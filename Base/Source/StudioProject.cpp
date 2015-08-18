@@ -189,7 +189,7 @@ void StudioProject::InitMesh()
 
 	//GameMenu
 	meshList[GEO_MENU_BACKGROUND] = MeshBuilder::Generate2DMesh("GameMenu_background", Color(1, 1, 1), 50, 50, 800,600);
-	meshList[GEO_MENU_BACKGROUND]->textureID = LoadTGA("Image//Menu//MenuBackground.tga");
+	meshList[GEO_MENU_BACKGROUND]->textureID = LoadTGA("Image//Menu//Menu_Background.tga");
 
 	meshList[GEO_MENU_FEEDBACK] = MeshBuilder::Generate2DMesh("GameMenu_feedback", Color(1, 1, 1), 0, 0, 210, 80);
 	meshList[GEO_MENU_FEEDBACK]->textureID = LoadTGA("Image//Menu//SelectionFeedback.tga");
@@ -199,7 +199,7 @@ void StudioProject::InitMesh()
 
 	meshList[GEO_CONTROLS_TEXT] = MeshBuilder::Generate2DMesh("GameMenuControlsText", Color(1, 1, 1), 0, 0, 220, 30);
 	meshList[GEO_CONTROLS_TEXT]->textureID = LoadTGA("Image//Menu//ControlsText.tga");
-
+	
 }
 void StudioProject::InitCamera()
 {
@@ -1855,7 +1855,7 @@ void StudioProject::RenderMenu(int input)
 		{
 			if(GameMenu.getMenuState())
 			{
-				Render2DMesh(meshList[GEO_PLAY_TEXT],false,1.f,130,350);
+				Render2DMesh(meshList[GEO_PLAY_TEXT],false,1.f,350,350);
 				Render2DMesh(meshList[GEO_CONTROLS_TEXT],false,1.f,80,220);
 				Render2DMesh(meshList[GEO_MENU_FEEDBACK],false,1.f,GameMenu.getCurrentSelectPos_X(),GameMenu.getCurrentSelectPos_Y());
 				RenderTextOnScreen(meshList[GEO_TEXT], "Press Escape To Exit", Color(0.3f, 0.3f, 0.3f), 2.f, 32, 10);

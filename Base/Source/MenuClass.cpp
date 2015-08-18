@@ -8,7 +8,7 @@ CMenuClass::CMenuClass(void)
 
 	currentSelectionPos.x = 130.f;
 	currentSelectionPos.y = 325.f;
-	playPos.x = 230.f;	//Feedback position
+	playPos.x = 450.f;	//Feedback position
 	controlPos.x = 300.f;
 	playPos.y = 325.f;	//Feedback position
 	controlPos.y = 195.f;
@@ -72,7 +72,19 @@ void CMenuClass::setReset(bool input)
 
 void CMenuClass::menuFeedback()
 {
-
+	//==================================//
+	//			Menu FeedBack			//
+	//=================================//
+	if(menuOption == PLAY_GAME)
+	{
+		currentSelectionPos.x = playPos.x;
+		currentSelectionPos.y = playPos.y;
+	}
+	else if(menuOption == CONTROLS)
+	{
+		currentSelectionPos.x = controlPos.x;
+		currentSelectionPos.y = controlPos.y;
+	}
 }
 
 void CMenuClass::ControlMenu()
@@ -130,19 +142,7 @@ void CMenuClass::DefaultMenu()
 		inputDelay = 0.f;
 	}
 
-	//==================================//
-	//			Menu FeedBack			//
-	//=================================//
-	if(menuOption == PLAY_GAME)
-	{
-		currentSelectionPos.x = playPos.x;
-		currentSelectionPos.y = playPos.y;
-	}
-	else if(menuOption == CONTROLS)
-	{
-		currentSelectionPos.x = controlPos.x;
-		currentSelectionPos.y = controlPos.y;
-	}
+	menuFeedback();
 }
 void CMenuClass::LostScreen()
 {
