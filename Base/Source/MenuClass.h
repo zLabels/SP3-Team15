@@ -41,6 +41,8 @@ public:
 	bool getReset();
 	void setReset(bool input);
 
+	void menuFeedback();
+
 	float inputDelay;	//limter for input delay
 	float DELAY_RATE;	//Input delay rate
 

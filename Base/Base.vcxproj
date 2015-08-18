@@ -12,6 +12,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\Application.cpp" />
+    <ClCompile Include="Source\C2DBoundBox.cpp" />
     <ClCompile Include="Source\C3dAABB.cpp" />
     <ClCompile Include="Source\C3dOBB.cpp" />
     <ClCompile Include="Source\C3DObject.cpp" />
@@ -43,6 +44,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Application.h" />
+    <ClInclude Include="Source\C2DBoundBox.h" />
     <ClInclude Include="Source\C3dAABB.h" />
     <ClInclude Include="Source\C3dOBB.h" />
     <ClInclude Include="Source\C3DObject.h" />

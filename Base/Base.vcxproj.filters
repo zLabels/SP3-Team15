@@ -150,6 +150,9 @@
     <ClCompile Include="Source\StudioProject.cpp">
       <Filter>Source Files\Scene</Filter>
     </ClCompile>
+    <ClCompile Include="Source\C2DBoundBox.cpp">
+      <Filter>Source Files\Collision</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Camera.h">
@@ -250,6 +253,9 @@
     </ClInclude>
     <ClInclude Include="Source\StudioProject.h">
       <Filter>Header Files\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\C2DBoundBox.h">
+      <Filter>Header Files\Collision</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

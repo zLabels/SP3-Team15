@@ -70,6 +70,11 @@ void CMenuClass::setReset(bool input)
 	Reset = input;
 }
 
+void CMenuClass::menuFeedback()
+{
+
+}
+
 void CMenuClass::ControlMenu()
 {
 	if(Application::IsKeyPressed(VK_RETURN)  && inputDelay > DELAY_RATE)

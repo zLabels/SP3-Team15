@@ -7,7 +7,6 @@ CSoundManager::CSoundManager(void) :
 {
 }
 
-
 CSoundManager::~CSoundManager(void)
 {
 	if(Sound)
@@ -21,7 +20,6 @@ CSoundManager::~CSoundManager(void)
 		engine = NULL;
 	}
 }
-
 
 void CSoundManager::Init()
 {
