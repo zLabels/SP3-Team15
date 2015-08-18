@@ -71,6 +71,11 @@ public:
 	int GetMapFineOffset_x(void);	//Get map fine offset X
 	int GetMapFineOffset_y(void);	//Get map find offset Y
 
+    void Hero_Acceleration(bool LeftOrRight,const float timeDiff);
+    void setHero_Velocity(float);
+    float getHero_Velocity(void);
+    void setHero_Deceleration(bool,float);
+
 	static CHero* GetInstance();	//Getting hero instance
 	
 		//Animations
@@ -119,5 +124,12 @@ private:
 
 	int mapOffset_X, mapOffset_Y;	//Map offset X , Y	for sccrolling
 	int mapFineOffset_X, mapFineOffset_Y;	//Map fine offset X , Y for scrolling
+
+    //Physics Code Declaration
+    float f_Current_Acceleration; // Acceleration of the character
+    float hero_mass;              // Player's mass
+    float hero_maxspeed;          // Player's Max speed that it can achieve
+    float hero_velocity;          // Player's Current Velocity
+    float f_force;                // Force
 };
 

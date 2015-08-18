@@ -237,6 +237,9 @@ void StudioProject::InitVariables()
 	//Save
 	Save = false;
 	load = true;
+
+    //Deceleration Physics
+    f_deceleration = 20;
 }
 void StudioProject::InitHUD()
 {
@@ -1319,6 +1322,36 @@ void StudioProject::UpdateInput(double dt)
 	{
 		CHero::GetInstance()->Hero_run_right->m_anim->animActive = false;
 	}
+
+     //--------Physics------
+    if(!Application::IsKeyPressed('D') && !Application::IsKeyPressed('A')) 
+    {
+        if(CHero::GetInstance()->getHero_Velocity() > 0)
+        {
+            float temp = CHero::GetInstance()->getHero_Velocity();
+            temp -= f_deceleration * dt;
+            if(temp < 0)
+            {
+                temp = 0;
+            }
+            CHero::GetInstance()->setHero_Deceleration(false,temp);
+
+        }
+        if(CHero::GetInstance()->getHero_Velocity() < 0)
+        {
+            float temp = CHero::GetInstance()->getHero_Velocity();
+            temp += f_deceleration * dt;
+            if(temp > 0)
+            {
+                temp = 0;
+            }
+            CHero::GetInstance()->setHero_Deceleration(true,temp);
+
+        }
+    
+
+        
+    }
 
 	//JUMPING
 	jump_input_delay += (float)dt;

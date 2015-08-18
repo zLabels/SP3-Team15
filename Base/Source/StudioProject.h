@@ -285,6 +285,8 @@ private:
 
 	//Convert into class CLayer
 	//Store into array of layers
+
+    float f_deceleration;
 };
 
 #endif

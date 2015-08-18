@@ -24,7 +24,12 @@ CHero::CHero(void):
 	hero_damaged(false),
 	kb_direction(false),
 	invul_frame(0.f),
-	MAX_INVUL(1.f)
+	MAX_INVUL(1.f),
+    f_Current_Acceleration(0),
+    hero_mass(4),
+    hero_velocity(0),
+    hero_maxspeed(10),
+    f_force(1)
 {
 }
 
@@ -79,12 +84,12 @@ void CHero::HeroMoveLeftRight(const bool mode, const float timeDiff)
 	if (mode)
 	{
 		tempHeroPos.x = HeroPos.x;
-		HeroPos.x = HeroPos.x - (int) (hero_MS * timeDiff);
+		 Hero_Acceleration(true, timeDiff);  //Acceleration
 	}
 	else
 	{
 		tempHeroPos.x = HeroPos.x;
-		HeroPos.x = HeroPos.x + (int) (hero_MS * timeDiff);
+		Hero_Acceleration(false, timeDiff); //Acceleration
 	}
 }
 /********************************************************************************
@@ -561,4 +566,60 @@ void CHero::SetHeroPos_x(float input)
 void CHero::SetHeroPos_y(float input)
 {
 	this->HeroPos.y = input;
+}
+
+void CHero::setHero_Velocity(float New_Velocity)
+{
+    hero_velocity = New_Velocity;
+}
+
+void CHero::Hero_Acceleration(bool LeftOrRight,const float timeDiff)
+{
+    f_Current_Acceleration = f_force / hero_mass; // Get Acceleration
+
+    if(LeftOrRight) //Move Left
+    {
+
+        if(hero_velocity > -hero_maxspeed)
+        {
+            hero_velocity -= f_Current_Acceleration * timeDiff;
+        }
+        else if (hero_velocity <= -hero_maxspeed)
+        {
+            hero_velocity = -hero_maxspeed;
+        }
+            HeroPos.x = HeroPos.x + (float)(hero_velocity * timeDiff);  // Translate Hero's position according to the velocity
+    }
+    else           //Move Right
+    {
+        if(hero_velocity < hero_maxspeed)
+        {
+            hero_velocity += f_Current_Acceleration * timeDiff;
+        }
+        else if (hero_velocity >= hero_maxspeed)
+        {
+            hero_velocity = hero_maxspeed;
+        }
+            HeroPos.x = HeroPos.x + (float)(hero_velocity * timeDiff);
+    }
+    
+}
+
+void CHero::setHero_Deceleration(bool LeftorRight ,float Decelerate)
+{
+    if(!LeftorRight) // RIGHT
+    {
+        hero_velocity = Decelerate;
+        HeroPos.x += (float)(hero_velocity);
+    }
+    else //LEFT
+    {
+        hero_velocity = Decelerate;
+        HeroPos.x +=  (float)(hero_velocity);
+    }
+}
+
+float CHero::getHero_Velocity(void)
+{
+    return hero_velocity;
 }
