@@ -233,6 +233,10 @@ void StudioProject::InitVariables()
 
 	//Map
 	Transiting = false;
+
+	//Save
+	Save = false;
+	load = true;
 }
 void StudioProject::InitHUD()
 {
@@ -265,6 +269,7 @@ void StudioProject::InitBackground()
 void StudioProject::InitHero()
 {
 	CHero::GetInstance()->HeroInit(0,500);
+	//Load function for the hero 
 
 	//Sprite Animation
 	//===================================================================================//
@@ -537,6 +542,45 @@ void StudioProject::Reset(bool hasWon)
 		GameMenu.setReset(false);
 	}
 }
+
+void StudioProject::LoadHero()
+{
+	string info = ""; //Used to store string from text file
+	vector<int> Hero_position;
+	if(Save == false)
+	{
+		if(load == true)
+		{
+			ifstream herodata("Source//TextFiles//Player//Player_Data.txt");
+			if(herodata.is_open())
+			{
+				while(herodata.good())
+				{
+					getline(herodata, info);
+
+					istringstream is(info);
+					
+					for(string value; getline(is, value, ','); )
+					{
+						Hero_position.push_back((atoi(value.c_str())));
+					}
+				}
+			}
+			herodata.close();
+		}
+	}
+	if(Hero_position.size() > 0)
+	{
+		unsigned j = 0; // used to control variables passed in
+		j+=5;	
+		CHero::GetInstance()->HeroInit(Hero_position[j-5],Hero_position[j-4]);
+		CHero::GetInstance()->Gethero_HP() = Hero_position[j-3];
+		CHero::GetInstance()->Gethero_EP() = Hero_position[j-2];
+		CHero::GetInstance()->setMapOffset_x(Hero_position[j-1]);
+		CHero::GetInstance()->setMapOffset_y(Hero_position[j]);
+	}
+}
+
 void StudioProject::LoadEnemies(unsigned Level)
 {
 	/*
@@ -1212,10 +1256,10 @@ void StudioProject::UpdateInput(double dt)
 	float tempHeroPos_y = CHero::GetInstance()->GetHeroPos_y();	//Hero current position Y
 	int checkPosition_X = (int)((CHero::GetInstance()->GetMapOffset_x() + tempHeroPos_x) / m_cMap->GetTileSize());	//Hero tile position X
 	int checkPosition_Y = m_cMap->GetNumOfTiles_Height() - (int) ( (tempHeroPos_y + m_cMap->GetTileSize()) / m_cMap->GetTileSize());	//Hero tile position Y
-	/*if(Application::IsKeyPressed('B'))
-	{
-		m_cMap = m_cMap2;
-	}*/
+	//if(Application::IsKeyPressed('B'))
+	//{
+	//	m_cMap = m_cMap2;
+	//}
 
 	//Movement
 	if(Application::IsKeyPressed('W'))	//Move up
@@ -1227,9 +1271,15 @@ void StudioProject::UpdateInput(double dt)
 		}
 	}
 	//Down
-	if(Application::IsKeyPressed('S'))
+	if(Application::IsKeyPressed(VK_F11))
 	{
-		//this->CHero::GetInstance()->HeroMoveUpDown(false , 1.0f);
+		//CHero::GetInstance()->HeroMoveUpDown(false , 1.0f);
+		Save = true; 
+		SaveGame();
+	}
+	if(Application::IsKeyPressed(VK_F10))
+	{
+		LoadHero();
 	}
 	//Walk Left
 	if(Application::IsKeyPressed('A') && 
@@ -1355,6 +1405,30 @@ void StudioProject::UpdateInput(double dt)
 		CHero::GetInstance()->Gethero_EP() -= 10;
 	}
 }
+void StudioProject::SaveGame()
+{
+	if(Save)
+	{
+		cout<<"SAVE";
+		ofstream saveFile/*("Source//TextFiles//Player//Player_Data.txt")*/;
+		saveFile.open("Source//TextFiles//Player//Player_Data.txt");
+		if(saveFile.is_open())
+		{
+			saveFile << (CHero::GetInstance()->GetHeroPos_x()) << ",";
+			saveFile << (CHero::GetInstance()->GetHeroPos_y()) << ",";
+
+			saveFile << (CHero::GetInstance()->Gethero_HP()) <<",";
+			saveFile << (CHero::GetInstance()->Gethero_EP()) <<",";
+
+			saveFile << (CHero::GetInstance()->GetMapOffset_x()) <<",";
+			saveFile << (CHero::GetInstance()->GetMapOffset_y());
+
+			Save = false;
+		}
+		saveFile.close();
+	}
+}
+
 void StudioProject::UpdateMap(double dt)
 {
 	MapTransition = dynamic_cast<CSpriteAnimation*>(meshList[MAP_TRANSITION]);
@@ -1399,6 +1473,8 @@ void StudioProject::UpdateMap(double dt)
 		GameMenu.setWinState(true);
 		Reset(true);
 	}
+
+	
 }
 void StudioProject::Update(double dt)
 {

@@ -527,6 +527,7 @@ int CHero::GetMapOffset_y(void)
 {
 	return this->mapOffset_Y;
 }
+
 void CHero::setMapOffset_x(int x)
 {
 	this->mapOffset_X = x;

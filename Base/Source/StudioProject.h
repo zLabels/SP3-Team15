@@ -181,7 +181,8 @@ public:
 	void Reset(bool hasWon);	//Resets the game
 	void AttackResponse(CHero::ATTACK_TYPE type);	//Reponse of attacks in game
 	void LoadEnemies(unsigned Level);	//Loads enemies on map based on map 
-	
+	void LoadHero();//Load Hero
+
 	void UpdateDebug(double dt);	//Update debug related information
 	void UpdateSprites(double dt);	//Update sprite animations
 	void UpdateInput(double dt);	//Updates player inputs
@@ -207,6 +208,8 @@ public:
 	void RenderDebug(void);	//Render debug related
 	void ClearBuffer(void);	//Clearing buffer
 	void EnableCamera(void);	//Camera type / enable
+
+	void SaveGame(void);//Save
 
 	void RenderText(Mesh* mesh, std::string text, Color color);	//Method to render text
 	void RenderTextOnScreen(Mesh* mesh, std::string text, Color color, float size, float x, float y);	//Method to render text on screen
@@ -259,6 +262,8 @@ private:
 	CSpriteAnimation* MapTransition;	//Used to transite from 1 map to another
 	bool Transiting;	//Control for transition of map
 	bool Lv1Clear;	//Check if map is cleared
+	bool Save;
+	bool load;
 
 	//Hero's Info
 	float HERO_SIZE;	//Size of hero
