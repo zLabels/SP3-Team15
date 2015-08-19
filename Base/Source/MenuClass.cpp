@@ -47,16 +47,16 @@ bool CMenuClass::getLoadingLevels()
 {
 	return Loading;
 }
-
-int CMenuClass::getChoosingLevels()
+void CMenuClass::setLoadingLevels(bool input)
+{
+	Loading = input;
+}
+bool CMenuClass::getChoosingLevels()
 {
 	return LevelSelect;
 }
 
-void CMenuClass::setLevelChoosen(int level)
-{
 
-}
 
 float CMenuClass::getCurrentSelectPos_X()
 {

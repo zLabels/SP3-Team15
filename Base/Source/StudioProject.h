@@ -277,6 +277,9 @@ private:
 	CSpriteAnimation* MapTransition;	//Used to transite from 1 map to another
 	bool Transiting;	//Control for transition of map
 	bool Lv1Clear;	//Check if map is cleared
+	bool Lv2Clear;
+	bool Lv3Clear;
+	bool Lv4Clear;
 	bool Save;
 	bool load;
 

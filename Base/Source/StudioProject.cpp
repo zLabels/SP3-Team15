@@ -239,7 +239,9 @@ void StudioProject::InitVariables()
 	//Level
 	m_CurrentLevel = 1;
 	Lv1Clear = false;
-
+	Lv2Clear = false;
+	Lv3Clear = false;
+	Lv4Clear = false;
 	//Map
 	Transiting = false;
 
@@ -601,7 +603,7 @@ void StudioProject::LoadHero()
 				//	RenderTextOnScreen(meshList[GEO_TEXT], "NO SAVED FILE", Color(1, 1, 1), 2.f, 15, 42);
 				//}
 			}
-
+			load = false;
 			herodata.close();
 		}
 	}
@@ -615,6 +617,7 @@ void StudioProject::LoadHero()
 		CHero::GetInstance()->setMapOffset_x(Hero_position[j-1]);
 		CHero::GetInstance()->setMapOffset_y(Hero_position[j]);
 	}
+
 }
 
 void StudioProject::LoadEnemies(unsigned Level)
@@ -1306,6 +1309,7 @@ void StudioProject::UpdateInput(double dt)
 	}
 	if(Application::IsKeyPressed(VK_F10))
 	{
+		load = true;
 		LoadHero();
 	}
 	//Walk Left
@@ -1583,59 +1587,36 @@ void StudioProject::Update(double dt)
 
 	else if(GameMenu.getMenuState() == false && GameMenu.getLostState() == false && GameMenu.getWinState() == false)
 	{
-
-		if(GameMenu.getLoadingLevels() == false)
-		{
-		/*=================
-			GAME START
-		===================*/
-		UpdateDebug(dt);
-
-		if(!Transiting)	//If player is transiting from map to map, no input is taken in
-		{
-			UpdateInput(dt);
-		}
-
-		
-		UpdateMap(dt);
-		HeroUpdate(dt);
-		EnemyUpdate(dt);
-		
-		UpdateSprites(dt);
-		UpdateEnemySprites(dt);
-
-		soundplayer.playSounds(soundplayer.GAME_BGM);
-
-		//camera.Update(dt);
-
-		fps = (float)(1.f / dt);
-		}
 		if(GameMenu.getLoadingLevels() == true)
 		{
+			load = true;
+			GameMenu.setLoadingLevels(false);
+		}
+
+		LoadHero();
 		/*=================
-			GAME START
+		GAME START
 		===================*/
 		UpdateDebug(dt);
-
 		if(!Transiting)	//If player is transiting from map to map, no input is taken in
 		{
 			UpdateInput(dt);
 		}
 
-		
+
 		UpdateMap(dt);
 		HeroUpdate(dt);
 		EnemyUpdate(dt);
-		
+
 		UpdateSprites(dt);
 		UpdateEnemySprites(dt);
-		LoadHero();
+
 		soundplayer.playSounds(soundplayer.GAME_BGM);
 
+		load = false;
 		//camera.Update(dt);
 
 		fps = (float)(1.f / dt);
-		}
 	}
 }
 
