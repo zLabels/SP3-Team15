@@ -131,6 +131,8 @@ class StudioProject : public Scene
 		GEO_SABER_SHOCKWAVE_LEFT,
 		GEO_SABER_JUMP_RIGHT,
 		GEO_SABER_JUMP_LEFT,
+		//Weapon
+		GEO_GRAPPLING_HOOK,
 			//Skele
 		GEO_SKELE_WALK_RIGHT,
 		GEO_SKELE_WALK_LEFT,
@@ -200,6 +202,7 @@ public:
 	void UpdateMap(double dt);	//Updates the current map
 	void UpdateEnemySprites(double dt);		//Updates enemy sprite animations
 
+	void RenderWeapon();	//Render player's weapon
 	void RenderMenu(int input);	//Render Menu
 	void RenderHeroSprites(void);	//Render hero related sprites
 	void RenderEnemySprites(CEnemy* enemyInput);	//Render Enemy related sprites
@@ -294,6 +297,8 @@ private:
 	int rearWallOffset_x, rearWallOffset_y;
 	int rearWallTileOffset_x, rearWallTileOffset_y;
 	int rearWallFineOffset_x, rearWallFineOffset_y;
+
+	float f_grappleRotation;
 
 	//Convert into class CLayer
 	//Store into array of layers

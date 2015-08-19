@@ -296,7 +296,7 @@ int CHero::ConstrainHeroY(const int leftBorder, const int rightBorder, const int
 bool CHero::CheckCollision (CMap* m_cMap, bool m_bCheckLeft,bool m_bCheckRight, bool m_bCheckUp, bool m_bCheckDown)
 {
 	int mapFineOffset_x = mapOffset_X % m_cMap->GetTileSize();
-	int checkPosition_X2 = (int) ((mapOffset_X+HeroPos.x + 25.f - mapFineOffset_x) / m_cMap->GetTileSize());
+	int checkPosition_X2 = (int) ((mapOffset_X+HeroPos.x - mapFineOffset_x) / m_cMap->GetTileSize());
 	int checkPosition_X3 = (int) ((mapOffset_X+HeroPos.x - mapFineOffset_x) / m_cMap->GetTileSize());
 	int checkPosition_Y2 = m_cMap->GetNumOfTiles_Height() - (int) ceil( (float) (HeroPos.y + m_cMap->GetTileSize()) / m_cMap->GetTileSize());
 	int checkPosition_Y3 = m_cMap->GetNumOfTiles_Height() - (int) ceil( (float) (HeroPos.y + m_cMap->GetTileSize() + 25.f) / m_cMap->GetTileSize());

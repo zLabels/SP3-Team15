@@ -203,8 +203,11 @@ void StudioProject::InitMesh()
 	meshList[GEO_LOAD_TEXT] = MeshBuilder::Generate2DMesh("GameMenuLoadText", Color(1, 1, 1), 0, 0, 100, 30);
 	meshList[GEO_LOAD_TEXT]->textureID = LoadTGA("Image//Menu//Menu_Loadtext.tga");
 	
-	meshList[GEO_LEVEL_TEXT] = MeshBuilder::Generate2DMesh("GameMenuLoadText", Color(1, 1, 1), 0, 0, 250, 30);
+	meshList[GEO_LEVEL_TEXT] = MeshBuilder::Generate2DMesh("GameMenuLevelText", Color(1, 1, 1), 0, 0, 250, 30);
 	meshList[GEO_LEVEL_TEXT]->textureID = LoadTGA("Image//Menu//Menu_Levelstext.tga");
+
+	meshList[GEO_GRAPPLING_HOOK] = MeshBuilder::Generate2DHook("Grapplinghook", Color(1, 1, 1), 0, 0, 25, 25);
+	meshList[GEO_GRAPPLING_HOOK]->textureID = LoadTGA("Image//Weapon//Grappling_Hook.tga");
 	
 }
 void StudioProject::InitCamera()
@@ -244,6 +247,7 @@ void StudioProject::InitVariables()
 	Save = false;
 	load = false;
 
+	f_grappleRotation = 0.f;
     //Deceleration Physics
     f_deceleration = 20;
 }
@@ -1457,6 +1461,37 @@ void StudioProject::UpdateInput(double dt)
 		}
 		CHero::GetInstance()->Gethero_EP() -= 10;
 	}
+	
+	/*
+		Clicking
+		Grappling Hook
+	*/
+	double x, y;
+	Application::GetCursorPos(&x, &y);
+	int w = Application::GetWindowWidth();
+	int h = Application::GetWindowHeight();
+	float posX = static_cast<float>(x) / w * 800;
+	posX += CHero::GetInstance()->GetMapOffset_x();
+	float posY = (h - static_cast<float>(y)) / h * 600;
+
+	static bool bLButtonState = false;
+	if(!bLButtonState && Application::IsMousePressed(0) )
+	{
+		bLButtonState = true;
+		std::cout << "LBUTTON DOWN" << std::endl;
+	}
+	else if(bLButtonState && !Application::IsMousePressed(0))
+	{
+		bLButtonState = false;
+	}
+
+	float hero_x = CHero::GetInstance()->GetHeroPos_x();
+	hero_x += CHero::GetInstance()->GetMapOffset_x();
+	float hero_y = CHero::GetInstance()->GetHeroPos_y();
+	f_grappleRotation = Math::RadianToDegree( -atan2(  (posX - hero_x),(posY - hero_y) ));
+
+	std::cout << posX << std::endl;
+	std::cout << hero_x << std::endl;
 }
 void StudioProject::SaveGame()
 {
@@ -1827,6 +1862,10 @@ void StudioProject::Render2DMesh(Mesh *mesh, bool enableLight, float size, float
 			modelStack.PushMatrix();
 				modelStack.LoadIdentity();
 				modelStack.Translate(x, y, 0);
+				if(rotate)
+				{
+					modelStack.Rotate(f_grappleRotation,0,0,1);
+				}
 				modelStack.Scale(size, size, size);
        
 				Mtx44 MVP, modelView, modelView_inverse_transpose;
@@ -1930,6 +1969,10 @@ void StudioProject::Render2DSprite(Mesh *mesh, bool enableLight, float sizex, fl
 	glEnable(GL_DEPTH_TEST);
 }
 
+void StudioProject::RenderWeapon()
+{
+	Render2DMesh(meshList[GEO_GRAPPLING_HOOK],false,1.f,CHero::GetInstance()->GetHeroPos_x(),CHero::GetInstance()->GetHeroPos_y(),true);
+}
 void StudioProject::RenderMenu(int input)
 {
 	//Render background
@@ -2380,7 +2423,7 @@ void StudioProject::Render()
 		}
 
 		RenderHeroSprites();
-
+		RenderWeapon();
 		RenderDebug();
 
 		SetHUD(true);

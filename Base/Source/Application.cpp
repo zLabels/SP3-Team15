@@ -185,6 +185,19 @@ bool Application::GetKeyBoardUpdate()
 	return true;
 }
 
+void Application::GetCursorPos(double *xpos, double *ypos)
+{
+	glfwGetCursorPos(m_window, xpos, ypos);
+}
+int Application::GetWindowWidth()
+{
+	return m_window_width;
+}
+int Application::GetWindowHeight()
+{
+	return m_window_height;
+}
+
 void Application::Run()
 {
 	//Main Loop

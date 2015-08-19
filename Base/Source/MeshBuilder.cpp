@@ -786,7 +786,7 @@ Mesh* MeshBuilder::Generate2DMesh(const std::string &meshName, Color color, int 
 	Vertex v;
 	std::vector<Vertex> vertex_buffer_data;
 	std::vector<GLuint> index_buffer_data;
-	// Vertex #1
+	// Vertex #18 
 	v.pos.Set(0, 0, 0);
 	v.color = color;
 	v.normal.Set(0, 0, 1);
@@ -825,7 +825,50 @@ Mesh* MeshBuilder::Generate2DMesh(const std::string &meshName, Color color, int 
 	mesh->mode = Mesh::DRAW_TRIANGLES;
 	return mesh;
 }
-
+Mesh* MeshBuilder::Generate2DHook(const std::string &meshName, Color color,int pos_x, int pos_y, int width, int height)
+{
+	Vertex v;
+	std::vector<Vertex> vertex_buffer_data;
+	std::vector<GLuint> index_buffer_data;
+	// Vertex #18 
+	v.pos.Set(-0.5f * width, -0.5f * height, 0);
+	v.color = color;
+	v.normal.Set(0, 0, 1);
+	v.texCoord.Set(0, 0);
+	vertex_buffer_data.push_back(v);
+	// Vertex #2
+	v.pos.Set(0.5f * width, -0.5f * height, 0);
+	v.color = color;
+	v.normal.Set(0, 0, 1);
+	v.texCoord.Set(1.0f, 0);
+	vertex_buffer_data.push_back(v);
+	// Vertex #3
+	v.pos.Set(0.5f * width, 0.5f * height, 0);
+	v.color = color;
+	v.normal.Set(0, 0, 1);
+	v.texCoord.Set(1.0f, 1.0f);
+	vertex_buffer_data.push_back(v);
+	// Vertex #4
+	v.pos.Set(-0.5f * width, 0.5f * height, 0);
+	v.color = color;
+	v.normal.Set(0, 0, 1);
+	v.texCoord.Set(0, 1.0f);
+	vertex_buffer_data.push_back(v);
+	index_buffer_data.push_back(3);
+	index_buffer_data.push_back(0);
+	index_buffer_data.push_back(2);
+	index_buffer_data.push_back(1);
+	index_buffer_data.push_back(2);
+	index_buffer_data.push_back(0);
+	Mesh *mesh = new Mesh(meshName);
+	glBindBuffer(GL_ARRAY_BUFFER, mesh->vertexBuffer);
+	glBufferData(GL_ARRAY_BUFFER, vertex_buffer_data.size() * sizeof(Vertex), &vertex_buffer_data[0], GL_STATIC_DRAW);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mesh->indexBuffer);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, index_buffer_data.size() * sizeof(GLuint), &index_buffer_data[0], GL_STATIC_DRAW);
+	mesh->indexSize = index_buffer_data.size();
+	mesh->mode = Mesh::DRAW_TRIANGLES;
+	return mesh;
+}
 CSpriteAnimation* MeshBuilder::GenerateSpriteAnimation(const std::string &meshName, unsigned numRow, unsigned numCol)
 {
 	Vertex v;
