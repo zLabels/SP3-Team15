@@ -105,10 +105,12 @@ class StudioProject : public Scene
 		GEO_LAYER_2,
 		GEO_LAYER_3,
 		//Tiles,
-		GEO_TILEUNDERGROUND,
 		GEO_TILESTRUCTURE,
-		GEO_TILEGRASSGROUND,
 		GEO_TILECAVE,
+		GEO_TILE_METALSUPPORT_RIGHT,
+		GEO_TILE_METALSUPPORT_LEFT,
+		GEO_TILE_METALFLOOR,
+		GEO_TILE_METALCORNER,
 		//Hero,
 		GEO_TILEHERO,
 		GEO_SABER_IDLE_RIGHT,
@@ -148,10 +150,11 @@ class StudioProject : public Scene
 	};
 	enum TILE_TYPE
 	{
-		TILE_GRASS = 1,
-		TILE_UNDERGROUND,
+		TILE_METALFLOOR = 1,
+		TILE_METALSUPPORT_RIGHT,
 		TILE_BORDER,
-		TILE_CAVE,
+		TILE_METALCORNER,
+		TILE_METALSUPPORT_LEFT,
 		MAX_TILE,
 	};
 
@@ -257,6 +260,7 @@ private:
 	unsigned m_CurrentLevel;	//Current Level
 	CMap* m_cMap;	//Current Map
 	CMap* Level1;	//Level 1 map
+	CMap* m_cDebug;	//Debug Map
 
 	void RenderTileMap();	//Used to render Tile map
 	CSpriteAnimation* MapTransition;	//Used to transite from 1 map to another

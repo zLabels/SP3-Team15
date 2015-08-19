@@ -259,7 +259,7 @@ void StudioProject::InitBackground()
 {
 	//First background
 	meshList[GEO_BACKGROUND] = MeshBuilder::Generate2DMesh("GEO_BACKGROUND", Color(1, 1, 1), 0, 0, 900, 600);
-	meshList[GEO_BACKGROUND]->textureID = LoadTGA("Image//Backgroundtest2.tga");
+	meshList[GEO_BACKGROUND]->textureID = LoadTGA("Image//Map//Map_Background.tga");
 
 	//Second layer for parrallax
 	meshList[GEO_LAYER_2] = MeshBuilder::Generate2DMesh("Layer2", Color(1, 1, 1), 0, 0, 900, 600);
@@ -423,11 +423,15 @@ void StudioProject::InitMap()
 	// Initialise and load the tile map
 	m_cMap = new CMap();
 
+	m_cDebug = new CMap();
+	m_cDebug->Init( ScreenHeight, ScreenWidth, 24, 32, 600, 1600 );
+	m_cDebug->LoadMap( "Image//MapDesigns//Map_Debug.csv" );
+
 	Level1 = new CMap();
 	Level1->Init( ScreenHeight, ScreenWidth, 24, 32, 600, 1600 );
 	Level1->LoadMap( "Image//MapDesigns//Level2.csv" );
 	
-	m_cMap = Level1;
+	m_cMap = m_cDebug;
 
 	//Init and load rear tile map
 	m_cRearMap = new CMap();
@@ -452,14 +456,20 @@ void StudioProject::InitTiles()
 
 	/*
 		Generate Tile is the function that breaks up the tileset and generate the tile 
-		based on the selected col and row
+		based on the selected col and row, Tile size needs to be 26 
 	*/
 	//Ground
-	meshList[GEO_TILEUNDERGROUND] = MeshBuilder::GenerateTile("underground",20,16,3,1,25);
-	meshList[GEO_TILEUNDERGROUND]->textureID = LoadTGA("Image//Tiles//tileset1.tga");
+	meshList[GEO_TILE_METALSUPPORT_LEFT] = MeshBuilder::GenerateTile("Metal_Support_Left",7,14,3,4,26);
+	meshList[GEO_TILE_METALSUPPORT_LEFT]->textureID = LoadTGA("Image//Tiles//Tile_Floor.tga");
 
-	meshList[GEO_TILEGRASSGROUND] = MeshBuilder::GenerateTile("grassground",20,16,2,2,25);
-	meshList[GEO_TILEGRASSGROUND]->textureID = LoadTGA("Image//Tiles//tileset1.tga");
+	meshList[GEO_TILE_METALSUPPORT_RIGHT] = MeshBuilder::GenerateTile("Metal_Support_Right",7,14,3,5,26);
+	meshList[GEO_TILE_METALSUPPORT_RIGHT]->textureID = LoadTGA("Image//Tiles//Tile_Floor.tga");
+
+	meshList[GEO_TILE_METALFLOOR] = MeshBuilder::GenerateTile("Metal_floor",7,14,1,2,26);
+	meshList[GEO_TILE_METALFLOOR]->textureID = LoadTGA("Image//Tiles//Tile_Floor.tga");
+
+	meshList[GEO_TILE_METALCORNER] = MeshBuilder::GenerateTile("Metal_Corner",7,14,1,4,26);
+	meshList[GEO_TILE_METALCORNER]->textureID = LoadTGA("Image//Tiles//Tile_Floor.tga");
 
 	theArrayOfGoodies = new CGoodies*[10];
 	for(unsigned i = 0; i < 10; ++i)
@@ -1267,7 +1277,7 @@ void StudioProject::UpdateInput(double dt)
 	//Movement
 	if(Application::IsKeyPressed('W'))	//Move up
 	{
-		if(m_cMap->theScreenMap[checkPosition_Y][checkPosition_X] == TILE_CAVE)
+		if(m_cMap->theScreenMap[checkPosition_Y][checkPosition_X] == TILE_METALCORNER)
 		{
 			Transiting = true;
 			MapTransition->m_anim->animActive = true;
@@ -1935,14 +1945,14 @@ void StudioProject::RenderMenu(int input)
 void StudioProject::RenderHUD(void)
 { 
 	//ICON
-	RenderMeshIn2D(meshList[GEO_ICON],false,0.7f,0.7f,-69.f,-51.f,false);
+	RenderMeshIn2D(meshList[GEO_ICON],false,0.7f,0.7f,-69.f,51.f,false);
 
 	//HUD template
-	RenderMeshIn2D(meshList[GEO_HUD_TEMPLATE],false,2.f,2.f,-40.f,-51.f,false);
+	RenderMeshIn2D(meshList[GEO_HUD_TEMPLATE],false,2.f,2.f,-40.f,51.f,false);
 	//Health points
-	RenderMeshIn2D(meshList[GEO_HUD_HP],false,0.032f * CHero::GetInstance()->Gethero_HP(),2.f,-52.8f,-48.1f,false);
+	RenderMeshIn2D(meshList[GEO_HUD_HP],false,0.032f * CHero::GetInstance()->Gethero_HP(),2.f,-52.8f,53.7f,false);
 	//Energy points
-	RenderMeshIn2D(meshList[GEO_HUD_EP],false,0.032f * CHero::GetInstance()->Gethero_EP(),2.f,-52.8f,-53.7f,false);
+	RenderMeshIn2D(meshList[GEO_HUD_EP],false,0.032f * CHero::GetInstance()->Gethero_EP(),2.f,-52.8f,48.1f,false);
 	//RenderMeshIn2D(meshList[GEO_HEALTHBAR],false,player.getHitpoints() * 0.025f,0.3f,-79.0f,-57.5f,false);
 
 	/*std::ostringstream ss3;
@@ -1971,14 +1981,14 @@ void StudioProject::RenderBackground(void)
 	rearWallOffset_x = (int) (CHero::GetInstance()->GetMapOffset_x() * 0.5);
 	rearWallFineOffset_x = rearWallOffset_x % m_cRearMap->GetTileSize();
 
-	Render2DMesh(meshList[GEO_LAYER_2], false, 1.0f,(float)(100 - rearWallOffset_x));
-	Render2DMesh(meshList[GEO_LAYER_2], false, 1.0f,(float)(1000 - rearWallOffset_x));
+	//Render2DMesh(meshList[GEO_LAYER_2], false, 1.0f,(float)(100 - rearWallOffset_x));
+	//Render2DMesh(meshList[GEO_LAYER_2], false, 1.0f,(float)(1000 - rearWallOffset_x));
 
 	rearWallOffset_x = (int) (CHero::GetInstance()->GetMapOffset_x() * 0.25);
 	rearWallFineOffset_x = rearWallOffset_x % m_cRearMap->GetTileSize();
 
-	Render2DMesh(meshList[GEO_LAYER_3], false, 1.0f,(float)(100 - rearWallOffset_x));
-	Render2DMesh(meshList[GEO_LAYER_3], false, 1.0f,(float)(1000 - rearWallOffset_x));
+	//Render2DMesh(meshList[GEO_LAYER_3], false, 1.0f,(float)(100 - rearWallOffset_x));
+	//Render2DMesh(meshList[GEO_LAYER_3], false, 1.0f,(float)(1000 - rearWallOffset_x));
 }
 void StudioProject::RenderGoodies(void)
 {
@@ -2001,17 +2011,21 @@ void StudioProject::RenderTileMap()
 			// If we have reached the right side of the Map, then do not display the extra column of tiles.
 			if ( (tileOffset_x+k) >= m_cMap->getNumOfTiles_MapWidth() )
 				break;
-			if (m_cMap->theScreenMap[i][m] == TILE_GRASS)
+			if (m_cMap->theScreenMap[i][m] == TILE_METALFLOOR)
 			{
-				Render2DMesh(meshList[GEO_TILEGRASSGROUND], false, 1.f, (float)k*m_cMap->GetTileSize()-CHero::GetInstance()->GetMapFineOffset_x(), 575.f-i*m_cMap->GetTileSize());
+				Render2DMesh(meshList[GEO_TILE_METALFLOOR], false, 1.f, (float)k*m_cMap->GetTileSize()-CHero::GetInstance()->GetMapFineOffset_x(), 575.f-i*m_cMap->GetTileSize());
 			}
-			else if (m_cMap->theScreenMap[i][m] == TILE_UNDERGROUND)
+			else if (m_cMap->theScreenMap[i][m] == TILE_METALSUPPORT_RIGHT)
 			{
-				Render2DMesh(meshList[GEO_TILEUNDERGROUND], false, 1.f, (float)k*m_cMap->GetTileSize()-CHero::GetInstance()->GetMapFineOffset_x(), 575.f-i*m_cMap->GetTileSize());
+				Render2DMesh(meshList[GEO_TILE_METALSUPPORT_RIGHT], false, 1.f, (float)k*m_cMap->GetTileSize()-CHero::GetInstance()->GetMapFineOffset_x(), 575.f-i*m_cMap->GetTileSize());
 			}
-			else if (m_cMap->theScreenMap[i][m] == TILE_CAVE)
+			else if (m_cMap->theScreenMap[i][m] == TILE_METALSUPPORT_LEFT)
 			{
-				Render2DMesh(meshList[GEO_TILECAVE], false, 1.f, (float)k*m_cMap->GetTileSize()-CHero::GetInstance()->GetMapFineOffset_x(), 575.f-i*m_cMap->GetTileSize());
+				Render2DMesh(meshList[GEO_TILE_METALSUPPORT_LEFT], false, 1.f, (float)k*m_cMap->GetTileSize()-CHero::GetInstance()->GetMapFineOffset_x(), 575.f-i*m_cMap->GetTileSize());
+			}
+			else if (m_cMap->theScreenMap[i][m] == TILE_METALCORNER)
+			{
+				Render2DMesh(meshList[GEO_TILE_METALCORNER], false, 1.f, (float)k*m_cMap->GetTileSize()-CHero::GetInstance()->GetMapFineOffset_x(), 575.f-i*m_cMap->GetTileSize());
 			}
 		}
 	}

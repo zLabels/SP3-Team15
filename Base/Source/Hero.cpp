@@ -28,7 +28,7 @@ CHero::CHero(void):
     f_Current_Acceleration(0),
     hero_mass(4),
     hero_velocity(0),
-    hero_maxspeed(10),
+    hero_maxspeed(5),
     f_force(1)
 {
 }
