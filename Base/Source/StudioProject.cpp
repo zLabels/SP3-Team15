@@ -217,7 +217,7 @@ void StudioProject::InitVariables()
 	ENEMY_OFFSET = 33.f;
 
 	//Hero
-	HERO_SIZE = 80.f;
+	HERO_SIZE = 70.f;
 	HERO_OFFSET = 33.f;
 	jump_input_delay = 0.f;
 
@@ -280,24 +280,24 @@ void StudioProject::InitHero()
 	//							IDLE													//
 	//
 	//==================================================================================//
-	meshList[GEO_SABER_IDLE_RIGHT] = MeshBuilder::GenerateSpriteAnimation("Saber_idle_left",1,2);
-	meshList[GEO_SABER_IDLE_RIGHT]->textureArray[0] = LoadTGA("Image//Saber//Saber_idle_right.tga");
+	meshList[GEO_PLAYER_IDLE_RIGHT] = MeshBuilder::GenerateSpriteAnimation("Hero_idle_right",2,2);
+	meshList[GEO_PLAYER_IDLE_RIGHT]->textureArray[0] = LoadTGA("Image//Player//Player_Idle.tga");
 	
-	CHero::GetInstance()->Hero_idle_right = dynamic_cast<CSpriteAnimation*>(meshList[GEO_SABER_IDLE_RIGHT]);
+	CHero::GetInstance()->Hero_idle_right = dynamic_cast<CSpriteAnimation*>(meshList[GEO_PLAYER_IDLE_RIGHT]);
 	if(CHero::GetInstance()->Hero_idle_right)
 	{
 		CHero::GetInstance()->Hero_idle_right->m_anim = new Animation();
 		CHero::GetInstance()->Hero_idle_right->m_anim->Set(0, 1, 1, 1.f, true,Vector3(0,0,1),0,0.f,HERO_SIZE);
 	}
 
-	meshList[GEO_SABER_IDLE_LEFT] = MeshBuilder::GenerateSpriteAnimation("Saber_idle_left",1,2);
-	meshList[GEO_SABER_IDLE_LEFT]->textureArray[0] = LoadTGA("Image//Saber//Saber_idle_left.tga");
+	meshList[GEO_PLAYER_IDLE_LEFT] = MeshBuilder::GenerateSpriteAnimation("Hero_idle_left",2,2);
+	meshList[GEO_PLAYER_IDLE_LEFT]->textureArray[0] = LoadTGA("Image//Player//Player_Idle.tga");
 	
-	CHero::GetInstance()->Hero_idle_left = dynamic_cast<CSpriteAnimation*>(meshList[GEO_SABER_IDLE_LEFT]);
+	CHero::GetInstance()->Hero_idle_left = dynamic_cast<CSpriteAnimation*>(meshList[GEO_PLAYER_IDLE_LEFT]);
 	if(CHero::GetInstance()->Hero_idle_left)
 	{
 		CHero::GetInstance()->Hero_idle_left->m_anim = new Animation();
-		CHero::GetInstance()->Hero_idle_left->m_anim->Set(0, 1, 1, 1.f, true,Vector3(0,0,1),0,0.f,HERO_SIZE);
+		CHero::GetInstance()->Hero_idle_left->m_anim->Set(2, 3, 1, 1.f, true,Vector3(0,0,1),0,0.f,HERO_SIZE);
 	}
 
 	//===================================================================================//
@@ -306,24 +306,24 @@ void StudioProject::InitHero()
 	//
 	//==================================================================================//
 
-	meshList[GEO_SABER_RUN_RIGHT] = MeshBuilder::GenerateSpriteAnimation("Saber_run_right",1,8);
-	meshList[GEO_SABER_RUN_RIGHT]->textureArray[0] = LoadTGA("Image//Saber//Saber_run_right.tga");
+	meshList[GEO_PLAYER_RUN_RIGHT] = MeshBuilder::GenerateSpriteAnimation("Hero_run_right",2,9);
+	meshList[GEO_PLAYER_RUN_RIGHT]->textureArray[0] = LoadTGA("Image//Player//Player_walking_sprite.tga");
 	
-	CHero::GetInstance()->Hero_run_right = dynamic_cast<CSpriteAnimation*>(meshList[GEO_SABER_RUN_RIGHT]);
+	CHero::GetInstance()->Hero_run_right = dynamic_cast<CSpriteAnimation*>(meshList[GEO_PLAYER_RUN_RIGHT]);
 	if(CHero::GetInstance()->Hero_run_right)
 	{
 		CHero::GetInstance()->Hero_run_right->m_anim = new Animation();
-		CHero::GetInstance()->Hero_run_right->m_anim->Set(0, 7, 1, 1.f, false,Vector3(0,0,1),0,0.f,HERO_SIZE);
+		CHero::GetInstance()->Hero_run_right->m_anim->Set(0, 8, 1, 1.f, false,Vector3(0,0,1),0,0.f,HERO_SIZE);
 	}
 
-	meshList[GEO_SABER_RUN_LEFT] = MeshBuilder::GenerateSpriteAnimation("Saber_run_left",1,8);
-	meshList[GEO_SABER_RUN_LEFT]->textureArray[0] = LoadTGA("Image//Saber//Saber_run_left.tga");
+	meshList[GEO_PLAYER_RUN_LEFT] = MeshBuilder::GenerateSpriteAnimation("Hero_run_left",2,9);
+	meshList[GEO_PLAYER_RUN_LEFT]->textureArray[0] = LoadTGA("Image//Player//Player_walking_sprite.tga");
 	
-	CHero::GetInstance()->Hero_run_left = dynamic_cast<CSpriteAnimation*>(meshList[GEO_SABER_RUN_LEFT]);
+	CHero::GetInstance()->Hero_run_left = dynamic_cast<CSpriteAnimation*>(meshList[GEO_PLAYER_RUN_LEFT]);
 	if(CHero::GetInstance()->Hero_run_left)
 	{
 		CHero::GetInstance()->Hero_run_left->m_anim = new Animation();
-		CHero::GetInstance()->Hero_run_left->m_anim->Set(0, 7, 1, 1.f, false,Vector3(0,0,1),0,0.f,HERO_SIZE);
+		CHero::GetInstance()->Hero_run_left->m_anim->Set(9, 17, 1, 1.f, false,Vector3(0,0,1),0,0.f,HERO_SIZE);
 	} 
 
 
@@ -398,24 +398,24 @@ void StudioProject::InitHero()
 	//
 	//==================================================================================//
 	
-	meshList[GEO_SABER_JUMP_RIGHT] = MeshBuilder::GenerateSpriteAnimation("Saber_jump_right",1,1);
-	meshList[GEO_SABER_JUMP_RIGHT]->textureArray[0] = LoadTGA("Image//Saber//Saber_jump_right.tga");
+	meshList[GEO_PLAYER_JUMP_RIGHT] = MeshBuilder::GenerateSpriteAnimation("Hero_jump_right",1,1);
+	meshList[GEO_PLAYER_JUMP_RIGHT]->textureArray[0] = LoadTGA("Image//Player//Player_Jump_Right.tga");
 
-	CHero::GetInstance()->Hero_jump_right = dynamic_cast<CSpriteAnimation*>(meshList[GEO_SABER_JUMP_RIGHT]);
+	CHero::GetInstance()->Hero_jump_right = dynamic_cast<CSpriteAnimation*>(meshList[GEO_PLAYER_JUMP_RIGHT]);
 	if(CHero::GetInstance()->Hero_jump_right)
 	{
 		CHero::GetInstance()->Hero_jump_right->m_anim = new Animation();
 		CHero::GetInstance()->Hero_jump_right->m_anim->Set(0, 0, 1, 1.f, false,Vector3(0,0,1),0,0.f,HERO_SIZE);
 	}
 	
-	meshList[GEO_SABER_JUMP_LEFT] = MeshBuilder::GenerateSpriteAnimation("Saber_jump_left",1,1);
-	meshList[GEO_SABER_JUMP_LEFT]->textureArray[0] = LoadTGA("Image//Saber//Saber_jump_left.tga");
+	meshList[GEO_PLAYER_JUMP_LEFT] = MeshBuilder::GenerateSpriteAnimation("Hero_jump_left",1,1);
+	meshList[GEO_PLAYER_JUMP_LEFT]->textureArray[0] = LoadTGA("Image//Player//Player_Jump_Left.tga");
 
-	CHero::GetInstance()->Hero_jump_left = dynamic_cast<CSpriteAnimation*>(meshList[GEO_SABER_JUMP_LEFT]);
+	CHero::GetInstance()->Hero_jump_left = dynamic_cast<CSpriteAnimation*>(meshList[GEO_PLAYER_JUMP_LEFT]);
 	if(CHero::GetInstance()->Hero_jump_left)
 	{
 		CHero::GetInstance()->Hero_jump_left->m_anim = new Animation();
-		CHero::GetInstance()->Hero_jump_left->m_anim->Set(0, 0, 1, 1.f, false,Vector3(0,0,1),0,0.f,HERO_SIZE);
+		CHero::GetInstance()->Hero_jump_left->m_anim->Set(0,0, 1, 1.f, false,Vector3(0,0,1),0,0.f,HERO_SIZE);
 	}
 }
 void StudioProject::InitMap()
@@ -1256,15 +1256,6 @@ void StudioProject::UpdateEnemySprites(double dt)
 }
 void StudioProject::UpdateInput(double dt)
 {
-	//==================================//
-	//			DYNAMIC CASTING 		//
-	//==================================//
-	CHero::GetInstance()->Hero_attack_1_right = dynamic_cast<CSpriteAnimation*>(meshList[GEO_SABER_ATTACK_1_RIGHT]);
-	CHero::GetInstance()->Hero_run_right = dynamic_cast<CSpriteAnimation*>(meshList[GEO_SABER_RUN_RIGHT]);
-	CHero::GetInstance()->Hero_run_left = dynamic_cast<CSpriteAnimation*>(meshList[GEO_SABER_RUN_LEFT]);
-	CHero::GetInstance()->Hero_shockwave_right = dynamic_cast<CSpriteAnimation*>(meshList[GEO_SABER_SHOCKWAVE_RIGHT]);
-	CHero::GetInstance()->Hero_jump_right = dynamic_cast<CSpriteAnimation*>(meshList[GEO_SABER_JUMP_RIGHT]);
-	
 	float tempHeroPos_x = CHero::GetInstance()->GetHeroPos_x();	//Hero current position X
 	float tempHeroPos_y = CHero::GetInstance()->GetHeroPos_y();	//Hero current position Y
 	int checkPosition_X = (int)((CHero::GetInstance()->GetMapOffset_x() + tempHeroPos_x) / m_cMap->GetTileSize());	//Hero tile position X

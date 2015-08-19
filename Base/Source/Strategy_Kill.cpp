@@ -2,8 +2,8 @@
 #include <iostream>
 
 CStrategy_Kill::CStrategy_Kill() :
-		AI_ATTACK_MS(3.f),
-		AI_PATROL_MS(2.f),
+		AI_ATTACK_MS(2.f),
+		AI_PATROL_MS(1.f),
 		PATROL_OFFSET(100),
 		AtStart(true)
 {

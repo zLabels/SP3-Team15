@@ -11,7 +11,7 @@ CHero::CHero(void):
 	hero_face_right(true),
 	hero_HP(100),
 	hero_EP(0),
-	hero_MS(5.f),
+	hero_MS(3.f),
 	kb_MS(10.f),
 	mapOffset_X(0), 
 	mapOffset_Y(0),
@@ -28,7 +28,7 @@ CHero::CHero(void):
     f_Current_Acceleration(0),
     hero_mass(4),
     hero_velocity(0),
-    hero_maxspeed(5),
+    hero_maxspeed(3),
     f_force(1)
 {
 }
@@ -588,7 +588,8 @@ void CHero::Hero_Acceleration(bool LeftOrRight,const float timeDiff)
         {
             hero_velocity = -hero_maxspeed;
         }
-            HeroPos.x = HeroPos.x + (float)(hero_velocity * timeDiff);  // Translate Hero's position according to the velocity
+        
+		HeroPos.x = HeroPos.x + (float)(hero_velocity * timeDiff);  // Translate Hero's position according to the velocity
     }
     else           //Move Right
     {
@@ -600,7 +601,8 @@ void CHero::Hero_Acceleration(bool LeftOrRight,const float timeDiff)
         {
             hero_velocity = hero_maxspeed;
         }
-            HeroPos.x = HeroPos.x + (float)(hero_velocity * timeDiff);
+        
+		HeroPos.x = HeroPos.x + (float)(hero_velocity * timeDiff);
     }
     
 }
