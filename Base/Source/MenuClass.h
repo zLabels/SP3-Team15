@@ -37,8 +37,9 @@ public:
 	bool getControlState();
 	
 	bool getLoadingLevels();
-	int getChoosingLevels();
-	void setLevelChoosen(int);
+	void setLoadingLevels(bool input);
+	bool getChoosingLevels();
+	//void setLevelChoosen(int);
 
 	bool getLostState();
 	void setLostState(bool input);
