@@ -25,6 +25,8 @@ public:
 	void Update(double dt);
 	void ControlMenu();
 	void DefaultMenu();
+	void LoadingMenu();
+	void LevelSelectMenu();
 	void LostScreen();
 	void WinScreen();
 
@@ -34,6 +36,10 @@ public:
 
 	bool getControlState();
 	
+	bool getLoadingLevels();
+	int getChoosingLevels();
+	void setLevelChoosen(int);
+
 	bool getLostState();
 	void setLostState(bool input);
 	bool getWinState();
@@ -52,10 +58,14 @@ private:
 	int menuOption;	//Player's option
 	Vector2 playPos;	//feedback pos
 	Vector2 controlPos;	//feedback pos
+	Vector2 loadPos;
+	Vector2 levelPos;
 	Vector2 currentSelectionPos;	//feedBackpos
 
 	bool showMenu;	//Menu loop control
 	bool showControls;	//Control menu
+	bool Loading; //Loading menu
+	bool LevelSelect; //Level Selecting Menu
 
 	bool Win;	//Win state of player
 	bool Lost;	//lose state of player

@@ -197,8 +197,14 @@ void StudioProject::InitMesh()
 	meshList[GEO_PLAY_TEXT] = MeshBuilder::Generate2DMesh("GameMenuPlayText", Color(1, 1, 1), 0, 0, 100, 30);
 	meshList[GEO_PLAY_TEXT]->textureID = LoadTGA("Image//Menu//PlayText.tga");
 
-	meshList[GEO_CONTROLS_TEXT] = MeshBuilder::Generate2DMesh("GameMenuControlsText", Color(1, 1, 1), 0, 0, 220, 30);
+	meshList[GEO_CONTROLS_TEXT] = MeshBuilder::Generate2DMesh("GameMenuControlsText", Color(1, 1, 1), 0, 0, 200, 30);
 	meshList[GEO_CONTROLS_TEXT]->textureID = LoadTGA("Image//Menu//ControlsText.tga");
+	
+	meshList[GEO_LOAD_TEXT] = MeshBuilder::Generate2DMesh("GameMenuLoadText", Color(1, 1, 1), 0, 0, 100, 30);
+	meshList[GEO_LOAD_TEXT]->textureID = LoadTGA("Image//Menu//Menu_Loadtext.tga");
+	
+	meshList[GEO_LEVEL_TEXT] = MeshBuilder::Generate2DMesh("GameMenuLoadText", Color(1, 1, 1), 0, 0, 250, 30);
+	meshList[GEO_LEVEL_TEXT]->textureID = LoadTGA("Image//Menu//Menu_Levelstext.tga");
 	
 }
 void StudioProject::InitCamera()
@@ -236,7 +242,7 @@ void StudioProject::InitVariables()
 
 	//Save
 	Save = false;
-	load = true;
+	load = false;
 
     //Deceleration Physics
     f_deceleration = 20;
@@ -565,6 +571,11 @@ void StudioProject::LoadHero()
 		if(load == true)
 		{
 			ifstream herodata("Source//TextFiles//Player//Player_Data.txt");
+			if(!herodata.is_open())
+			{
+				RenderTextOnScreen(meshList[GEO_TEXT], "ERROR LOADING", Color(1, 1, 1), 2.f, 15, 42);
+			}
+
 			if(herodata.is_open())
 			{
 				while(herodata.good())
@@ -577,8 +588,16 @@ void StudioProject::LoadHero()
 					{
 						Hero_position.push_back((atoi(value.c_str())));
 					}
-				}
+				}			
+				//herodata.seekg(0,std::ios::end);
+				//unsigned int size = herodata.tellg();
+				//if(size == 0)
+				//{
+				//	cout<<"NOTHING"<<endl;
+				//	RenderTextOnScreen(meshList[GEO_TEXT], "NO SAVED FILE", Color(1, 1, 1), 2.f, 15, 42);
+				//}
 			}
+
 			herodata.close();
 		}
 	}
@@ -1458,6 +1477,7 @@ void StudioProject::SaveGame()
 			saveFile << (CHero::GetInstance()->GetMapOffset_y());
 
 			Save = false;
+			load = true;
 		}
 		saveFile.close();
 	}
@@ -1525,8 +1545,12 @@ void StudioProject::Update(double dt)
 			soundplayer.playSounds(soundplayer.MENU_FEEDBACK);
 		}
 	}
+
 	else if(GameMenu.getMenuState() == false && GameMenu.getLostState() == false && GameMenu.getWinState() == false)
 	{
+
+		if(GameMenu.getLoadingLevels() == false)
+		{
 		/*=================
 			GAME START
 		===================*/
@@ -1537,10 +1561,11 @@ void StudioProject::Update(double dt)
 			UpdateInput(dt);
 		}
 
+		
 		UpdateMap(dt);
 		HeroUpdate(dt);
 		EnemyUpdate(dt);
-
+		
 		UpdateSprites(dt);
 		UpdateEnemySprites(dt);
 
@@ -1549,6 +1574,33 @@ void StudioProject::Update(double dt)
 		//camera.Update(dt);
 
 		fps = (float)(1.f / dt);
+		}
+		if(GameMenu.getLoadingLevels() == true)
+		{
+		/*=================
+			GAME START
+		===================*/
+		UpdateDebug(dt);
+
+		if(!Transiting)	//If player is transiting from map to map, no input is taken in
+		{
+			UpdateInput(dt);
+		}
+
+		
+		UpdateMap(dt);
+		HeroUpdate(dt);
+		EnemyUpdate(dt);
+		
+		UpdateSprites(dt);
+		UpdateEnemySprites(dt);
+		LoadHero();
+		soundplayer.playSounds(soundplayer.GAME_BGM);
+
+		//camera.Update(dt);
+
+		fps = (float)(1.f / dt);
+		}
 	}
 }
 
@@ -1889,8 +1941,11 @@ void StudioProject::RenderMenu(int input)
 		{
 			if(GameMenu.getMenuState())
 			{
-				Render2DMesh(meshList[GEO_PLAY_TEXT],false,1.f,350,350);
-				Render2DMesh(meshList[GEO_CONTROLS_TEXT],false,1.f,80,220);
+				Render2DMesh(meshList[GEO_PLAY_TEXT],false,0.8f,350,350);
+				Render2DMesh(meshList[GEO_CONTROLS_TEXT],false,0.8f,265,295);
+				Render2DMesh(meshList[GEO_LOAD_TEXT],false,0.8f,350,240);
+				Render2DMesh(meshList[GEO_LEVEL_TEXT],false,1.f,200,185);
+
 				Render2DMesh(meshList[GEO_MENU_FEEDBACK],false,1.f,GameMenu.getCurrentSelectPos_X(),GameMenu.getCurrentSelectPos_Y());
 				RenderTextOnScreen(meshList[GEO_TEXT], "Press Escape To Exit", Color(0.3f, 0.3f, 0.3f), 2.f, 32, 10);
 			}
@@ -1906,6 +1961,34 @@ void StudioProject::RenderMenu(int input)
 				RenderTextOnScreen(meshList[GEO_TEXT], "Z - Heavy Attack", Color(1, 1, 1), 2.f, 15, 26);
 				RenderTextOnScreen(meshList[GEO_TEXT], "X - Light Attack", Color(1, 1, 1), 2.f, 15, 23);
 				RenderTextOnScreen(meshList[GEO_TEXT], "C - Shockwave Attack", Color(1, 1, 1), 2.f, 15, 20);
+		
+				RenderTextOnScreen(meshList[GEO_TEXT], "Press 'Enter' to return to main menu", Color(0.3f, 0.3f, 0.3f), 1.5f, 28, 10);
+			}
+		}
+		break;
+			case CMenuClass::LOAD:
+		{
+			if(GameMenu.getMenuState())
+			{
+				RenderTextOnScreen(meshList[GEO_TEXT], "LOAD PREVIOUS GAME STATE", Color(1, 1, 1), 2.f, 15, 42);
+				RenderTextOnScreen(meshList[GEO_TEXT], "", Color(1, 1, 1), 2.f, 15, 38);
+				RenderTextOnScreen(meshList[GEO_TEXT], "D - Move Right", Color(1, 1, 1), 2.f, 15, 34);
+
+		
+				RenderTextOnScreen(meshList[GEO_TEXT], "Press 'Enter' to return to main menu", Color(0.3f, 0.3f, 0.3f), 1.5f, 28, 10);
+			}
+		}
+		break;
+	case CMenuClass::LEVEL_SELECTION:
+		{
+			if(GameMenu.getMenuState())
+			{
+				RenderTextOnScreen(meshList[GEO_TEXT], "CHOOSE LEVEL", Color(1, 1, 1), 2.f, 15, 42);
+				RenderTextOnScreen(meshList[GEO_TEXT], "LEVEL 1", Color(1, 1, 1), 2.f, 15, 38);
+				RenderTextOnScreen(meshList[GEO_TEXT], "LEVEL 2", Color(1, 1, 1), 2.f, 15, 34);
+				RenderTextOnScreen(meshList[GEO_TEXT], "LEVEL 3", Color(1, 1, 1), 2.f, 15, 26);
+				RenderTextOnScreen(meshList[GEO_TEXT], "LEVEL 4", Color(1, 1, 1), 2.f, 15, 23);
+				
 		
 				RenderTextOnScreen(meshList[GEO_TEXT], "Press 'Enter' to return to main menu", Color(0.3f, 0.3f, 0.3f), 1.5f, 28, 10);
 			}
@@ -1931,6 +2014,8 @@ void StudioProject::RenderMenu(int input)
 			}
 		}
 		break;
+
+		
 	}
 }
 void StudioProject::RenderHUD(void)
@@ -2256,13 +2341,22 @@ void StudioProject::Render()
 	ClearBuffer();
 	EnableCamera();
 
-	if(GameMenu.getMenuState() == true && GameMenu.getControlState() == false  && GameMenu.getLostState() == false)	//Rendering Default screen
+	if(GameMenu.getMenuState() == true && GameMenu.getControlState() == false && GameMenu.getLoadingLevels() == false  && GameMenu.getChoosingLevels() == false && GameMenu.getLostState() == false)	//Rendering Default screen
 	{
 		RenderMenu(CMenuClass::PLAY_GAME);
 	}
-	else if(GameMenu.getMenuState() == true && GameMenu.getControlState() == true && GameMenu.getLostState() == false)	//Rendering Control Screen
+	else if(GameMenu.getMenuState() == true && GameMenu.getControlState() == true && GameMenu.getLoadingLevels() == false && GameMenu.getChoosingLevels() == false && GameMenu.getLostState() == false)	//Rendering Control Screen
 	{
 		RenderMenu(CMenuClass::CONTROLS);
+	}
+	else if(GameMenu.getMenuState() == true && GameMenu.getLoadingLevels() == true && GameMenu.getControlState() == false && GameMenu.getChoosingLevels() == false  && GameMenu.getLostState() == false)	//Rendering Control Screen
+	{
+		RenderMenu(CMenuClass::LOAD);
+
+	}
+	else if(GameMenu.getMenuState() == true && GameMenu.getLoadingLevels() == false && GameMenu.getChoosingLevels() == true && GameMenu.getControlState() == false  && GameMenu.getLostState() == false)	//Rendering Control Screen
+	{
+		RenderMenu(CMenuClass::LEVEL_SELECTION);
 	}
 	else if(GameMenu.getMenuState() == false && GameMenu.getLostState() == false && GameMenu.getWinState() == false)
 	{

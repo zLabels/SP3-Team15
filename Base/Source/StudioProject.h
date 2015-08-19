@@ -148,6 +148,8 @@ class StudioProject : public Scene
 		GEO_MENU_FEEDBACK,
 		GEO_PLAY_TEXT,
 		GEO_CONTROLS_TEXT,
+		GEO_LOAD_TEXT,
+		GEO_LEVEL_TEXT,
 		//Map transition
 		MAP_TRANSITION,
 		//Powerup

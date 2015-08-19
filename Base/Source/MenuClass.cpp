@@ -9,14 +9,21 @@ CMenuClass::CMenuClass(void)
 	currentSelectionPos.x = 130.f;
 	currentSelectionPos.y = 325.f;
 	playPos.x = 450.f;	//Feedback position
-	controlPos.x = 300.f;
+	controlPos.x = 450.f;
+	loadPos.x = 450.f;
+	levelPos.x = 450.f;
+
 	playPos.y = 325.f;	//Feedback position
-	controlPos.y = 195.f;
+	controlPos.y = 270.f;
+	loadPos.y = 215.f;
+	levelPos.y = 160.f;
 
 	inputDelay = 0.f;
 	DELAY_RATE = 0.2f;
 
 	showControls = false;
+	Loading = false;
+	LevelSelect = false;
 
 	Win = false;
 	Lost = false;
@@ -34,6 +41,21 @@ bool CMenuClass::getMenuState()
 bool CMenuClass::getControlState()
 {
 	return showControls;
+}
+
+bool CMenuClass::getLoadingLevels()
+{
+	return Loading;
+}
+
+int CMenuClass::getChoosingLevels()
+{
+	return LevelSelect;
+}
+
+void CMenuClass::setLevelChoosen(int level)
+{
+
 }
 
 float CMenuClass::getCurrentSelectPos_X()
@@ -85,6 +107,16 @@ void CMenuClass::menuFeedback()
 		currentSelectionPos.x = controlPos.x;
 		currentSelectionPos.y = controlPos.y;
 	}
+	else if(menuOption == LOAD)
+	{
+		currentSelectionPos.x = loadPos.x;
+		currentSelectionPos.y = loadPos.y;
+	}
+	else if(menuOption == LEVEL_SELECTION)
+	{
+		currentSelectionPos.x = levelPos.x;
+		currentSelectionPos.y = levelPos.y;
+	}
 }
 
 void CMenuClass::ControlMenu()
@@ -92,6 +124,24 @@ void CMenuClass::ControlMenu()
 	if(Application::IsKeyPressed(VK_RETURN)  && inputDelay > DELAY_RATE)
 	{
 		showControls = false;
+		inputDelay = 0.f;
+	}
+}
+
+void CMenuClass::LoadingMenu()
+{
+	if(Application::IsKeyPressed(VK_RETURN)  && inputDelay > DELAY_RATE)
+	{
+		Loading = false;
+		inputDelay = 0.f;
+	}
+}
+
+void CMenuClass::LevelSelectMenu()
+{
+	if(Application::IsKeyPressed(VK_RETURN)  && inputDelay > DELAY_RATE)
+	{
+		LevelSelect = false;
 		inputDelay = 0.f;
 	}
 }
@@ -104,13 +154,20 @@ void CMenuClass::DefaultMenu()
 	{
 		if(menuOption == PLAY_GAME)
 		{
-			menuOption = CONTROLS;
+			menuOption = LEVEL_SELECTION;
 		}
 		else if(menuOption == CONTROLS)
 		{
-			menuOption--;
+			menuOption = PLAY_GAME;
 		}
-
+		else if(menuOption == LOAD)
+		{
+			menuOption = CONTROLS;
+		}
+		else if(menuOption == LEVEL_SELECTION)
+		{
+			menuOption = LOAD;
+		}
 		inputDelay = 0.f;
 	}
 
@@ -118,13 +175,20 @@ void CMenuClass::DefaultMenu()
 	{
 		if(menuOption == PLAY_GAME)
 		{
-			menuOption++;
+			menuOption = CONTROLS;
 		}
 		else if(menuOption == CONTROLS)
 		{
+			menuOption = LOAD;
+		}
+		else if(menuOption == LOAD)
+		{
+			menuOption = LEVEL_SELECTION;
+		}
+		else if(menuOption == LEVEL_SELECTION)
+		{
 			menuOption = PLAY_GAME;
 		}
-
 		inputDelay = 0.f;
 	}
 
@@ -141,7 +205,18 @@ void CMenuClass::DefaultMenu()
 		showControls = true;
 		inputDelay = 0.f;
 	}
-
+	else if(Application::IsKeyPressed(VK_RETURN) && menuOption == LOAD  && inputDelay > DELAY_RATE)
+	{
+		showMenu = false;
+		Loading = true;
+		
+		inputDelay = 0.f;
+	}
+	else if(Application::IsKeyPressed(VK_RETURN) && menuOption == LEVEL_SELECTION  && inputDelay > DELAY_RATE)
+	{
+		LevelSelect = true;
+		inputDelay = 0.f;
+	}
 	menuFeedback();
 }
 void CMenuClass::LostScreen()
@@ -169,14 +244,22 @@ void CMenuClass::Update(double dt)
 	inputDelay += (float)dt;
 	
 	//Display default menu
-	if(showMenu == true && showControls == false)
+	if(showMenu == true && showControls == false && Loading == false && LevelSelect == false)
 	{
 		DefaultMenu();
 	}
 	//Display Control menu
-	else if(showMenu == true && showControls == true)
+	else if(showMenu == true && showControls == true && Loading == false && LevelSelect == false)
 	{
 		ControlMenu();
+	}
+	else if(showMenu == true && Loading == true && showControls == false && LevelSelect == false)
+	{
+		LoadingMenu();
+	}
+	else if(showMenu == true && LevelSelect == true && Loading == false && showControls == false)
+	{
+		LevelSelectMenu();
 	}
 	else if(Lost == true)
 	{
