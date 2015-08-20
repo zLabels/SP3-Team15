@@ -39,6 +39,7 @@
     <ClCompile Include="Source\Strategy.cpp" />
     <ClCompile Include="Source\Strategy_Kill.cpp" />
     <ClCompile Include="Source\StudioProject.cpp" />
+    <ClCompile Include="Source\TileCollision.cpp" />
     <ClCompile Include="Source\TreasureChest.cpp" />
     <ClCompile Include="Source\Utility.cpp" />
     <ClCompile Include="Source\Weapon.cpp" />
@@ -75,6 +76,7 @@
     <ClInclude Include="Source\Strategy.h" />
     <ClInclude Include="Source\Strategy_Kill.h" />
     <ClInclude Include="Source\StudioProject.h" />
+    <ClInclude Include="Source\TileCollision.h" />
     <ClInclude Include="Source\TreasureChest.h" />
     <ClInclude Include="Source\Utility.h" />
     <ClInclude Include="Source\Vertex.h" />

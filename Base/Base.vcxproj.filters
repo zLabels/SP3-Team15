@@ -168,6 +168,9 @@
     <ClCompile Include="Source\Shuriken.cpp">
       <Filter>Source Files\Classes\Weapons</Filter>
     </ClCompile>
+    <ClCompile Include="Source\TileCollision.cpp">
+      <Filter>Source Files\Collision</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Camera.h">
@@ -274,6 +277,9 @@
     </ClInclude>
     <ClInclude Include="Source\Shuriken.h">
       <Filter>Header Files\Classes\Weapons</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\TileCollision.h">
+      <Filter>Header Files\Collision</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

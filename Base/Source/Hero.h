@@ -6,15 +6,6 @@
 
 class CHero
 {
-	/*Enum for tiles in game*/
-	enum TILE_TYPE
-	{
-		TILE_GRASS = 1,
-		TILE_UNDERGROUND,
-		TILE_BORDER,
-		TILE_CAVE,
-		MAX_TILE,
-	};
 public:
 	/*Enum for Attacks available to Hero*/
 	enum ATTACK_TYPE
@@ -41,7 +32,6 @@ public:
 	int ConstrainHeroY(const int leftBorder, const int rightBorder, const int topBorder, const int bottomBorder,
 						float timeDiff, int screenWidth, int screenHeight,unsigned maplevel);	//Constraining Hero's Y position
 
-	bool CheckCollision (CMap* m_cMap,bool m_bCheckLeft,bool m_bCheckRight, bool m_bCheckUp, bool m_bCheckDown);	//Collision Detection function
 	void CollisionResponse(bool m_bCheckLeft,bool m_bCheckRight, bool m_bCheckUp, bool m_bCheckDown);	//Collision	Response function
 
 	float& GetHeroPos_x(void);	//Getting hero X

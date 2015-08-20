@@ -1,4 +1,5 @@
 #include "Hero.h"
+#include "TileCollision.h"
 
 CHero* CHero::heroInstance = 0;
 
@@ -197,14 +198,14 @@ void CHero::HeroKnockBack(CMap* m_cMap)
 			}
 			//Collision checks to see if hero can be knocked back further
 			//Right
-			if ( CheckCollision(m_cMap,false,true,false,false) == true)
+			if ( HeroCollisionCheck(m_cMap,false,true,false,false,HeroPos.x,HeroPos.y,mapOffset_X,jumpspeed) == true)
 			{
 				// Since the new position does not allow the hero to move into, then go back to the old position
 				HeroPos.x = ((int) (HeroPos.x / m_cMap->GetTileSize())) * m_cMap->GetTileSize();	
 				hero_damaged = false;
 			}
 			//Left
-			else if( CheckCollision(m_cMap,true,false,false,false) == true)
+			else if( HeroCollisionCheck(m_cMap,true,false,false,false,HeroPos.x,HeroPos.y,mapOffset_X,jumpspeed) == true)
 			{
 				HeroPos.x = tempHeroPos.x;
 				hero_damaged = false;
@@ -225,14 +226,14 @@ void CHero::HeroKnockBack(CMap* m_cMap)
 			}
 			//Collision checks to see if hero can be knocked back further
 			//Right
-			if ( CheckCollision(m_cMap,false,true,false,false) == true)
+			if ( HeroCollisionCheck(m_cMap,false,true,false,false,HeroPos.x,HeroPos.y,mapOffset_X,jumpspeed) == true)
 			{
 				// Since the new position does not allow the hero to move into, then go back to the old position
 				HeroPos.x = ((int) (HeroPos.x / m_cMap->GetTileSize())) * m_cMap->GetTileSize();	
 				hero_damaged = false;
 			}
 			//Left
-			else if( CheckCollision(m_cMap,true,false,false,false) == true)
+			else if( HeroCollisionCheck(m_cMap,true,false,false,false,HeroPos.x,HeroPos.y,mapOffset_X,jumpspeed) == true)
 			{
 				HeroPos.x = tempHeroPos.x;
 				hero_damaged = false;
@@ -293,103 +294,16 @@ int CHero::ConstrainHeroY(const int leftBorder, const int rightBorder, const int
 	return mapOffset_Y;
 }
 
-bool CHero::CheckCollision (CMap* m_cMap, bool m_bCheckLeft,bool m_bCheckRight, bool m_bCheckUp, bool m_bCheckDown)
-{
-	int mapFineOffset_x = mapOffset_X % m_cMap->GetTileSize();
-	int checkPosition_X2 = (int) ((mapOffset_X+HeroPos.x - mapFineOffset_x) / m_cMap->GetTileSize());
-	int checkPosition_X3 = (int) ((mapOffset_X+HeroPos.x - mapFineOffset_x) / m_cMap->GetTileSize());
-	int checkPosition_Y2 = m_cMap->GetNumOfTiles_Height() - (int) ceil( (float) (HeroPos.y + m_cMap->GetTileSize()) / m_cMap->GetTileSize());
-	int checkPosition_Y3 = m_cMap->GetNumOfTiles_Height() - (int) ceil( (float) (HeroPos.y + m_cMap->GetTileSize() + 25.f) / m_cMap->GetTileSize());
-	int checkPosition_Y4 = m_cMap->GetNumOfTiles_Height() - (int) ceil( (float) (HeroPos.y + m_cMap->GetTileSize() + 40.f) / m_cMap->GetTileSize());
-
-	if(m_bCheckRight)
-	{
-		if (//Border
-			(m_cMap->theScreenMap[checkPosition_Y2][checkPosition_X2+2] == TILE_BORDER) ||
-			(m_cMap->theScreenMap[checkPosition_Y3][checkPosition_X2+2] == TILE_BORDER) ||
-			(m_cMap->theScreenMap[checkPosition_Y4][checkPosition_X2+2] == TILE_BORDER) ||
-			//Grass
-			(m_cMap->theScreenMap[checkPosition_Y2][checkPosition_X2+2] == TILE_GRASS) ||
-			(m_cMap->theScreenMap[checkPosition_Y3][checkPosition_X2+2] == TILE_GRASS) ||
-			(m_cMap->theScreenMap[checkPosition_Y4][checkPosition_X2+2] == TILE_GRASS) ||
-			//Tile underground
-			(m_cMap->theScreenMap[checkPosition_Y2][checkPosition_X2+2] == TILE_UNDERGROUND) ||
-			(m_cMap->theScreenMap[checkPosition_Y3][checkPosition_X2+2] == TILE_UNDERGROUND) ||
-			(m_cMap->theScreenMap[checkPosition_Y4][checkPosition_X2+2] == TILE_UNDERGROUND))
-		{
-			return true;
-		}
-	}
-
-	if(m_bCheckLeft)
-	{
-		if( //Border
-			(m_cMap->theScreenMap[checkPosition_Y2][checkPosition_X3] == TILE_BORDER ) ||
-			(m_cMap->theScreenMap[checkPosition_Y3][checkPosition_X3] == TILE_BORDER ) ||
-			(m_cMap->theScreenMap[checkPosition_Y4][checkPosition_X3] == TILE_BORDER ) ||
-			//Grass
-			(m_cMap->theScreenMap[checkPosition_Y2][checkPosition_X3] == TILE_GRASS ) ||
-			(m_cMap->theScreenMap[checkPosition_Y3][checkPosition_X3] == TILE_GRASS ) ||
-			(m_cMap->theScreenMap[checkPosition_Y4][checkPosition_X3] == TILE_GRASS ) ||
-			//Tile underground
-			(m_cMap->theScreenMap[checkPosition_Y2][checkPosition_X3] == TILE_UNDERGROUND ) ||
-			(m_cMap->theScreenMap[checkPosition_Y3][checkPosition_X3] == TILE_UNDERGROUND ) ||
-			(m_cMap->theScreenMap[checkPosition_Y4][checkPosition_X3] == TILE_UNDERGROUND ))
-		{
-			return true;
-		}
-	}
-
-	if(m_bCheckUp)
-	{
-		int checkPosition_X = (int) ((mapOffset_X+HeroPos.x) / m_cMap->GetTileSize());
-		int checkPosition_Y = m_cMap->GetNumOfTiles_Height() - (int) ceil( (float) (HeroPos.y + m_cMap->GetTileSize() + jumpspeed + 39.f) / m_cMap->GetTileSize());
-
-		if ( //Border
-			 (m_cMap->theScreenMap[checkPosition_Y][checkPosition_X] == TILE_BORDER) ||
-		     (m_cMap->theScreenMap[checkPosition_Y][checkPosition_X+2] == TILE_BORDER) ||
-			 //Grass
-			 (m_cMap->theScreenMap[checkPosition_Y][checkPosition_X] == TILE_GRASS) ||
-		     (m_cMap->theScreenMap[checkPosition_Y][checkPosition_X+2] == TILE_GRASS) ||
-			 //Tile underground
-			 (m_cMap->theScreenMap[checkPosition_Y][checkPosition_X] == TILE_GRASS) ||
-		     (m_cMap->theScreenMap[checkPosition_Y][checkPosition_X+2] == TILE_GRASS))
-		{
-			return true;
-		}
-	}
-
-	if(m_bCheckDown)
-	{
-		int checkPosition_X = (int) ((mapOffset_X+HeroPos.x) / m_cMap->GetTileSize());
-		int checkPosition_Y = m_cMap->GetNumOfTiles_Height() - (int) ceil( (float) (HeroPos.y - jumpspeed) / m_cMap->GetTileSize());
-
-		if ( (m_cMap->theScreenMap[checkPosition_Y][checkPosition_X] == TILE_GRASS) || 
-			(m_cMap->theScreenMap[checkPosition_Y][checkPosition_X+1] == TILE_GRASS) || 
-			(m_cMap->theScreenMap[checkPosition_Y][checkPosition_X+2] == TILE_GRASS) ||
-			//Tile underground
-			(m_cMap->theScreenMap[checkPosition_Y][checkPosition_X] == TILE_GRASS) || 
-			(m_cMap->theScreenMap[checkPosition_Y][checkPosition_X+1] == TILE_GRASS) || 
-			(m_cMap->theScreenMap[checkPosition_Y][checkPosition_X+2] == TILE_GRASS))
-		{
-			return true;
-		}
-
-	}
-
-	return false;
-}
-
 void CHero::Update(CMap* m_cMap,int mapWidth, int mapHeight,unsigned maplevel)
 {
 	//Right
-	if ( CheckCollision(m_cMap,false,true,false,false) == true)
+	if ( HeroCollisionCheck(m_cMap,false,true,false,false,HeroPos.x,HeroPos.y,mapOffset_X,jumpspeed) == true)
 	{
 		// Since the new position does not allow the hero to move into, then go back to the old position
 		HeroPos.x = ((int) (HeroPos.x / m_cMap->GetTileSize())) * m_cMap->GetTileSize();	
 	}
 	//Left
-	else if( CheckCollision(m_cMap,true,false,false,false) == true)
+	else if( HeroCollisionCheck(m_cMap,true,false,false,false,HeroPos.x,HeroPos.y,mapOffset_X,jumpspeed) == true)
 	{
 		HeroPos.x = tempHeroPos.x;
 	}
@@ -397,7 +311,7 @@ void CHero::Update(CMap* m_cMap,int mapWidth, int mapHeight,unsigned maplevel)
 	if (hero_inMidAir_Up == false && hero_inMidAir_Down == false)
 	{
 		//falling
-		if ( CheckCollision(m_cMap,false,false,false,true) == false )
+		if ( HeroCollisionCheck(m_cMap,false,false,false,true,HeroPos.x,HeroPos.y,mapOffset_X,jumpspeed) == false )
 		{
 			hero_inMidAir_Down = true;
 		}
@@ -411,7 +325,7 @@ void CHero::Update(CMap* m_cMap,int mapWidth, int mapHeight,unsigned maplevel)
 	{
 		tempHeroPos.y = HeroPos.y;
 		// Check if the hero can move up into mid air...
-		if ( CheckCollision(m_cMap,false,false,true,false) == true )
+		if ( HeroCollisionCheck(m_cMap,false,false,true,false,HeroPos.x,HeroPos.y,mapOffset_X,jumpspeed) == true )
 		{
 			//// Since the new position does not allow the hero to move into, then go back to the old position
 			//HeroPos.y = ((int) (HeroPos.y / m_cMap->GetTileSize())) * m_cMap->GetTileSize();
@@ -447,7 +361,7 @@ void CHero::Update(CMap* m_cMap,int mapWidth, int mapHeight,unsigned maplevel)
 		if (checkPosition_Y > m_cMap->GetNumOfTiles_Height())
 			checkPosition_Y = m_cMap->GetNumOfTiles_Height();
 
-		if ( CheckCollision(m_cMap,false,false,false,true) == true )
+		if ( HeroCollisionCheck(m_cMap,false,false,false,true,HeroPos.x,HeroPos.y,mapOffset_X,jumpspeed) == true )
 		{
 			// Since the new position does not allow the hero to move into, then go back to the old position
 			HeroPos.y = ((int) (HeroPos.y / m_cMap->GetTileSize())) * m_cMap->GetTileSize();
