@@ -442,8 +442,9 @@ void StudioProject::InitMap()
 	m_cMap3 = new CMap();
 
 	m_cDebug = new CMap();
-	m_cDebug->Init( ScreenHeight, ScreenWidth, 24, 32, 600, 1600 );
-	m_cDebug->LoadMap( "Image//MapDesigns//Map_Debug.csv" );
+	m_cDebug->Init( ScreenHeight, ScreenWidth, 24, 32, 600, 3200 );
+	//m_cDebug->LoadMap( "Image//MapDesigns//Map_Debug.csv" );
+    m_cDebug->LoadMap( "Image//MapDesigns//Map_Level1.csv" );
 
 	Level1 = new CMap();
 	Level1->Init( ScreenHeight, ScreenWidth, 24, 32, 600, 1600 );
@@ -492,6 +493,9 @@ void StudioProject::InitTiles()
 
 	meshList[GEO_TILE_METALCORNER] = MeshBuilder::GenerateTile("Metal_Corner",7,14,1,4,26);
 	meshList[GEO_TILE_METALCORNER]->textureID = LoadTGA("Image//Tiles//Tile_Floor.tga");
+    
+    meshList[GEO_TILE_DOOR] = MeshBuilder::GenerateTile("Metal_Corner",7,14,0,11,26);
+	meshList[GEO_TILE_DOOR]->textureID = LoadTGA("Image//Tiles//Tile_Floor.tga");
 
 	theArrayOfGoodies = new CGoodies*[10];
 	for(unsigned i = 0; i < 10; ++i)
@@ -1083,7 +1087,7 @@ void StudioProject::EnemyUpdate(double dt)
 }
 void StudioProject::HeroUpdate(double dt)
 {
-	CHero::GetInstance()->Update(m_cMap,ScreenWidth,ScreenHeight,m_CurrentLevel);	//Update hero
+	CHero::GetInstance()->Update(m_cMap,m_cMap->getNumOfTiles_MapWidth() * m_cMap->GetTileSize() - ScreenWidth,ScreenHeight,m_CurrentLevel);	//Update hero
 
 	if(CHero::GetInstance()->Gethero_invulframe() != 0)
 	{
@@ -1373,23 +1377,35 @@ void StudioProject::UpdateWeapon()
 void StudioProject::UpdateInput(double dt)
 {
 	float tempHeroPos_x = CHero::GetInstance()->GetHeroPos_x();	//Hero current position X
-	float tempHeroPos_y = CHero::GetInstance()->GetHeroPos_y();	//Hero current position Y
-	int checkPosition_X = (int)((CHero::GetInstance()->GetMapOffset_x() + tempHeroPos_x) / m_cMap->GetTileSize());	//Hero tile position X
-	int checkPosition_Y = m_cMap->GetNumOfTiles_Height() - (int) ( (tempHeroPos_y + m_cMap->GetTileSize()) / m_cMap->GetTileSize());	//Hero tile position Y
-	if(Application::IsKeyPressed('B'))
-	{
-		m_cMap = m_cMap2;
-	}
+    float tempHeroPos_y = CHero::GetInstance()->GetHeroPos_y();	//Hero current position Y
+    int checkPosition_X = (int)((CHero::GetInstance()->GetMapOffset_x() + tempHeroPos_x) / m_cMap->GetTileSize());	//Hero tile position X
+    int checkPosition_Y = m_cMap->GetNumOfTiles_Height() - (int) ( (tempHeroPos_y + m_cMap->GetTileSize()) / m_cMap->GetTileSize());	//Hero tile position Y
+    int checkPosition_Y3 = m_cMap->GetNumOfTiles_Height() - (int) ceil( (float) (tempHeroPos_y + m_cMap->GetTileSize() + 25.f) / m_cMap->GetTileSize());
+    int checkPosition_Y4 = m_cMap->GetNumOfTiles_Height() - (int) ceil( (float) (tempHeroPos_y + m_cMap->GetTileSize() + 40.f) / m_cMap->GetTileSize());
+    //if(Application::IsKeyPressed('B'))
+    //{
+    //	m_cMap = m_cMap2;
+    //}
 
-	//Movement
-	if(Application::IsKeyPressed('W'))	//Move up
-	{
-		if(m_cMap->theScreenMap[checkPosition_Y][checkPosition_X] == TILE_METALCORNER)
-		{
-			Transiting = true;
-			MapTransition->m_anim->animActive = true;
-		}
-	}
+    //Movement
+    if(Application::IsKeyPressed('W'))	//Move up
+    {
+        if(m_cMap->theScreenMap[checkPosition_Y][checkPosition_X] == TILE_METALCORNER)
+        {
+            Transiting = true;
+            MapTransition->m_anim->animActive = true;
+        }
+        if( 
+            m_cMap->theScreenMap[checkPosition_Y][checkPosition_X + 2]  == TILE_DOOR ||
+            m_cMap->theScreenMap[checkPosition_Y3][checkPosition_X + 2] == TILE_DOOR ||
+            m_cMap->theScreenMap[checkPosition_Y4][checkPosition_X + 2] == TILE_DOOR
+            )
+        {
+            m_cMap->theScreenMap[checkPosition_Y][checkPosition_X + 2]  = 0;
+            m_cMap->theScreenMap[checkPosition_Y3][checkPosition_X + 2] = 0;
+            m_cMap->theScreenMap[checkPosition_Y4][checkPosition_X + 2] = 0;
+        }
+    }
 	//Down
 	if(Application::IsKeyPressed(VK_F11))
 	{
@@ -2228,6 +2244,10 @@ void StudioProject::RenderTileMap()
 			{
 				Render2DMesh(meshList[GEO_TILE_METALCORNER], false, 1.f, (float)k*m_cMap->GetTileSize()-CHero::GetInstance()->GetMapFineOffset_x(), 575.f-i*m_cMap->GetTileSize());
 			}
+            else if (m_cMap->theScreenMap[i][m] == TILE_DOOR)
+            {
+                Render2DMesh(meshList[GEO_TILE_DOOR], false, 1.f, (float)k*m_cMap->GetTileSize()-CHero::GetInstance()->GetMapFineOffset_x(), 575.f-i*m_cMap->GetTileSize());
+            }
 		}
 	}
 }

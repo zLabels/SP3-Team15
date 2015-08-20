@@ -112,6 +112,7 @@ class StudioProject : public Scene
 		GEO_TILE_METALSUPPORT_LEFT,
 		GEO_TILE_METALFLOOR,
 		GEO_TILE_METALCORNER,
+        GEO_TILE_DOOR,
 		//Hero,
 		GEO_TILEHERO,
 		GEO_PLAYER_RUN_RIGHT,
@@ -167,6 +168,7 @@ class StudioProject : public Scene
 		TILE_BORDER,
 		TILE_METALCORNER,
 		TILE_METALSUPPORT_LEFT,
+        TILE_DOOR,
 		MAX_TILE,
 	};
 
