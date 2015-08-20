@@ -33,6 +33,7 @@
     <ClCompile Include="Source\Minimap.cpp" />
     <ClCompile Include="Source\Monster.cpp" />
     <ClCompile Include="Source\shader.cpp" />
+    <ClCompile Include="Source\Shuriken.cpp" />
     <ClCompile Include="Source\SoundManager.cpp" />
     <ClCompile Include="Source\SpriteAnimation.cpp" />
     <ClCompile Include="Source\Strategy.cpp" />
@@ -68,6 +69,7 @@
     <ClInclude Include="Source\Monster.h" />
     <ClInclude Include="Source\Scene.h" />
     <ClInclude Include="Source\shader.hpp" />
+    <ClInclude Include="Source\Shuriken.h" />
     <ClInclude Include="Source\SoundManager.h" />
     <ClInclude Include="Source\SpriteAnimation.h" />
     <ClInclude Include="Source\Strategy.h" />

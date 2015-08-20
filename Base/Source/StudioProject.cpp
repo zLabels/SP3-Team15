@@ -492,6 +492,14 @@ void StudioProject::InitTiles()
 		theArrayOfGoodies[i]->SetTextureID(LoadTGA("Image//Tiles//tile4_treasurechest.tga"));
 	}
 }
+void StudioProject::InitWeapon()
+{
+	meshList[GEO_GRAPPLING_HOOK] = MeshBuilder::Generate2DHook("Grapplinghook", Color(1, 1, 1), 0, 0, 25, 25);
+	meshList[GEO_GRAPPLING_HOOK]->textureID = LoadTGA("Image//Weapon//Grappling_Hook.tga");
+	
+	meshList[GEO_SHURIKEN] = MeshBuilder::Generate2DMesh("Shuriken",Color(1,1,1),0,0,25,25);
+	meshList[GEO_SHURIKEN]->textureID = LoadTGA("Image//Weapon//Weapon_Shuriken.tga");
+}
 
 void StudioProject::Init()
 {
@@ -506,7 +514,9 @@ void StudioProject::Init()
 	InitTiles();
 	InitMap();
 	InitHero();
+	InitWeapon();
 	LoadEnemies(m_CurrentLevel);
+
 }
 
 void StudioProject::Reset(bool hasWon)
@@ -535,7 +545,7 @@ void StudioProject::Reset(bool hasWon)
 
 		//Map
 		Transiting = false;
-		m_cMap = Level1;
+		m_cMap = m_cDebug;
 
 		soundplayer.stopSound();
 		GameMenu.setReset(false);
@@ -560,7 +570,7 @@ void StudioProject::Reset(bool hasWon)
 
 		//Map
 		Transiting = false;
-		m_cMap = Level1;
+		m_cMap = m_cDebug;
 
 		soundplayer.stopSound();
 	
@@ -568,6 +578,30 @@ void StudioProject::Reset(bool hasWon)
 	}
 }
 
+void StudioProject::SaveGame()
+{
+	if(Save)
+	{
+		cout<<"SAVE";
+		ofstream saveFile/*("Source//TextFiles//Player//Player_Data.txt")*/;
+		saveFile.open("Source//TextFiles//Player//Player_Data.txt");
+		if(saveFile.is_open())
+		{
+			saveFile << (CHero::GetInstance()->GetHeroPos_x()) << ",";
+			saveFile << (CHero::GetInstance()->GetHeroPos_y()) << ",";
+
+			saveFile << (CHero::GetInstance()->Gethero_HP()) <<",";
+			saveFile << (CHero::GetInstance()->Gethero_EP()) <<",";
+
+			saveFile << (CHero::GetInstance()->GetMapOffset_x()) <<",";
+			saveFile << (CHero::GetInstance()->GetMapOffset_y());
+
+			Save = false;
+			load = true;
+		}
+		saveFile.close();
+	}
+}
 void StudioProject::LoadHero()
 {
 	string info = ""; //Used to store string from text file
@@ -1280,6 +1314,19 @@ void StudioProject::UpdateEnemySprites(double dt)
 		}
 	}
 }
+void StudioProject::UpdateWeapon()
+{
+	if(shurikenList.size() > 0)
+	{
+		for(unsigned i = 0;i < shurikenList.size(); ++i)
+		{
+			if(shurikenList[i].getActive() == true)
+			{
+				shurikenList[i].Update(m_cMap,CHero::GetInstance()->GetMapOffset_x(),CHero::GetInstance()->GetMapOffset_y());
+			}
+		}
+	}
+}
 void StudioProject::UpdateInput(double dt)
 {
 	float tempHeroPos_x = CHero::GetInstance()->GetHeroPos_x();	//Hero current position X
@@ -1478,50 +1525,31 @@ void StudioProject::UpdateInput(double dt)
 	posX += CHero::GetInstance()->GetMapOffset_x();
 	float posY = (h - static_cast<float>(y)) * 600 / h;
 
+	float hero_x = CHero::GetInstance()->GetHeroPos_x();
+	hero_x += CHero::GetInstance()->GetMapOffset_x();
+	hero_x += 25.f;
+	float hero_y = CHero::GetInstance()->GetHeroPos_y();
+	hero_y += 50.f;
+
 	static bool bLButtonState = false;
 	if(!bLButtonState && Application::IsMousePressed(0) )
 	{
 		bLButtonState = true;
 		std::cout << "LBUTTON DOWN" << std::endl;
+		CShuriken shuriken;
+		shuriken.setData(meshList[GEO_SHURIKEN],CHero::GetInstance()->GetHeroPos_x(),CHero::GetInstance()->GetHeroPos_y(),
+						10,posX - hero_x,posY - hero_y,true);
+		shurikenList.push_back(shuriken);
 	}
 	else if(bLButtonState && !Application::IsMousePressed(0))
 	{
 		bLButtonState = false;
 	}
 
-	float hero_x = CHero::GetInstance()->GetHeroPos_x();
-	hero_x += CHero::GetInstance()->GetMapOffset_x();
-	hero_x += 25.f;
-	float hero_y = CHero::GetInstance()->GetHeroPos_y();
-	hero_y += 50.f;
 	f_grappleRotation = Math::RadianToDegree( -atan2(  (posX - hero_x),(posY - hero_y) ));
 
 	std::cout << posX << std::endl;
 	std::cout << hero_x << std::endl;
-}
-void StudioProject::SaveGame()
-{
-	if(Save)
-	{
-		cout<<"SAVE";
-		ofstream saveFile/*("Source//TextFiles//Player//Player_Data.txt")*/;
-		saveFile.open("Source//TextFiles//Player//Player_Data.txt");
-		if(saveFile.is_open())
-		{
-			saveFile << (CHero::GetInstance()->GetHeroPos_x()) << ",";
-			saveFile << (CHero::GetInstance()->GetHeroPos_y()) << ",";
-
-			saveFile << (CHero::GetInstance()->Gethero_HP()) <<",";
-			saveFile << (CHero::GetInstance()->Gethero_EP()) <<",";
-
-			saveFile << (CHero::GetInstance()->GetMapOffset_x()) <<",";
-			saveFile << (CHero::GetInstance()->GetMapOffset_y());
-
-			Save = false;
-			load = true;
-		}
-		saveFile.close();
-	}
 }
 
 void StudioProject::UpdateMap(double dt)
@@ -1610,6 +1638,7 @@ void StudioProject::Update(double dt)
 		HeroUpdate(dt);
 		EnemyUpdate(dt);
 
+		UpdateWeapon();
 		UpdateSprites(dt);
 		UpdateEnemySprites(dt);
 
@@ -1960,6 +1989,17 @@ void StudioProject::RenderWeapon()
 	float hero_y = CHero::GetInstance()->GetHeroPos_y();
 	hero_y += 25.f;
 	Render2DMesh(meshList[GEO_GRAPPLING_HOOK],false,1.f,hero_x,hero_y,true);
+
+	if(shurikenList.size() > 0)
+	{
+		for(unsigned i = 0;i < shurikenList.size(); ++i)
+		{
+			if(shurikenList[i].getActive() == true)
+			{
+				Render2DMesh(shurikenList[i].getMesh(),false,1.f,shurikenList[i].getPos().x,shurikenList[i].getPos().y);
+			}
+		}
+	}
 }
 void StudioProject::RenderMenu(int input)
 {

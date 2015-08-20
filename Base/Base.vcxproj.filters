@@ -61,6 +61,18 @@
     <Filter Include="Source Files\Classes\Goodies">
       <UniqueIdentifier>{7493edd2-04c5-4727-99d5-97caf2b432bd}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Classes\Weapons">
+      <UniqueIdentifier>{933cf1b9-0cd0-4219-81e6-e1cac26d6daf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Classes\Weapons">
+      <UniqueIdentifier>{b6bd2108-dc53-41a9-ae25-2fac2fbc3ee7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Classes\Enemy">
+      <UniqueIdentifier>{b1ee134e-a453-4c38-8f5d-6a9a319e5f7b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Classes\Enemy">
+      <UniqueIdentifier>{4623fede-2788-4441-8b7c-6430ce0acdfe}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\Camera3.cpp">
@@ -74,9 +86,6 @@
     </ClCompile>
     <ClCompile Include="Source\LoadTGA.cpp">
       <Filter>Source Files\Misc</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Weapon.cpp">
-      <Filter>Source Files\Classes</Filter>
     </ClCompile>
     <ClCompile Include="Source\Minimap.cpp">
       <Filter>Source Files\Classes</Filter>
@@ -120,9 +129,6 @@
     <ClCompile Include="Source\SpriteAnimation.cpp">
       <Filter>Source Files\Classes</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Monster.cpp">
-      <Filter>Source Files\Classes</Filter>
-    </ClCompile>
     <ClCompile Include="Source\SoundManager.cpp">
       <Filter>Source Files\Classes</Filter>
     </ClCompile>
@@ -131,9 +137,6 @@
     </ClCompile>
     <ClCompile Include="Source\Strategy_Kill.cpp">
       <Filter>Source Files\Classes\Strategies</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Enemy.cpp">
-      <Filter>Source Files\Classes</Filter>
     </ClCompile>
     <ClCompile Include="Source\Goodies.cpp">
       <Filter>Source Files\Classes\Goodies</Filter>
@@ -152,6 +155,18 @@
     </ClCompile>
     <ClCompile Include="Source\C2DBoundBox.cpp">
       <Filter>Source Files\Collision</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Weapon.cpp">
+      <Filter>Source Files\Classes\Weapons</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Monster.cpp">
+      <Filter>Source Files\Classes\Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Enemy.cpp">
+      <Filter>Source Files\Classes\Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Shuriken.cpp">
+      <Filter>Source Files\Classes\Weapons</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -185,9 +200,6 @@
     <ClInclude Include="Source\Minimap.h">
       <Filter>Header Files\Classes</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Weapon.h">
-      <Filter>Header Files\Classes</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Application.h">
       <Filter>Header Files\Scene</Filter>
     </ClInclude>
@@ -215,9 +227,6 @@
     <ClInclude Include="Source\LoadHmap.h">
       <Filter>Header Files\Misc</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Enemy.h">
-      <Filter>Header Files\Classes</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Map.h">
       <Filter>Header Files\Classes</Filter>
     </ClInclude>
@@ -225,9 +234,6 @@
       <Filter>Header Files\Classes</Filter>
     </ClInclude>
     <ClInclude Include="Source\SpriteAnimation.h">
-      <Filter>Header Files\Classes</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Monster.h">
       <Filter>Header Files\Classes</Filter>
     </ClInclude>
     <ClInclude Include="Source\SoundManager.h">
@@ -256,6 +262,18 @@
     </ClInclude>
     <ClInclude Include="Source\C2DBoundBox.h">
       <Filter>Header Files\Collision</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Weapon.h">
+      <Filter>Header Files\Classes\Weapons</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Enemy.h">
+      <Filter>Header Files\Classes\Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Monster.h">
+      <Filter>Header Files\Classes\Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Shuriken.h">
+      <Filter>Header Files\Classes\Weapons</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

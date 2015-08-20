@@ -21,6 +21,7 @@
 #include "SpriteAnimation.h"
 #include "Monster.h"
 #include "MenuClass.h"
+#include "Shuriken.h"
 
 //Goodies
 #include "GoodiesFactory.h"
@@ -133,6 +134,7 @@ class StudioProject : public Scene
 		GEO_SABER_JUMP_LEFT,
 		//Weapon
 		GEO_GRAPPLING_HOOK,
+		GEO_SHURIKEN,
 			//Skele
 		GEO_SKELE_WALK_RIGHT,
 		GEO_SKELE_WALK_LEFT,
@@ -190,6 +192,7 @@ public:
 	void InitTiles(void);	//Initialize tiles in game
 	void InitHero(void);	//Initialize hero related
 	void InitMap(void);	//Initialize map in game
+	void InitWeapon(void);	//Initialize weapons in game
 
 	void Reset(bool hasWon);	//Resets the game
 	void AttackResponse(CHero::ATTACK_TYPE type);	//Reponse of attacks in game
@@ -201,6 +204,7 @@ public:
 	void UpdateInput(double dt);	//Updates player inputs
 	void UpdateMap(double dt);	//Updates the current map
 	void UpdateEnemySprites(double dt);		//Updates enemy sprite animations
+	void UpdateWeapon();	//Updates the weapons in the game
 
 	void RenderWeapon();	//Render player's weapon
 	void RenderMenu(int input);	//Render Menu
@@ -288,6 +292,9 @@ private:
 	float HERO_OFFSET;	//Offset of hero for tile
 	float jump_input_delay;	//Delay input for double jump
 
+	//Weapon
+	vector<CShuriken> shurikenList;
+
 	//Menu
 	CMenuClass GameMenu;
 	
@@ -305,7 +312,6 @@ private:
 
 	//Convert into class CLayer
 	//Store into array of layers
-
     float f_deceleration;
 };
 

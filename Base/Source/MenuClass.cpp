@@ -56,8 +56,6 @@ bool CMenuClass::getChoosingLevels()
 	return LevelSelect;
 }
 
-
-
 float CMenuClass::getCurrentSelectPos_X()
 {
 	return this->currentSelectionPos.x;
