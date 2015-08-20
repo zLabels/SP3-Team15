@@ -1474,9 +1474,9 @@ void StudioProject::UpdateInput(double dt)
 	Application::GetCursorPos(&x, &y);
 	int w = Application::GetWindowWidth();
 	int h = Application::GetWindowHeight();
-	float posX = static_cast<float>(x) / w * 800;
+	float posX = static_cast<float>(x)  * 800/ w;
 	posX += CHero::GetInstance()->GetMapOffset_x();
-	float posY = (h - static_cast<float>(y)) / h * 600;
+	float posY = (h - static_cast<float>(y)) * 600 / h;
 
 	static bool bLButtonState = false;
 	if(!bLButtonState && Application::IsMousePressed(0) )
