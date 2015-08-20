@@ -1491,7 +1491,9 @@ void StudioProject::UpdateInput(double dt)
 
 	float hero_x = CHero::GetInstance()->GetHeroPos_x();
 	hero_x += CHero::GetInstance()->GetMapOffset_x();
+	hero_x += 25.f;
 	float hero_y = CHero::GetInstance()->GetHeroPos_y();
+	hero_y += 50.f;
 	f_grappleRotation = Math::RadianToDegree( -atan2(  (posX - hero_x),(posY - hero_y) ));
 
 	std::cout << posX << std::endl;
@@ -1952,7 +1954,12 @@ void StudioProject::Render2DSprite(Mesh *mesh, bool enableLight, float sizex, fl
 
 void StudioProject::RenderWeapon()
 {
-	Render2DMesh(meshList[GEO_GRAPPLING_HOOK],false,1.f,CHero::GetInstance()->GetHeroPos_x(),CHero::GetInstance()->GetHeroPos_y(),true);
+	float hero_x = CHero::GetInstance()->GetHeroPos_x();
+	//hero_x += CHero::GetInstance()->GetMapOffset_x();
+	hero_x += 50.f;
+	float hero_y = CHero::GetInstance()->GetHeroPos_y();
+	hero_y += 25.f;
+	Render2DMesh(meshList[GEO_GRAPPLING_HOOK],false,1.f,hero_x,hero_y,true);
 }
 void StudioProject::RenderMenu(int input)
 {
@@ -2045,7 +2052,7 @@ void StudioProject::RenderMenu(int input)
 void StudioProject::RenderHUD(void)
 { 
 	//ICON
-	RenderMeshIn2D(meshList[GEO_ICON],false,0.7f,0.7f,-69.f,51.f,false);
+	//RenderMeshIn2D(meshList[GEO_ICON],false,0.7f,0.7f,-69.f,51.f,false);
 
 	//HUD template
 	RenderMeshIn2D(meshList[GEO_HUD_TEMPLATE],false,2.f,2.f,-40.f,51.f,false);

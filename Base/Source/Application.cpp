@@ -24,6 +24,9 @@ double Application::mouse_last_x = 0.0, Application::mouse_last_y = 0.0,
 	Application::mouse_diff_x = 0.0, Application::mouse_diff_y = 0.0;
 double Application::camera_yaw = 0.0, Application::camera_pitch = 0.0;
 
+int m_window_width = 1920;
+int m_window_height = 1080;
+
 //Define an error callback
 static void error_callback(int error, const char* description)
 {
@@ -40,6 +43,8 @@ static void key_callback(GLFWwindow* window, int key, int scancode, int action, 
 
 void resize_callback(GLFWwindow* window, int w, int h)
 {
+	m_window_width = w;
+	m_window_height = h;
 	glViewport(0, 0, w, h);
 }
 
