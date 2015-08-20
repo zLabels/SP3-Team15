@@ -3,6 +3,8 @@
 
 CMenuClass::CMenuClass(void)
 {
+	GameLevels = LEVEL1;
+	LevelOption = LEVEL1;
 	menuOption = PLAY_GAME;
 	showMenu = true;
 
@@ -20,6 +22,13 @@ CMenuClass::CMenuClass(void)
 
 	inputDelay = 0.f;
 	DELAY_RATE = 0.2f;
+	DELAY_RATE2 = 0.5f;
+
+	Level1Size = 3.f;	//Text size
+	Level2Size = 3.f;
+	Level3Size = 3.f;
+	Level4Size = 3.f;
+	Level5Size = 3.f;
 
 	showControls = false;
 	Loading = false;
@@ -28,6 +37,9 @@ CMenuClass::CMenuClass(void)
 	Win = false;
 	Lost = false;
 	Reset = false;
+
+	SELECTED_SIZE = 4.f;
+	NORMAL_SIZE = 3.f;
 }
 CMenuClass::~CMenuClass(void)
 {
@@ -51,9 +63,34 @@ void CMenuClass::setLoadingLevels(bool input)
 {
 	Loading = input;
 }
+
 bool CMenuClass::getChoosingLevels()
 {
-	return LevelSelect;
+	return this->LevelSelect;
+}
+int CMenuClass::igetCurrentLevel() 
+{
+	return this->GameLevels;
+}
+float CMenuClass::getLevel1Size()
+{
+	return this->Level1Size;
+}
+float CMenuClass::getLevel2Size()
+{
+	return this->Level2Size;
+}
+float CMenuClass::getLevel3Size()
+{
+	return this->Level3Size;
+}
+float CMenuClass::getLevel4Size()
+{
+	return this->Level4Size;
+}
+float CMenuClass::getLevel5Size()
+{
+	return this->Level5Size;
 }
 
 float CMenuClass::getCurrentSelectPos_X()
@@ -81,6 +118,7 @@ void CMenuClass::setWinState(bool input)
 {
 	this->Win = input;
 }
+
 bool CMenuClass::getReset()
 {
 	return Reset;
@@ -117,6 +155,53 @@ void CMenuClass::menuFeedback()
 	}
 }
 
+void CMenuClass::menuFeedback2()
+{
+	//==================================//
+	//			Menu FeedBack			//
+	//=================================//
+	if(LevelOption == LEVEL1)
+	{
+		Level1Size = SELECTED_SIZE;
+		Level2Size = NORMAL_SIZE;
+		Level3Size = NORMAL_SIZE;
+		Level4Size = NORMAL_SIZE;
+		Level5Size = NORMAL_SIZE;
+	}
+	else if(LevelOption == LEVEL2)
+	{
+		Level1Size = NORMAL_SIZE;
+		Level2Size = SELECTED_SIZE;
+		Level3Size = NORMAL_SIZE;
+		Level4Size = NORMAL_SIZE;
+		Level5Size = NORMAL_SIZE;
+	}
+	else if(LevelOption == LEVEL3)
+	{
+		Level1Size = NORMAL_SIZE;
+		Level2Size = NORMAL_SIZE;
+		Level3Size = SELECTED_SIZE;
+		Level4Size = NORMAL_SIZE;
+		Level5Size = NORMAL_SIZE;
+	}
+	else if(LevelOption == LEVEL4)
+	{
+		Level1Size = NORMAL_SIZE;
+		Level2Size = NORMAL_SIZE;
+		Level3Size = NORMAL_SIZE;
+		Level4Size = SELECTED_SIZE;
+		Level5Size = NORMAL_SIZE;
+	}
+	else if(LevelOption == LEVEL5)
+	{
+		Level1Size = NORMAL_SIZE;
+		Level2Size = NORMAL_SIZE;
+		Level3Size = NORMAL_SIZE;
+		Level4Size = NORMAL_SIZE;
+		Level5Size = SELECTED_SIZE;
+	}
+}
+
 void CMenuClass::ControlMenu()
 {
 	if(Application::IsKeyPressed(VK_RETURN)  && inputDelay > DELAY_RATE)
@@ -135,14 +220,110 @@ void CMenuClass::LoadingMenu()
 	}
 }
 
-void CMenuClass::LevelSelectMenu()
+int CMenuClass::LevelSelectMenu()
 {
-	if(Application::IsKeyPressed(VK_RETURN)  && inputDelay > DELAY_RATE)
+	if(Application::IsKeyPressed(VK_UP) && inputDelay > DELAY_RATE2)
 	{
-		LevelSelect = false;
+		if(LevelOption == LEVEL1)
+		{
+			LevelOption = LEVEL5;
+		}
+		else if(LevelOption == LEVEL2)
+		{
+			LevelOption--;
+		}
+		else if(LevelOption == LEVEL3)
+		{
+			LevelOption--;
+		}
+		else if(LevelOption == LEVEL4)
+		{
+			LevelOption--;
+		}
+		else if(LevelOption == LEVEL5)
+		{
+			LevelOption--;
+		}
+
 		inputDelay = 0.f;
 	}
+
+	if(Application::IsKeyPressed(VK_DOWN) && inputDelay > DELAY_RATE2)
+	{
+		if(LevelOption == LEVEL1)
+		{
+			LevelOption++;
+		}
+		else if(LevelOption == LEVEL2)
+		{
+			LevelOption++;
+		}
+		else if(LevelOption == LEVEL3)
+		{
+			LevelOption++;
+		}
+		else if(LevelOption == LEVEL4)
+		{
+			LevelOption++;
+		}
+		else if(LevelOption == LEVEL5)
+		{
+			LevelOption = LEVEL1;
+		}
+
+		inputDelay = 0.f;
+	}
+
+	//==================================//
+	//			Menu Selection			//
+	//=================================//
+	if(Application::IsKeyPressed(VK_RETURN) && LevelOption == LEVEL1 && inputDelay > DELAY_RATE2)
+	{
+		LevelSelect = false;
+		GameLevels = LEVEL1;
+		inputDelay = 0.f;
+		showMenu = false;
+		cout <<"level";
+		if(GameLevels != 0)
+			return GameLevels;
+	}
+	else if(Application::IsKeyPressed(VK_RETURN) && LevelOption == LEVEL2 && inputDelay > DELAY_RATE2)
+	{
+		LevelSelect = false;
+		GameLevels = LEVEL2;
+		inputDelay = 0.f;
+		showMenu = false;
+		return GameLevels;
+	}
+	else if(Application::IsKeyPressed(VK_RETURN) && LevelOption == LEVEL3 && inputDelay > DELAY_RATE2)
+	{
+		LevelSelect = false;
+		GameLevels = LEVEL3;
+		inputDelay = 0.f;
+		showMenu = false;
+		return GameLevels;
+	}
+	else if(Application::IsKeyPressed(VK_RETURN) && LevelOption == LEVEL4 && inputDelay > DELAY_RATE2)
+	{
+		LevelSelect = false;
+		GameLevels = LEVEL4;
+		inputDelay = 0.f;
+		showMenu = false;
+		return GameLevels;
+	}
+	else if(Application::IsKeyPressed(VK_RETURN) && LevelOption == LEVEL5 && inputDelay > DELAY_RATE2)
+	{
+		LevelSelect = false;
+		GameLevels = LEVEL5;
+		inputDelay = 0.f;
+		showMenu = false;
+		return GameLevels;
+	}
+	menuFeedback2();
+
+	return 0;
 }
+
 void CMenuClass::DefaultMenu()
 {
 	//==================================//
@@ -217,6 +398,7 @@ void CMenuClass::DefaultMenu()
 	}
 	menuFeedback();
 }
+
 void CMenuClass::LostScreen()
 {
 	if(Application::IsKeyPressed(VK_RETURN)  && inputDelay > DELAY_RATE)
@@ -237,7 +419,7 @@ void CMenuClass::WinScreen()
 	}
 }
 
-void CMenuClass::Update(double dt)
+int CMenuClass::Update(double dt)
 {
 	inputDelay += (float)dt;
 	
@@ -257,7 +439,11 @@ void CMenuClass::Update(double dt)
 	}
 	else if(showMenu == true && LevelSelect == true && Loading == false && showControls == false)
 	{
-		LevelSelectMenu();
+		int select = LevelSelectMenu();
+		if(select != 0)
+		{
+			return select;
+		}
 	}
 	else if(Lost == true)
 	{
@@ -267,4 +453,6 @@ void CMenuClass::Update(double dt)
 	{
 		WinScreen();
 	}
+
+	return 0;
 }

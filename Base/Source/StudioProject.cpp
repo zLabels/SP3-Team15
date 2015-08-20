@@ -249,6 +249,8 @@ void StudioProject::InitVariables()
 	Save = false;
 	load = false;
 
+	choice = 0;
+
 	f_grappleRotation = 0.f;
     //Deceleration Physics
     f_deceleration = 20;
@@ -435,6 +437,10 @@ void StudioProject::InitMap()
 	// Initialise and load the tile map
 	m_cMap = new CMap();
 
+	m_cMap2 = new CMap();
+
+	m_cMap3 = new CMap();
+
 	m_cDebug = new CMap();
 	m_cDebug->Init( ScreenHeight, ScreenWidth, 24, 32, 600, 1600 );
 	m_cDebug->LoadMap( "Image//MapDesigns//Map_Debug.csv" );
@@ -444,6 +450,10 @@ void StudioProject::InitMap()
 	Level1->LoadMap( "Image//MapDesigns//Level2.csv" );
 	
 	m_cMap = m_cDebug;
+
+	m_cMap2 = Level1;
+
+	m_cMap3 = m_cDebug;
 
 	//Init and load rear tile map
 	m_cRearMap = new CMap();
@@ -654,6 +664,38 @@ void StudioProject::LoadHero()
 
 }
 
+void StudioProject::LoadMap(int level)
+{
+	switch(level)
+	{
+	case 1:
+		{
+			m_cMap = m_cMap;
+		}
+		break;
+	case 2:
+		{
+			m_cMap = m_cMap2;
+		}
+		break;
+	case 3:
+		{
+			m_cMap = m_cMap3;
+		}
+		break;
+	case 4:
+		{
+			m_cMap = m_cMap2;
+		}
+		break;
+	case 5:
+		{
+			m_cMap = m_cMap2;
+		}
+		break;
+	}
+}
+
 void StudioProject::LoadEnemies(unsigned Level)
 {
 	/*
@@ -839,6 +881,7 @@ void StudioProject::LoadEnemies(unsigned Level)
 		}
 	}
 }
+
 void StudioProject::AttackResponse(CHero::ATTACK_TYPE type)
 {
 	/*
@@ -1333,10 +1376,10 @@ void StudioProject::UpdateInput(double dt)
 	float tempHeroPos_y = CHero::GetInstance()->GetHeroPos_y();	//Hero current position Y
 	int checkPosition_X = (int)((CHero::GetInstance()->GetMapOffset_x() + tempHeroPos_x) / m_cMap->GetTileSize());	//Hero tile position X
 	int checkPosition_Y = m_cMap->GetNumOfTiles_Height() - (int) ( (tempHeroPos_y + m_cMap->GetTileSize()) / m_cMap->GetTileSize());	//Hero tile position Y
-	//if(Application::IsKeyPressed('B'))
-	//{
-	//	m_cMap = m_cMap2;
-	//}
+	if(Application::IsKeyPressed('B'))
+	{
+		m_cMap = m_cMap2;
+	}
 
 	//Movement
 	if(Application::IsKeyPressed('W'))	//Move up
@@ -1568,28 +1611,30 @@ void StudioProject::UpdateMap(double dt)
 	//******************************************************************************//
 	//			USED TO CONTROL TRANSITION FROM MAP TO MAP BASED ON CURRENT LEVEL	//
 	//******************************************************************************//
-	if(MapTransition->m_anim->animCurrentFrame == 5 && Loaded == false)
-	{
-		LoadEnemies(m_CurrentLevel);
-	}
+	//if(MapTransition->m_anim->animCurrentFrame == 5 && Loaded == false)
+	//{
+	//	LoadEnemies(m_CurrentLevel);
+	//}
 
-	for(unsigned i = 0; i < enemyContainer.size(); ++i)
-	{
-		if(enemyContainer[i]->getActive() == true)
-		{
-			if(m_CurrentLevel == 1)
-			{
-				Lv1Clear = false;
-			}
-		}
-		else if( i == (enemyContainer.size() - 1) )
-		{
-			if(m_CurrentLevel == 1)
-			{
-				Lv1Clear = true;
-			}
-		}
-	}
+	//for(unsigned i = 0; i < enemyContainer.size(); ++i)
+	//{
+	//	if(enemyContainer[i]->getActive() == true)
+	//	{
+	//		if(m_CurrentLevel == 1)
+	//		{
+	//			Lv1Clear = false;
+	//		}
+	//	}
+	//	else if( i == (enemyContainer.size() - 1) )
+	//	{
+	//		if(m_CurrentLevel == 1)
+	//		{
+	//			Lv1Clear = true;
+	//		}
+	//	}
+	//}
+
+
 
 	if(Lv1Clear)
 	{
@@ -1599,6 +1644,7 @@ void StudioProject::UpdateMap(double dt)
 
 	
 }
+
 void StudioProject::Update(double dt)
 {
 	if(GameMenu.getReset() == true)
@@ -1607,14 +1653,22 @@ void StudioProject::Update(double dt)
 	}
 	if(GameMenu.getMenuState() == true || GameMenu.getLostState() == true || GameMenu.getWinState() == true)
 	{	
-		GameMenu.Update(dt);
+		int lvl = GameMenu.Update(dt);
+		if(lvl != 0)
+		{
+			m_CurrentLevel = lvl;
+			LoadMap(m_CurrentLevel);
+		}
+		else if(lvl == 0)
+		{
+			cout<<"NO LEVEL SELECTED"<<endl;
+		}
 
 		if( (Application::IsKeyPressed(VK_DOWN) || Application::IsKeyPressed(VK_UP) || Application::IsKeyPressed(VK_RETURN)) && GameMenu.inputDelay == 0.f)
 		{
 			soundplayer.playSounds(soundplayer.MENU_FEEDBACK);
 		}
 	}
-
 	else if(GameMenu.getMenuState() == false && GameMenu.getLostState() == false && GameMenu.getWinState() == false)
 	{
 		if(GameMenu.getLoadingLevels() == true)
@@ -2055,12 +2109,12 @@ void StudioProject::RenderMenu(int input)
 			if(GameMenu.getMenuState())
 			{
 				RenderTextOnScreen(meshList[GEO_TEXT], "CHOOSE LEVEL", Color(1, 1, 1), 2.f, 15, 42);
-				RenderTextOnScreen(meshList[GEO_TEXT], "LEVEL 1", Color(1, 1, 1), 2.f, 15, 38);
-				RenderTextOnScreen(meshList[GEO_TEXT], "LEVEL 2", Color(1, 1, 1), 2.f, 15, 34);
-				RenderTextOnScreen(meshList[GEO_TEXT], "LEVEL 3", Color(1, 1, 1), 2.f, 15, 26);
-				RenderTextOnScreen(meshList[GEO_TEXT], "LEVEL 4", Color(1, 1, 1), 2.f, 15, 23);
-				
-		
+				RenderTextOnScreen(meshList[GEO_TEXT], "LEVEL 1", Color(1, 1, 1), GameMenu.getLevel1Size(), 15, 38);
+				RenderTextOnScreen(meshList[GEO_TEXT], "LEVEL 2", Color(1, 1, 1), GameMenu.getLevel2Size(), 15, 34);
+				RenderTextOnScreen(meshList[GEO_TEXT], "LEVEL 3", Color(1, 1, 1), GameMenu.getLevel3Size(), 15, 30);
+				RenderTextOnScreen(meshList[GEO_TEXT], "LEVEL 4", Color(1, 1, 1), GameMenu.getLevel4Size(), 15, 26);
+				RenderTextOnScreen(meshList[GEO_TEXT], "LEVEL 5", Color(1, 1, 1), GameMenu.getLevel5Size(), 15, 22);
+
 				RenderTextOnScreen(meshList[GEO_TEXT], "Press 'Enter' to return to main menu", Color(0.3f, 0.3f, 0.3f), 1.5f, 28, 10);
 			}
 		}

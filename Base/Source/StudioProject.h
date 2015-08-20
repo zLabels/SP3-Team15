@@ -197,11 +197,13 @@ public:
 	void Reset(bool hasWon);	//Resets the game
 	void AttackResponse(CHero::ATTACK_TYPE type);	//Reponse of attacks in game
 	void LoadEnemies(unsigned Level);	//Loads enemies on map based on map 
+	void LoadMap(int level);
 	void LoadHero();//Load Hero
 
 	void UpdateDebug(double dt);	//Update debug related information
 	void UpdateSprites(double dt);	//Update sprite animations
 	void UpdateInput(double dt);	//Updates player inputs
+
 	void UpdateMap(double dt);	//Updates the current map
 	void UpdateEnemySprites(double dt);		//Updates enemy sprite animations
 	void UpdateWeapon();	//Updates the weapons in the game
@@ -274,6 +276,8 @@ private:
 	//Maps
 	unsigned m_CurrentLevel;	//Current Level
 	CMap* m_cMap;	//Current Map
+	CMap* m_cMap2;
+	CMap* m_cMap3;
 	CMap* Level1;	//Level 1 map
 	CMap* m_cDebug;	//Debug Map
 
@@ -307,6 +311,7 @@ private:
 	int rearWallOffset_x, rearWallOffset_y;
 	int rearWallTileOffset_x, rearWallTileOffset_y;
 	int rearWallFineOffset_x, rearWallFineOffset_y;
+	int choice;
 
 	float f_grappleRotation;
 
