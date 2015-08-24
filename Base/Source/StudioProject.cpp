@@ -508,13 +508,13 @@ void StudioProject::InitTiles()
     meshList[GEO_TILE_DOOR] = MeshBuilder::GenerateTile("Metal_Corner",7,14,0,11,26);
 	meshList[GEO_TILE_DOOR]->textureID = LoadTGA("Image//Tiles//Tile_Floor.tga");
 
-    meshList[GEO_TILE_LASER] = MeshBuilder::GenerateTile("Laser",7,14,0,9,26);
+    meshList[GEO_TILE_LASER] = MeshBuilder::GenerateTile("Laser",7,14,5,10,26);
 	meshList[GEO_TILE_LASER]->textureID = LoadTGA("Image//Tiles//Tile_Floor.tga");
 
     meshList[GEO_TILE_LASER_SWITCH] = MeshBuilder::GenerateTile("Laser_Switch",7,14,6,0,26);
 	meshList[GEO_TILE_LASER_SWITCH]->textureID = LoadTGA("Image//Tiles//Tile_Floor.tga");
     
-    meshList[GEO_TILE_HEALTH] = MeshBuilder::GenerateTile("HEALTH",7,14,2,2,26);
+    meshList[GEO_TILE_HEALTH] = MeshBuilder::GenerateTile("HEALTH",7,14,6,12,26);
 	meshList[GEO_TILE_HEALTH]->textureID = LoadTGA("Image//Tiles//Tile_Floor.tga");
     
     meshList[GEO_TILE_SCORE] = MeshBuilder::GenerateTile("Score",7,14,5,13,26);
@@ -1590,7 +1590,7 @@ void StudioProject::UpdateInput(double dt)
         }
 
         //LASER SWITCH
-        if(m_cMap->theScreenMap[checkPosition_Y3][checkPosition_X + 2] == TILE_LASER_SWITCH || m_cMap->theScreenMap[checkPosition_Y3][checkPosition_X - 1] == TILE_LASER_SWITCH )
+        if(m_cMap->theScreenMap[checkPosition_Y3][checkPosition_X + 3] == TILE_LASER_SWITCH || m_cMap->theScreenMap[checkPosition_Y3][checkPosition_X - 1] == TILE_LASER_SWITCH )
         {
             int m = 0;
             for(int i = 0; i < m_cMap->GetNumOfTiles_Height(); ++i)
@@ -2522,7 +2522,8 @@ void StudioProject::RenderDebug(void)
 	//sss << "mapOffset_x: "<<CHero::GetInstance()->GetMapOffset_x();
 	//RenderTextOnScreen(meshList[GEO_TEXT], sss.str(), Color(0, 1, 0), 3, 2, 7);
 
-	/*std::ostringstream sss;q
+    /*
+	std::ostringstream sss;
 	sss.precision(5);
 	sss << "heropos.x: "<< CHero::GetInstance()->GetMapOffset_x() + CHero::GetInstance()->GetHeroPos_x();
 	RenderTextOnScreen(meshList[GEO_TEXT], sss.str(), Color(0, 1, 0), 3, 2, 7);
@@ -2530,7 +2531,9 @@ void StudioProject::RenderDebug(void)
 	std::ostringstream ssss;
 	ssss.precision(5);
 	ssss << "heropos.x: "<<CHero::GetInstance()->GetHeroPos_y();
-	RenderTextOnScreen(meshList[GEO_TEXT], ssss.str(), Color(0, 1, 0), 3, 2, 4);*/
+	RenderTextOnScreen(meshList[GEO_TEXT], ssss.str(), Color(0, 1, 0), 3, 2, 4);
+    */
+
 }
 void StudioProject::RenderHeroSprites(void)
 {
