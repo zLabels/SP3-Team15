@@ -171,6 +171,9 @@
     <ClCompile Include="Source\Hero.cpp">
       <Filter>Source Files\Classes</Filter>
     </ClCompile>
+    <ClCompile Include="Source\GrapplingHook.cpp">
+      <Filter>Source Files\Classes\Weapons</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Camera.h">
@@ -280,6 +283,9 @@
     </ClInclude>
     <ClInclude Include="Source\Hero.h">
       <Filter>Header Files\Classes</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\GrapplingHook.h">
+      <Filter>Header Files\Classes\Weapons</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

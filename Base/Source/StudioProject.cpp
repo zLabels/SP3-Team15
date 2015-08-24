@@ -462,7 +462,7 @@ void StudioProject::InitMap()
 	m_cMap_Level4->LoadMap( "Image//MapDesigns//Map_Level4.csv");
 
 	m_cMap_Level5 = new CMap();
-	m_cMap_Level5->Init( ScreenHeight, ScreenWidth, 24, 32, 600, 1600 );
+	m_cMap_Level5->Init( ScreenHeight, ScreenWidth, 24, 32, 600, 3200 );
 	m_cMap_Level5->LoadMap( "Image//MapDesigns//Map_Level1.csv");
 
 	m_cMap = m_cMap_Level1;
@@ -644,7 +644,6 @@ void StudioProject::SaveGame()
 		saveFile.close();
 	}
 }
-
 void StudioProject::LoadHero()
 {
 	string info = ""; //Used to store string from text file
@@ -697,7 +696,6 @@ void StudioProject::LoadHero()
 	}
 
 }
-
 void StudioProject::LoadMap(int level)
 {
 	switch(level)
@@ -734,7 +732,6 @@ void StudioProject::LoadMap(int level)
 		break;
 	}
 }
-
 void StudioProject::LoadEnemies(unsigned Level)
 {
 	/*
@@ -1016,7 +1013,26 @@ void StudioProject::LoadEnemies(unsigned Level)
 		}
 	}
 }
-
+CShuriken* StudioProject::FetchShuriken()
+{
+	for(std::vector<CShuriken *>::iterator it = shurikenList.begin(); it != shurikenList.end(); ++it)
+	{
+		CShuriken *star = (CShuriken *)*it;
+		if(!star->getActive())
+		{
+			star->setActive(true);
+			return star;
+		}
+	}
+	for(unsigned i = 0; i < 5; ++i)
+	{
+		CShuriken *star = new CShuriken();
+		shurikenList.push_back(star);
+	}
+	CShuriken *star = shurikenList.back();
+	star->setActive(true);
+	return star;
+}
 void StudioProject::AttackResponse(CHero::ATTACK_TYPE type)
 {
 	/*
@@ -1214,6 +1230,18 @@ void StudioProject::EnemyUpdate(double dt)
 			}
 		}
 
+		for(std::vector<CShuriken *>::iterator it = shurikenList.begin(); it != shurikenList.end(); ++it)
+		{
+			CShuriken *star = (CShuriken *)*it;
+			if(star->getActive() && Enemy->getActive())
+			{
+				if( ((Enemy->GetPos_x() + 12.5f) - (star->getPos().x + CHero::GetInstance()->GetMapOffset_x())) * ((Enemy->GetPos_x() + 12.5f) - (star->getPos().x + CHero::GetInstance()->GetMapOffset_x())) + ((Enemy->GetPos_y() + 25.f) - star->getPos().y) * ((Enemy->GetPos_y() + 25.f) - star->getPos().y) < 1600)
+				{
+					Enemy->EnemyDamaged(100,m_cMap);
+					star->setActive(false);
+				}
+			}
+		}
 	}
 }
 void StudioProject::HeroUpdate(double dt)
@@ -1494,18 +1522,22 @@ void StudioProject::UpdateEnemySprites(double dt)
 }
 void StudioProject::UpdateWeapon()
 {
-        if(shurikenList.size() > 0)
-        {
-            for(unsigned i = 0;i < shurikenList.size(); ++i)
-            {
-                if(shurikenList[i].getActive() == true)
-                {
-                    shurikenList[i].Update(m_cMap,CHero::GetInstance()->GetMapOffset_x(),CHero::GetInstance()->GetMapOffset_y());
-                }
-            }
-        }
-}
+	if(shurikenList.size() > 0)
+	{
+		for(unsigned i = 0;i < shurikenList.size(); ++i)
+		{
+			if(shurikenList[i]->getActive() == true)
+			{
+				shurikenList[i]->Update(m_cMap,CHero::GetInstance()->GetMapOffset_x(),CHero::GetInstance()->GetMapOffset_y());
+			}
+		}
+	}
 
+	if(GrappleHook.getActive())
+	{
+		GrappleHook.Update(m_cMap,CHero::GetInstance()->GetMapOffset_x(),CHero::GetInstance()->GetMapOffset_y());
+	}
+}
 void StudioProject::UpdateTiles()
 {
     float tempHeroPos_x = CHero::GetInstance()->GetHeroPos_x();	//Hero current position X
@@ -1556,7 +1588,6 @@ void StudioProject::UpdateTiles()
     }
     //--------------//
 }
-
 void StudioProject::UpdateInput(double dt)
 {
 	float tempHeroPos_x = CHero::GetInstance()->GetHeroPos_x();	//Hero current position X
@@ -1799,22 +1830,45 @@ void StudioProject::UpdateInput(double dt)
 	{
 		bLButtonState = true;
 		std::cout << "LBUTTON DOWN" << std::endl;
-		CShuriken shuriken;
-		shuriken.setData(meshList[GEO_SHURIKEN],hero_x - CHero::GetInstance()->GetMapOffset_x(),hero_y,
+		CShuriken* shuriken = FetchShuriken();
+		shuriken->setData(meshList[GEO_SHURIKEN],hero_x - CHero::GetInstance()->GetMapOffset_x(),hero_y,
 						10,posX - hero_x,posY - hero_y,true);
-		shurikenList.push_back(shuriken);
+
+		CHero::GetInstance()->Gethero_EP() -= 10;
 	}
 	else if(bLButtonState && !Application::IsMousePressed(0))
 	{
 		bLButtonState = false;
 	}
 
-	f_grappleRotation = Math::RadianToDegree( -atan2(  (posX - hero_x),(posY - hero_y) ));
+	static bool bRButtonState = false;
+	if(!bRButtonState && Application::IsMousePressed(1) && GrappleHook.getActive() == false && GrappleHook.getHooked() == false)
+	{
+		bRButtonState = true;
+		std::cout << "RBUTTON DOWN" << std::endl;
+		GrappleHook.setData(meshList[GEO_GRAPPLING_HOOK],hero_x - CHero::GetInstance()->GetMapOffset_x(),hero_y,
+						10,posX - hero_x,posY - hero_y,true);
+		GrappleHook.setRotation(Math::RadianToDegree( -atan2(  (posX - hero_x),(posY - hero_y) )));
+		GrappleHook.setActive(true);
+	}
+	else if(bRButtonState && !Application::IsMousePressed(0))
+	{
+		bRButtonState = false;
+	}
 
+	f_grappleRotation = Math::RadianToDegree( -atan2(  (posX - (hero_x - CHero::GetInstance()->GetMapOffset_x())),(posY - hero_y) ));
+
+	if(GrappleHook.getHooked())
+	{
+		if(CHero::GetInstance()->HeroGrapple(m_cMap,GrappleHook.getDir(),GrappleHook.getPos()))
+		{
+			GrappleHook.setHooked(false);
+		}
+	}
+	std::cout <<GrappleHook.getPos().y << std::endl;
 	//std::cout << posX << std::endl;
 	//std::cout << hero_x << std::endl;
 }
-
 void StudioProject::UpdateMap(double dt)
 {
 	MapTransition = dynamic_cast<CSpriteAnimation*>(meshList[MAP_TRANSITION]);
@@ -2139,7 +2193,7 @@ void StudioProject::RenderEnemyOnMap2D(Mesh *mesh, bool enableLight, float sizeY
 	viewStack.PopMatrix();
 	projectionStack.PopMatrix();
 }
-void StudioProject::Render2DMesh(Mesh *mesh, bool enableLight, float size, float x, float y, bool rotate)
+void StudioProject::Render2DMesh(Mesh *mesh, bool enableLight, float size, float x, float y, bool rotate,float rotation)
 {
 	glDisable(GL_DEPTH_TEST);
 	Mtx44 ortho;
@@ -2153,7 +2207,7 @@ void StudioProject::Render2DMesh(Mesh *mesh, bool enableLight, float size, float
 				modelStack.Translate(x, y, 0);
 				if(rotate)
 				{
-					modelStack.Rotate(f_grappleRotation,0,0,1);
+					modelStack.Rotate(rotation,0,0,1);
 				}
 				modelStack.Scale(size, size, size);
        
@@ -2272,14 +2326,18 @@ void StudioProject::RenderWeapon()
         {
             for(unsigned i = 0;i < shurikenList.size(); ++i)
             {
-                if(shurikenList[i].getActive() == true)
+                if(shurikenList[i]->getActive() == true)
                 {
-					Render2DMesh(shurikenList[i].getMesh(),false,1.f,shurikenList[i].getPos().x,shurikenList[i].getPos().y);
-                    std::cout <<  shurikenList[i].getPos().x << std::endl;
+					Render2DMesh(shurikenList[i]->getMesh(),false,1.f,shurikenList[i]->getPos().x,shurikenList[i]->getPos().y);
                 }
             }
         }
     //}
+
+	if(GrappleHook.getActive())
+	{
+		Render2DMesh(GrappleHook.getMesh(),false,1.f,GrappleHook.getPos().x,GrappleHook.getPos().y,true,GrappleHook.getRotation());
+	}
 }
 void StudioProject::RenderMenu(int input)
 {
@@ -2521,8 +2579,7 @@ void StudioProject::RenderDebug(void)
 	//sss.precision(5);
 	//sss << "mapOffset_x: "<<CHero::GetInstance()->GetMapOffset_x();
 	//RenderTextOnScreen(meshList[GEO_TEXT], sss.str(), Color(0, 1, 0), 3, 2, 7);
-
-    /*
+    
 	std::ostringstream sss;
 	sss.precision(5);
 	sss << "heropos.x: "<< CHero::GetInstance()->GetMapOffset_x() + CHero::GetInstance()->GetHeroPos_x();
@@ -2532,7 +2589,7 @@ void StudioProject::RenderDebug(void)
 	ssss.precision(5);
 	ssss << "heropos.x: "<<CHero::GetInstance()->GetHeroPos_y();
 	RenderTextOnScreen(meshList[GEO_TEXT], ssss.str(), Color(0, 1, 0), 3, 2, 4);
-    */
+    
 
 }
 void StudioProject::RenderHeroSprites(void)
@@ -2791,6 +2848,13 @@ void StudioProject::Exit()
 		CEnemy *enemy = enemyContainer.back();
 		delete enemy;
 		enemyContainer.pop_back();
+	}
+
+	while(shurikenList.size() > 0)
+	{
+		CShuriken *star = shurikenList.back();
+		delete star;
+		shurikenList.pop_back();
 	}
 	glDeleteProgram(m_programID);
 	glDeleteVertexArrays(1, &m_vertexArrayID);

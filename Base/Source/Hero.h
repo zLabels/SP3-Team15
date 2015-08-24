@@ -1,5 +1,6 @@
 #pragma once
 #include "Vector2.h"
+#include "Vector3.h"
 #include "Map.h"
 #include "SpriteAnimation.h"
 #include <cmath>
@@ -21,6 +22,7 @@ public:
 	void HeroJump();	//Hero jump function
 	void HeroMoveUpDown(const bool mode, const float timeDiff);	//Hero Moving up / down function
 	void HeroMoveLeftRight(const bool mode , const float timeDiff);	//Hero Moving left/right function
+	bool HeroGrapple(CMap* m_cMap,Vector3 direction,Vector3 hookPosition);	//Hero moving towards grapple direction
 	int HeroAttack(int enemy_x,int enemy_y, ATTACK_TYPE type);	//Hero attacking
 	void HeroDamaged(int enemy_x, int enemy_y);	//Hero Damaged by colliding with enemy
 	void HeroDamaged(int Damage);	//Hero Damaged by enemy
@@ -100,6 +102,7 @@ private:
 	bool hero_face_right;	//Bool if hero is facing right
 	bool hero_damaged;	//Hero is damaged
 	bool kb_direction;	//Hero knockback direction (false = left, true = right)
+	bool hero_grappling;	//Hero is grappling
 	int jumpspeed;	//speed of jump
 	int jumpcount;	//Number of jumps
 	int MAX_FALLSPEED;	//Maximum speed of falling

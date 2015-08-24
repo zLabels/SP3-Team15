@@ -10,8 +10,9 @@ CHero::CHero(void):
 	jumpcount(0),
 	hero_face_left(false),
 	hero_face_right(true),
+	hero_grappling(false),
 	hero_HP(100),
-	hero_EP(0),
+	hero_EP(100),
 	hero_MS(3.f),
 	kb_MS(10.f),
 	mapOffset_X(0), 
@@ -92,6 +93,28 @@ void CHero::HeroMoveLeftRight(const bool mode, const float timeDiff)
 		tempHeroPos.x = HeroPos.x;
 		Hero_Acceleration(false, timeDiff); //Acceleration
 	}
+}
+
+bool CHero::HeroGrapple(CMap* m_cMap,Vector3 direction,Vector3 hookPosition)
+{
+	hero_grappling = true;
+
+	
+	direction.Normalize();
+
+	tempHeroPos.x = HeroPos.x;
+	tempHeroPos.y = HeroPos.y;
+	HeroPos.x += direction.x * 15;
+	HeroPos.y += direction.y * 15;
+	if( HeroCollisionCheck(m_cMap,true,true,true,true,HeroPos.x,HeroPos.y,mapOffset_X,jumpspeed) == true)
+	{
+		HeroPos.x = tempHeroPos.x;
+		HeroPos.y = tempHeroPos.y;
+		hero_grappling = false;
+		return true;
+	}
+	
+	return false;
 }
 /********************************************************************************
 Hero Attacking
@@ -308,7 +331,7 @@ void CHero::Update(CMap* m_cMap,int mapWidth, int mapHeight,unsigned maplevel)
 		HeroPos.x = tempHeroPos.x;
 	}
 	//Falling
-	if (hero_inMidAir_Up == false && hero_inMidAir_Down == false)
+	if (hero_inMidAir_Up == false && hero_inMidAir_Down == false && hero_grappling == false)
 	{
 		//falling
 		if ( HeroCollisionCheck(m_cMap,false,false,false,true,HeroPos.x,HeroPos.y,mapOffset_X,jumpspeed) == false )

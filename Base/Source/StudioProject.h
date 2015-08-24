@@ -22,6 +22,7 @@
 #include "Monster.h"
 #include "MenuClass.h"
 #include "Shuriken.h"
+#include "GrapplingHook.h"
 
 //Goodies
 #include "GoodiesFactory.h"
@@ -209,8 +210,9 @@ public:
 	void Reset(bool hasWon);	//Resets the game
 	void AttackResponse(CHero::ATTACK_TYPE type);	//Reponse of attacks in game
 	void LoadEnemies(unsigned Level);	//Loads enemies on map based on map 
-	void LoadMap(int level);
+	void LoadMap(int level);	//Load map
 	void LoadHero();//Load Hero
+	CShuriken* FetchShuriken(void);	//Fetch weapon from vector
 
 	void UpdateDebug(double dt);	//Update debug related information
 	void UpdateSprites(double dt);	//Update sprite animations
@@ -249,7 +251,7 @@ public:
 	void RenderMesh(Mesh *mesh, bool enableLight);	//Method to render meshes
 	void RenderEnemyOnMap2D(Mesh *mesh, bool enableLight, float sizeY = 1.0f,float sizeX=1.0f, float x=0.0f, float y=0.0f,bool rotate = false);	//Method to render enemies on minimap
 	void RenderMeshIn2D(Mesh *mesh, bool enableLight, float sizeY = 1.0f,float sizeX=1.0f, float x=0.0f, float y=0.0f,bool rotate = false);	//Method to render mesh in 2D
-	void Render2DMesh(Mesh *mesh, const bool enableLight, const float size=1.0f, const float x=0.0f, const float y=0.0f, const bool rotate=false);	//Render 2D Meshes
+	void Render2DMesh(Mesh *mesh, const bool enableLight, const float size=1.0f, const float x=0.0f, const float y=0.0f, const bool rotate=false,const float rotation = 0.f);	//Render 2D Meshes
 	void Render2DSprite(Mesh *mesh, const bool enableLight, const float sizex=1.0f,const float sizey=1.0f, const float x=0.0f, const float y=0.0f, const bool rotate=false);	//Render 2D Sprites
 
 private:
@@ -312,7 +314,8 @@ private:
 	float jump_input_delay;	//Delay input for double jump
 
 	//Weapon
-	vector<CShuriken> shurikenList;
+	vector<CShuriken*> shurikenList;
+	CGrapplingHook GrappleHook;
 
 	//Menu
 	CMenuClass GameMenu;
