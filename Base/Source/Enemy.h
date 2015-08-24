@@ -22,7 +22,7 @@ public:
 
 	enum ENEMY_TYPE
 	{
-		SKELETON,
+		GUARD1,
 		GHOST,
 		MAX_ENEMY
 	};

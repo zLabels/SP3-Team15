@@ -141,12 +141,12 @@ class StudioProject : public Scene
 		//Weapon
 		GEO_GRAPPLING_HOOK,
 		GEO_SHURIKEN,
-			//Skele
-		GEO_SKELE_WALK_RIGHT,
-		GEO_SKELE_WALK_LEFT,
-		GEO_SKELE_DEATH_RIGHT,
-		GEO_SKELE_ATTACK_RIGHT,
-		GEO_SKELE_ATTACK_LEFT,
+			//Guard 1
+		GEO_GUARD1_WALK_RIGHT,
+		GEO_GUARD1_WALK_LEFT,
+		GEO_GUARD1_DEATH_RIGHT,
+		GEO_GUARD1_ATTACK_RIGHT,
+		GEO_GUARD1_ATTACK_LEFT,
 			//Ghost
 		GEO_GHOST_WALK_RIGHT,
 		GEO_GHOST_WALK_LEFT,
@@ -289,9 +289,11 @@ private:
 	//Maps
 	unsigned m_CurrentLevel;	//Current Level
 	CMap* m_cMap;	//Current Map
-	CMap* m_cMap2;
-	CMap* m_cMap3;
-	CMap* Level1;	//Level 1 map
+	CMap* m_cMap_Level1;	//Level 1 map
+	CMap* m_cMap_Level2;	//Level 2 map
+	CMap* m_cMap_Level3;	//Level 3 map
+	CMap* m_cMap_Level4;	//Level 4 map
+	CMap* m_cMap_Level5;	//Level 5 map
 	CMap* m_cDebug;	//Debug Map
 
 	void RenderTileMap();	//Used to render Tile map

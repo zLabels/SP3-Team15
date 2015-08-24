@@ -4,7 +4,7 @@ CEnemy::CEnemy(void)
 	: theStrategy(NULL),
 	  enemyHealth(100),
 	  enemyDamage(5),
-	  enemyType(SKELETON),
+	  enemyType(GUARD1),
 	  enemy_face_left(false),
 	  enemy_face_right(true),
 	  DeathAnimation_Right(NULL),

@@ -441,24 +441,31 @@ void StudioProject::InitMap()
 	// Initialise and load the tile map
 	m_cMap = new CMap();
 
-	m_cMap2 = new CMap();
-
-	m_cMap3 = new CMap();
-
 	m_cDebug = new CMap();
 	m_cDebug->Init( ScreenHeight, ScreenWidth, 24, 32, 600, 3200 );
-	//m_cDebug->LoadMap( "Image//MapDesigns//Map_Debug.csv" );
-    m_cDebug->LoadMap( "Image//MapDesigns//Map_Level1.csv" );
+	m_cDebug->LoadMap( "Image//MapDesigns//Map_Debug.csv" );
 
-	Level1 = new CMap();
-	Level1->Init( ScreenHeight, ScreenWidth, 24, 32, 600, 1600 );
-	Level1->LoadMap( "Image//MapDesigns//Level2.csv");
-	
-	m_cMap = m_cDebug;
+	m_cMap_Level1 = new CMap();
+	m_cMap_Level1->Init( ScreenHeight, ScreenWidth, 24, 32, 600, 3200 );
+	m_cMap_Level1->LoadMap( "Image//MapDesigns//Map_Level1.csv");
 
-	m_cMap2 = Level1;
+	m_cMap_Level2 = new CMap();
+	m_cMap_Level2->Init( ScreenHeight, ScreenWidth, 24, 32, 600, 3200 );
+	m_cMap_Level2->LoadMap( "Image//MapDesigns//Map_Level1.csv");
 
-	m_cMap3 = m_cDebug;
+	m_cMap_Level3 = new CMap();
+	m_cMap_Level3->Init( ScreenHeight, ScreenWidth, 24, 32, 600, 3200 );
+	m_cMap_Level3->LoadMap( "Image//MapDesigns//Map_Level1.csv");
+
+	m_cMap_Level4 = new CMap();
+	m_cMap_Level4->Init( ScreenHeight, ScreenWidth, 24, 32, 600, 3200 );
+	m_cMap_Level4->LoadMap( "Image//MapDesigns//Map_Level4.csv");
+
+	m_cMap_Level5 = new CMap();
+	m_cMap_Level5->Init( ScreenHeight, ScreenWidth, 24, 32, 600, 1600 );
+	m_cMap_Level5->LoadMap( "Image//MapDesigns//Map_Level1.csv");
+
+	m_cMap = m_cMap_Level1;
 
 	//Init and load rear tile map
 	m_cRearMap = new CMap();
@@ -578,7 +585,7 @@ void StudioProject::Reset(bool hasWon)
 
 		//Map
 		Transiting = false;
-		m_cMap = m_cDebug;
+		m_cMap = m_cMap_Level1;
 
 		soundplayer.stopSound();
 		GameMenu.setReset(false);
@@ -603,7 +610,7 @@ void StudioProject::Reset(bool hasWon)
 
 		//Map
 		Transiting = false;
-		m_cMap = m_cDebug;
+		m_cMap = m_cMap_Level1;
 
 		soundplayer.stopSound();
 	
@@ -697,27 +704,32 @@ void StudioProject::LoadMap(int level)
 	{
 	case 1:
 		{
-			m_cMap = m_cMap;
+			m_cMap = m_cMap_Level1;
+			LoadEnemies(level);
 		}
 		break;
 	case 2:
 		{
-			m_cMap = m_cMap2;
+			m_cMap = m_cMap_Level1;
+			LoadEnemies(level);
 		}
 		break;
 	case 3:
 		{
-			m_cMap = m_cMap3;
+			m_cMap = m_cMap_Level1;
+			LoadEnemies(level);
 		}
 		break;
 	case 4:
 		{
-			m_cMap = m_cMap2;
+			m_cMap = m_cMap_Level4;
+			LoadEnemies(level);
 		}
 		break;
 	case 5:
 		{
-			m_cMap = m_cMap2;
+			m_cMap = m_cMap_Level1;
+			LoadEnemies(level);
 		}
 		break;
 	}
@@ -739,7 +751,7 @@ void StudioProject::LoadEnemies(unsigned Level)
 		{
 			if(Lv1Clear == false)
 			{
-				ifstream datafiles("Source//TextFiles//Level2Data.txt");
+				ifstream datafiles("Source//TextFiles//Guard_Level1Data.txt");
 				if(datafiles.is_open())
 				{
 					while(datafiles.good())
@@ -760,6 +772,102 @@ void StudioProject::LoadEnemies(unsigned Level)
 				}
 				datafiles.close();
 			}
+		}
+		break;
+	case 2:
+		{
+			ifstream datafiles("Source//TextFiles//Guard_Level1Data.txt");
+			if(datafiles.is_open())
+			{
+				while(datafiles.good())
+				{
+					getline(datafiles, data);
+
+					istringstream is(data);
+					// If this line is not a comment line, then process it
+					if(!(data.find("//") == NULL) && data != "")
+					{
+						//Stores data into vector
+						for(string line; getline(is, line, ','); )
+						{
+							positionData.push_back((atoi(line.c_str())));
+						}
+					}
+				}
+			}
+			datafiles.close();
+		}
+		break;
+	case 3:
+		{
+			ifstream datafiles("Source//TextFiles//Guard_Level1Data.txt");
+			if(datafiles.is_open())
+			{
+				while(datafiles.good())
+				{
+					getline(datafiles, data);
+
+					istringstream is(data);
+					// If this line is not a comment line, then process it
+					if(!(data.find("//") == NULL) && data != "")
+					{
+						//Stores data into vector
+						for(string line; getline(is, line, ','); )
+						{
+							positionData.push_back((atoi(line.c_str())));
+						}
+					}
+				}
+			}
+			datafiles.close();
+		}
+		break;
+	case 4:
+		{
+			ifstream datafiles("Source//TextFiles//Guard_Level4Data.txt");
+			if(datafiles.is_open())
+			{
+				while(datafiles.good())
+				{
+					getline(datafiles, data);
+
+					istringstream is(data);
+					// If this line is not a comment line, then process it
+					if(!(data.find("//") == NULL) && data != "")
+					{
+						//Stores data into vector
+						for(string line; getline(is, line, ','); )
+						{
+							positionData.push_back((atoi(line.c_str())));
+						}
+					}
+				}
+			}
+			datafiles.close();
+		}
+		break;
+	case 5:
+		{
+			ifstream datafiles("Source//TextFiles//Guard_Level1Data.txt");
+			if(datafiles.is_open())
+			{
+				while(datafiles.good())
+				{
+					getline(datafiles, data);
+
+					istringstream is(data);
+					// If this line is not a comment line, then process it
+					if(!(data.find("//") == NULL) && data != "")
+					{
+						//Stores data into vector
+						for(string line; getline(is, line, ','); )
+						{
+							positionData.push_back((atoi(line.c_str())));
+						}
+					}
+				}
+			}
+			datafiles.close();
 		}
 		break;
 	}
@@ -792,33 +900,33 @@ void StudioProject::LoadEnemies(unsigned Level)
 			*/
 			if(positionData[j] == 1)
 			{
-				enemy->Init(positionData[j-4],positionData[j-3],positionData[j-2],positionData[j-1],true,CEnemy::SKELETON);
+				enemy->Init(positionData[j-4],positionData[j-3],positionData[j-2],positionData[j-1],true,CEnemy::GUARD1);
 				enemy->ChangeStrategy(new CStrategy_Kill());
 
 				//Right walk
-				meshList[GEO_SKELE_WALK_RIGHT] = MeshBuilder::GenerateSpriteAnimation("skele_walk_Right",1,9);
-				meshList[GEO_SKELE_WALK_RIGHT]->textureArray[0] = LoadTGA("Image//Skeleton//SkeletonWalk2_Right.tga");
-				enemy->WalkAnimation_Right = dynamic_cast<CSpriteAnimation*>(meshList[GEO_SKELE_WALK_RIGHT]);
+				meshList[GEO_GUARD1_WALK_RIGHT] = MeshBuilder::GenerateSpriteAnimation("Guard1_walk_right",3,5);
+				meshList[GEO_GUARD1_WALK_RIGHT]->textureArray[0] = LoadTGA("Image//Enemies//Normal//Guard_AlertRight.tga");
+				enemy->WalkAnimation_Right = dynamic_cast<CSpriteAnimation*>(meshList[GEO_GUARD1_WALK_RIGHT]);
 				if(enemy->WalkAnimation_Right)
 				{
 					enemy->WalkAnimation_Right->m_anim = new Animation();
-					enemy->WalkAnimation_Right->m_anim->Set(1, 8, 1, 1.f, true,Vector3((float)enemy->GetPos_x(),(float)enemy->GetPos_y(),1),0,0.f,ENEMY_SIZE);
+					enemy->WalkAnimation_Right->m_anim->Set(0, 14, 1, 1.f, true,Vector3((float)enemy->GetPos_x(),(float)enemy->GetPos_y(),1),0,0.f,ENEMY_SIZE);
 				}
 
 				//Left walk
-				meshList[GEO_SKELE_WALK_LEFT] = MeshBuilder::GenerateSpriteAnimation("skele_walk_Left",1,9);
-				meshList[GEO_SKELE_WALK_LEFT]->textureArray[0] = LoadTGA("Image//Skeleton//SkeletonWalk_Left.tga");
-				enemy->WalkAnimation_Left = dynamic_cast<CSpriteAnimation*>(meshList[GEO_SKELE_WALK_LEFT]);
+				meshList[GEO_GUARD1_WALK_LEFT] = MeshBuilder::GenerateSpriteAnimation("Guard1_walk_Left",3,5);
+				meshList[GEO_GUARD1_WALK_LEFT]->textureArray[0] = LoadTGA("Image//Enemies//Normal//Guard_AlertLeft.tga");
+				enemy->WalkAnimation_Left = dynamic_cast<CSpriteAnimation*>(meshList[GEO_GUARD1_WALK_LEFT]);
 				if(enemy->WalkAnimation_Left)
 				{
 					enemy->WalkAnimation_Left->m_anim = new Animation();
-					enemy->WalkAnimation_Left->m_anim->Set(1, 8, 1, 1.f, true,Vector3((float)enemy->GetPos_x(),(float)enemy->GetPos_y(),1),0,0.f,ENEMY_SIZE);
+					enemy->WalkAnimation_Left->m_anim->Set(0, 14, 1, 1.f, true,Vector3((float)enemy->GetPos_x(),(float)enemy->GetPos_y(),1),0,0.f,ENEMY_SIZE);
 				}
 
 				//Death animation
-				meshList[GEO_SKELE_DEATH_RIGHT] = MeshBuilder::GenerateSpriteAnimation("skele_death_right",1,7);
-				meshList[GEO_SKELE_DEATH_RIGHT]->textureArray[0] = LoadTGA("Image//Skeleton//SkeletonDeath_Right.tga");
-				enemy->DeathAnimation_Right = dynamic_cast<CSpriteAnimation*>(meshList[GEO_SKELE_DEATH_RIGHT]);
+				meshList[GEO_GUARD1_DEATH_RIGHT] = MeshBuilder::GenerateSpriteAnimation("skele_death_right",1,7);
+				meshList[GEO_GUARD1_DEATH_RIGHT]->textureArray[0] = LoadTGA("Image//Skeleton//SkeletonDeath_Right.tga");
+				enemy->DeathAnimation_Right = dynamic_cast<CSpriteAnimation*>(meshList[GEO_GUARD1_DEATH_RIGHT]);
 				if(enemy->DeathAnimation_Right)
 				{
 					enemy->DeathAnimation_Right->m_anim = new Animation();
@@ -826,18 +934,18 @@ void StudioProject::LoadEnemies(unsigned Level)
 				}
 
 				//Attacking animation
-				meshList[GEO_SKELE_ATTACK_RIGHT] = MeshBuilder::GenerateSpriteAnimation("skele_attack_right",1,4);
-				meshList[GEO_SKELE_ATTACK_RIGHT]->textureArray[0] = LoadTGA("Image//Skeleton//SkeletonAttack_Right.tga");
-				enemy->AttackAnimation_Right = dynamic_cast<CSpriteAnimation*>(meshList[GEO_SKELE_ATTACK_RIGHT]);
+				meshList[GEO_GUARD1_ATTACK_RIGHT] = MeshBuilder::GenerateSpriteAnimation("skele_attack_right",1,4);
+				meshList[GEO_GUARD1_ATTACK_RIGHT]->textureArray[0] = LoadTGA("Image//Skeleton//SkeletonAttack_Right.tga");
+				enemy->AttackAnimation_Right = dynamic_cast<CSpriteAnimation*>(meshList[GEO_GUARD1_ATTACK_RIGHT]);
 				if(enemy->AttackAnimation_Right)
 				{
 					enemy->AttackAnimation_Right->m_anim = new Animation();
 					enemy->AttackAnimation_Right->m_anim->Set(0, 3, 0, 1.f, false,Vector3((float)enemy->GetPos_x(),(float)enemy->GetPos_y(),1),0,0.f,100.f);
 				}
 
-				meshList[GEO_SKELE_ATTACK_LEFT] = MeshBuilder::GenerateSpriteAnimation("skele_attack_left",1,4);
-				meshList[GEO_SKELE_ATTACK_LEFT]->textureArray[0] = LoadTGA("Image//Skeleton//SkeletonAttack_Left.tga");
-				enemy->AttackAnimation_Left = dynamic_cast<CSpriteAnimation*>(meshList[GEO_SKELE_ATTACK_LEFT]);
+				meshList[GEO_GUARD1_ATTACK_LEFT] = MeshBuilder::GenerateSpriteAnimation("skele_attack_left",1,4);
+				meshList[GEO_GUARD1_ATTACK_LEFT]->textureArray[0] = LoadTGA("Image//Skeleton//SkeletonAttack_Left.tga");
+				enemy->AttackAnimation_Left = dynamic_cast<CSpriteAnimation*>(meshList[GEO_GUARD1_ATTACK_LEFT]);
 				if(enemy->AttackAnimation_Left)
 				{
 					enemy->AttackAnimation_Left->m_anim = new Animation();
@@ -1076,7 +1184,7 @@ void StudioProject::EnemyUpdate(double dt)
 			//Plays sound if enemy is dead
 		else if(Enemy->DeathAnimation_Right->m_anim->animActive == true)
 		{
-			if(Enemy->enemyType == CEnemy::SKELETON)
+			if(Enemy->enemyType == CEnemy::GUARD1)
 			{
 				soundplayer.playSounds(soundplayer.SKELE_DEATH);
 			}
