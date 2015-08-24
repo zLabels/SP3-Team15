@@ -530,7 +530,7 @@ void StudioProject::InitWeapon()
 	meshList[GEO_GRAPPLING_HOOK] = MeshBuilder::Generate2DHook("Grapplinghook", Color(1, 1, 1), 0, 0, 25, 25);
 	meshList[GEO_GRAPPLING_HOOK]->textureID = LoadTGA("Image//Weapon//Grappling_Hook.tga");
 	
-	meshList[GEO_SHURIKEN] = MeshBuilder::Generate2DMesh("Shuriken",Color(1,1,1),0,0,25,25);
+	meshList[GEO_SHURIKEN] = MeshBuilder::GenerateQuad("Shuriken",Color(1,1,1),25.f);
 	meshList[GEO_SHURIKEN]->textureID = LoadTGA("Image//Weapon//Weapon_Shuriken.tga");
 }
 
@@ -1688,7 +1688,7 @@ void StudioProject::UpdateInput(double dt)
 		bLButtonState = true;
 		std::cout << "LBUTTON DOWN" << std::endl;
 		CShuriken shuriken;
-		shuriken.setData(meshList[GEO_SHURIKEN],CHero::GetInstance()->GetHeroPos_x(),CHero::GetInstance()->GetHeroPos_y(),
+		shuriken.setData(meshList[GEO_SHURIKEN],hero_x - CHero::GetInstance()->GetMapOffset_x(),hero_y,
 						10,posX - hero_x,posY - hero_y,true);
 		shurikenList.push_back(shuriken);
 	}
@@ -1812,7 +1812,7 @@ void StudioProject::Update(double dt)
 
 		fps = (float)(1.f / dt);
 
-        cout << Shuriken_Number << endl;
+        //cout << Shuriken_Number << endl;
 	}
 }
 
@@ -2162,8 +2162,8 @@ void StudioProject::RenderWeapon()
             {
                 if(shurikenList[i].getActive() == true)
                 {
-                    Render2DMesh(shurikenList[i].getMesh(),false,1.f,shurikenList[i].getPos().x,shurikenList[i].getPos().y);
-                    
+					Render2DMesh(shurikenList[i].getMesh(),false,1.f,shurikenList[i].getPos().x,shurikenList[i].getPos().y);
+                    std::cout <<  shurikenList[i].getPos().x << std::endl;
                 }
             }
         }
