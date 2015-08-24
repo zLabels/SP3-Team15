@@ -539,3 +539,8 @@ float CHero::getHero_Velocity(void)
 {
     return hero_velocity;
 }
+
+void CHero::setHero_Health(int newHealth)
+{
+    hero_HP = newHealth;
+}

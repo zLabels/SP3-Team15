@@ -61,11 +61,16 @@ public:
 	int GetMapFineOffset_x(void);	//Get map fine offset X
 	int GetMapFineOffset_y(void);	//Get map find offset Y
 
+    //---Physics Function---//
     void Hero_Acceleration(bool LeftOrRight,const float timeDiff);
     void setHero_Velocity(float);
     float getHero_Velocity(void);
     void setHero_Deceleration(bool,float);
-
+    //---------------------//
+    
+    //---Tile Object Interaction---//
+    void setHero_Health(int);
+    //-----------------------------//
 	static CHero* GetInstance();	//Getting hero instance
 	
 		//Animations

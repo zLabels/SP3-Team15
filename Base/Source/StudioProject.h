@@ -113,6 +113,11 @@ class StudioProject : public Scene
 		GEO_TILE_METALFLOOR,
 		GEO_TILE_METALCORNER,
         GEO_TILE_DOOR,
+        GEO_TILE_LASER,
+        GEO_TILE_LASER_SWITCH,
+        GEO_TILE_HEALTH,
+        GEO_TILE_SCORE,
+        GEO_TILE_SHURIKEN,
 		//Hero,
 		GEO_TILEHERO,
 		GEO_PLAYER_RUN_RIGHT,
@@ -169,6 +174,11 @@ class StudioProject : public Scene
 		TILE_METALCORNER,
 		TILE_METALSUPPORT_LEFT,
         TILE_DOOR,
+        TILE_LASER,
+        TILE_LASER_SWITCH,
+        TILE_HEALTH,
+        TILE_SCORE,
+        TILE_SHURIKEN,
 		MAX_TILE,
 	};
 
@@ -209,6 +219,7 @@ public:
 	void UpdateMap(double dt);	//Updates the current map
 	void UpdateEnemySprites(double dt);		//Updates enemy sprite animations
 	void UpdateWeapon();	//Updates the weapons in the game
+    void UpdateTiles(); // Updates the tiles in game
 
 	void RenderWeapon();	//Render player's weapon
 	void RenderMenu(int input);	//Render Menu
@@ -320,6 +331,10 @@ private:
 	//Convert into class CLayer
 	//Store into array of layers
     float f_deceleration;
+
+    //Tiles || Game related
+    int Money_Score;
+    int Shuriken_Number;
 };
 
 #endif

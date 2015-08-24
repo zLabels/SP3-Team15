@@ -15,6 +15,8 @@ bool SingleTileCollisionCheck(CMap* m_cMap, bool m_bCheckLeft,bool m_bCheckRight
 			(m_cMap->theScreenMap[checkPosition_Y2][checkPosition_X2+2] == TILE_GRASS) ||
             //Door
             (m_cMap->theScreenMap[checkPosition_Y2][checkPosition_X2+2] == TILE_DOOR) ||
+            //Laser
+            (m_cMap->theScreenMap[checkPosition_Y2][checkPosition_X2+2] == TILE_LASER_SWITCH) ||
 			//Tile underground
 			(m_cMap->theScreenMap[checkPosition_Y2][checkPosition_X2+2] == TILE_UNDERGROUND))
 
@@ -30,8 +32,10 @@ bool SingleTileCollisionCheck(CMap* m_cMap, bool m_bCheckLeft,bool m_bCheckRight
 			(m_cMap->theScreenMap[checkPosition_Y2][checkPosition_X3] == TILE_BORDER ) ||
 			//Grass
 			(m_cMap->theScreenMap[checkPosition_Y2][checkPosition_X3] == TILE_GRASS ) ||
-            //DOOR
+            //Door
 			(m_cMap->theScreenMap[checkPosition_Y2][checkPosition_X3] == TILE_DOOR ) ||
+            //Laser
+			(m_cMap->theScreenMap[checkPosition_Y2][checkPosition_X3] == TILE_LASER_SWITCH ) ||
 			//Tile underground
 			(m_cMap->theScreenMap[checkPosition_Y2][checkPosition_X3] == TILE_UNDERGROUND ) )
 		{
@@ -50,9 +54,12 @@ bool SingleTileCollisionCheck(CMap* m_cMap, bool m_bCheckLeft,bool m_bCheckRight
 			 //Grass
 			 (m_cMap->theScreenMap[checkPosition_Y][checkPosition_X] == TILE_GRASS) ||
 		     (m_cMap->theScreenMap[checkPosition_Y][checkPosition_X+2] == TILE_GRASS) ||
-             //DOOR
+             //Door
 			 (m_cMap->theScreenMap[checkPosition_Y][checkPosition_X] == TILE_DOOR) ||
 		     (m_cMap->theScreenMap[checkPosition_Y][checkPosition_X+2] == TILE_DOOR) ||
+             //Laser
+			 (m_cMap->theScreenMap[checkPosition_Y][checkPosition_X] == TILE_LASER_SWITCH) ||
+		     (m_cMap->theScreenMap[checkPosition_Y][checkPosition_X+2] == TILE_LASER_SWITCH) ||
 			 //Tile underground
 			 (m_cMap->theScreenMap[checkPosition_Y][checkPosition_X] == TILE_GRASS) ||
 		     (m_cMap->theScreenMap[checkPosition_Y][checkPosition_X+2] == TILE_GRASS))
@@ -69,10 +76,14 @@ bool SingleTileCollisionCheck(CMap* m_cMap, bool m_bCheckLeft,bool m_bCheckRight
 		if ( (m_cMap->theScreenMap[checkPosition_Y][checkPosition_X] == TILE_GRASS) || 
 			(m_cMap->theScreenMap[checkPosition_Y][checkPosition_X+1] == TILE_GRASS) || 
 			(m_cMap->theScreenMap[checkPosition_Y][checkPosition_X+2] == TILE_GRASS) ||
-            //DOOR
+            //Door
 			(m_cMap->theScreenMap[checkPosition_Y][checkPosition_X] == TILE_DOOR) || 
 			(m_cMap->theScreenMap[checkPosition_Y][checkPosition_X+1] == TILE_DOOR) || 
 			(m_cMap->theScreenMap[checkPosition_Y][checkPosition_X+2] == TILE_DOOR)||
+            //Laser Switch
+			(m_cMap->theScreenMap[checkPosition_Y][checkPosition_X] == TILE_LASER_SWITCH) || 
+			(m_cMap->theScreenMap[checkPosition_Y][checkPosition_X+1] == TILE_LASER_SWITCH) || 
+			(m_cMap->theScreenMap[checkPosition_Y][checkPosition_X+2] == TILE_LASER_SWITCH)||
 			//Tile underground
 			(m_cMap->theScreenMap[checkPosition_Y][checkPosition_X] == TILE_GRASS) || 
 			(m_cMap->theScreenMap[checkPosition_Y][checkPosition_X+1] == TILE_GRASS) || 
@@ -114,6 +125,10 @@ bool HeroCollisionCheck( CMap* m_cMap,bool m_bCheckLeft,bool m_bCheckRight, bool
 			(m_cMap->theScreenMap[checkPosition_Y2][checkPosition_X2+2] == TILE_DOOR) ||
 			(m_cMap->theScreenMap[checkPosition_Y3][checkPosition_X2+2] == TILE_DOOR) ||
 			(m_cMap->theScreenMap[checkPosition_Y4][checkPosition_X2+2] == TILE_DOOR) ||
+			//Laser Switch
+			(m_cMap->theScreenMap[checkPosition_Y2][checkPosition_X2+2] == TILE_LASER_SWITCH) ||
+			(m_cMap->theScreenMap[checkPosition_Y3][checkPosition_X2+2] == TILE_LASER_SWITCH) ||
+			(m_cMap->theScreenMap[checkPosition_Y4][checkPosition_X2+2] == TILE_LASER_SWITCH) ||
 			//Tile underground
 			(m_cMap->theScreenMap[checkPosition_Y2][checkPosition_X2+2] == TILE_UNDERGROUND) ||
 			(m_cMap->theScreenMap[checkPosition_Y3][checkPosition_X2+2] == TILE_UNDERGROUND) ||
@@ -137,6 +152,10 @@ bool HeroCollisionCheck( CMap* m_cMap,bool m_bCheckLeft,bool m_bCheckRight, bool
 			(m_cMap->theScreenMap[checkPosition_Y2][checkPosition_X3] == TILE_DOOR ) ||
 			(m_cMap->theScreenMap[checkPosition_Y3][checkPosition_X3] == TILE_DOOR ) ||
 			(m_cMap->theScreenMap[checkPosition_Y4][checkPosition_X3] == TILE_DOOR ) ||
+			//Laser Switch
+			(m_cMap->theScreenMap[checkPosition_Y2][checkPosition_X3] == TILE_LASER_SWITCH ) ||
+			(m_cMap->theScreenMap[checkPosition_Y3][checkPosition_X3] == TILE_LASER_SWITCH ) ||
+			(m_cMap->theScreenMap[checkPosition_Y4][checkPosition_X3] == TILE_LASER_SWITCH ) ||
 			//Tile underground
 			(m_cMap->theScreenMap[checkPosition_Y2][checkPosition_X3] == TILE_UNDERGROUND ) ||
 			(m_cMap->theScreenMap[checkPosition_Y3][checkPosition_X3] == TILE_UNDERGROUND ) ||
@@ -157,9 +176,12 @@ bool HeroCollisionCheck( CMap* m_cMap,bool m_bCheckLeft,bool m_bCheckRight, bool
 			 //Grass
 			 (m_cMap->theScreenMap[checkPosition_Y][checkPosition_X] == TILE_GRASS) ||
 		     (m_cMap->theScreenMap[checkPosition_Y][checkPosition_X+2] == TILE_GRASS) ||
-			 //DOOR
+			 //Door
 			 (m_cMap->theScreenMap[checkPosition_Y][checkPosition_X] == TILE_DOOR) ||
 		     (m_cMap->theScreenMap[checkPosition_Y][checkPosition_X+2] == TILE_DOOR) ||
+			 //Laser Switch
+			 (m_cMap->theScreenMap[checkPosition_Y][checkPosition_X] == TILE_LASER_SWITCH) ||
+		     (m_cMap->theScreenMap[checkPosition_Y][checkPosition_X+2] == TILE_LASER_SWITCH) ||
 			 //Tile underground
 			 (m_cMap->theScreenMap[checkPosition_Y][checkPosition_X] == TILE_GRASS) ||
 		     (m_cMap->theScreenMap[checkPosition_Y][checkPosition_X+2] == TILE_GRASS))
@@ -180,6 +202,10 @@ bool HeroCollisionCheck( CMap* m_cMap,bool m_bCheckLeft,bool m_bCheckRight, bool
             (m_cMap->theScreenMap[checkPosition_Y][checkPosition_X] == TILE_DOOR) || 
 			(m_cMap->theScreenMap[checkPosition_Y][checkPosition_X+1] == TILE_DOOR) || 
 			(m_cMap->theScreenMap[checkPosition_Y][checkPosition_X+2] == TILE_DOOR) ||
+            //Laser Switch
+            (m_cMap->theScreenMap[checkPosition_Y][checkPosition_X] == TILE_LASER_SWITCH) || 
+			(m_cMap->theScreenMap[checkPosition_Y][checkPosition_X+1] == TILE_LASER_SWITCH) || 
+			(m_cMap->theScreenMap[checkPosition_Y][checkPosition_X+2] == TILE_LASER_SWITCH) ||
 			//Tile underground
 			(m_cMap->theScreenMap[checkPosition_Y][checkPosition_X] == TILE_GRASS) || 
 			(m_cMap->theScreenMap[checkPosition_Y][checkPosition_X+1] == TILE_GRASS) || 

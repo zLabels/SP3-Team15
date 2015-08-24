@@ -254,6 +254,10 @@ void StudioProject::InitVariables()
 	f_grappleRotation = 0.f;
     //Deceleration Physics
     f_deceleration = 20;
+
+    //Init for Tiles || Game related stuff
+    Money_Score = 0;
+    Shuriken_Number = 0;
 }
 void StudioProject::InitHUD()
 {
@@ -285,7 +289,7 @@ void StudioProject::InitBackground()
 }
 void StudioProject::InitHero()
 {
-	CHero::GetInstance()->HeroInit(0,500);
+	CHero::GetInstance()->HeroInit(25,500);
 	//Load function for the hero 
 
 	//Sprite Animation
@@ -448,7 +452,7 @@ void StudioProject::InitMap()
 
 	Level1 = new CMap();
 	Level1->Init( ScreenHeight, ScreenWidth, 24, 32, 600, 1600 );
-	Level1->LoadMap( "Image//MapDesigns//Level2.csv" );
+	Level1->LoadMap( "Image//MapDesigns//Level2.csv");
 	
 	m_cMap = m_cDebug;
 
@@ -496,6 +500,21 @@ void StudioProject::InitTiles()
     
     meshList[GEO_TILE_DOOR] = MeshBuilder::GenerateTile("Metal_Corner",7,14,0,11,26);
 	meshList[GEO_TILE_DOOR]->textureID = LoadTGA("Image//Tiles//Tile_Floor.tga");
+
+    meshList[GEO_TILE_LASER] = MeshBuilder::GenerateTile("Laser",7,14,0,9,26);
+	meshList[GEO_TILE_LASER]->textureID = LoadTGA("Image//Tiles//Tile_Floor.tga");
+
+    meshList[GEO_TILE_LASER_SWITCH] = MeshBuilder::GenerateTile("Laser_Switch",7,14,6,0,26);
+	meshList[GEO_TILE_LASER_SWITCH]->textureID = LoadTGA("Image//Tiles//Tile_Floor.tga");
+    
+    meshList[GEO_TILE_HEALTH] = MeshBuilder::GenerateTile("HEALTH",7,14,2,2,26);
+	meshList[GEO_TILE_HEALTH]->textureID = LoadTGA("Image//Tiles//Tile_Floor.tga");
+    
+    meshList[GEO_TILE_SCORE] = MeshBuilder::GenerateTile("Score",7,14,5,13,26);
+	meshList[GEO_TILE_SCORE]->textureID = LoadTGA("Image//Tiles//Tile_Floor.tga");
+
+    meshList[GEO_TILE_SHURIKEN] = MeshBuilder::GenerateTile("SHURIKEN",7,14,4,8,26);
+	meshList[GEO_TILE_SHURIKEN]->textureID = LoadTGA("Image//Tiles//Tile_Floor.tga");
 
 	theArrayOfGoodies = new CGoodies*[10];
 	for(unsigned i = 0; i < 10; ++i)
@@ -1363,17 +1382,69 @@ void StudioProject::UpdateEnemySprites(double dt)
 }
 void StudioProject::UpdateWeapon()
 {
-	if(shurikenList.size() > 0)
-	{
-		for(unsigned i = 0;i < shurikenList.size(); ++i)
-		{
-			if(shurikenList[i].getActive() == true)
-			{
-				shurikenList[i].Update(m_cMap,CHero::GetInstance()->GetMapOffset_x(),CHero::GetInstance()->GetMapOffset_y());
-			}
-		}
-	}
+        if(shurikenList.size() > 0)
+        {
+            for(unsigned i = 0;i < shurikenList.size(); ++i)
+            {
+                if(shurikenList[i].getActive() == true)
+                {
+                    shurikenList[i].Update(m_cMap,CHero::GetInstance()->GetMapOffset_x(),CHero::GetInstance()->GetMapOffset_y());
+                }
+            }
+        }
 }
+
+void StudioProject::UpdateTiles()
+{
+    float tempHeroPos_x = CHero::GetInstance()->GetHeroPos_x();	//Hero current position X
+    float tempHeroPos_y = CHero::GetInstance()->GetHeroPos_y();	//Hero current position Y
+    int checkPosition_X = (int)((CHero::GetInstance()->GetMapOffset_x() + tempHeroPos_x) / m_cMap->GetTileSize());	//Hero tile position X
+    int checkPosition_Y = m_cMap->GetNumOfTiles_Height() - (int) ( (tempHeroPos_y + m_cMap->GetTileSize()) / m_cMap->GetTileSize());	//Hero tile position Y
+    int checkPosition_Y3 = m_cMap->GetNumOfTiles_Height() - (int) ceil( (float) (tempHeroPos_y + m_cMap->GetTileSize() + 25.f) / m_cMap->GetTileSize());
+    int checkPosition_Y4 = m_cMap->GetNumOfTiles_Height() - (int) ceil( (float) (tempHeroPos_y + m_cMap->GetTileSize() + 40.f) / m_cMap->GetTileSize());
+
+    //---LASER---// //Need a Function maybe?
+    if(m_cMap->theScreenMap[checkPosition_Y][checkPosition_X+2] == TILE_LASER)
+    {
+        CHero::GetInstance()->setHero_Health(CHero::GetInstance()->Gethero_HP() - 3);
+    }
+    //-----------//
+
+    //---HEALTH---//
+    if(m_cMap->theScreenMap[checkPosition_Y][checkPosition_X] == TILE_HEALTH)
+    {
+        if(CHero::GetInstance()->Gethero_HP() != 100) // If not 100 goes in here
+        {
+            if(CHero::GetInstance()->Gethero_HP() < 100 && CHero::GetInstance()->Gethero_HP() > 75) // if Health is in between 75 to 100, set it to 100
+            {
+                CHero::GetInstance()->setHero_Health(100);
+            }
+            else if(CHero::GetInstance()->Gethero_HP() <= 75) // If health is lower or equals to 75, health plus 25.
+            {
+                CHero::GetInstance()->setHero_Health(CHero::GetInstance()->Gethero_HP() + 25);
+            }
+        }
+        m_cMap->theScreenMap[checkPosition_Y][checkPosition_X] = 0; //Despawn the health pickup
+    }
+    //----------//
+
+    //---Score---//
+    if(m_cMap->theScreenMap[checkPosition_Y][checkPosition_X] == TILE_SCORE)
+    {
+        Money_Score += 100;
+        m_cMap->theScreenMap[checkPosition_Y][checkPosition_X] = 0; //Despawn the score pickup
+    }
+    //-----------//
+
+    //---Shuriken---//
+    if(m_cMap->theScreenMap[checkPosition_Y][checkPosition_X] == TILE_SHURIKEN)
+    {
+        Shuriken_Number += 5;
+        m_cMap->theScreenMap[checkPosition_Y][checkPosition_X] = 0; //Despawn the score pickup
+    }
+    //--------------//
+}
+
 void StudioProject::UpdateInput(double dt)
 {
 	float tempHeroPos_x = CHero::GetInstance()->GetHeroPos_x();	//Hero current position X
@@ -1404,6 +1475,27 @@ void StudioProject::UpdateInput(double dt)
             m_cMap->theScreenMap[checkPosition_Y][checkPosition_X + 2]  = 0;
             m_cMap->theScreenMap[checkPosition_Y3][checkPosition_X + 2] = 0;
             m_cMap->theScreenMap[checkPosition_Y4][checkPosition_X + 2] = 0;
+        }
+
+        //LASER SWITCH
+        if(m_cMap->theScreenMap[checkPosition_Y3][checkPosition_X + 2] == TILE_LASER_SWITCH || m_cMap->theScreenMap[checkPosition_Y3][checkPosition_X - 1] == TILE_LASER_SWITCH )
+        {
+            int m = 0;
+            for(int i = 0; i < m_cMap->GetNumOfTiles_Height(); ++i)
+            {
+                for(int k = 0; k < m_cMap->GetNumOfTiles_Width()+1; k ++)
+                {
+                    m = tileOffset_x + k;
+                    // If we have reached the right side of the Map, then do not display the extra column of tiles.
+                    if ( (tileOffset_x+k) >= m_cMap->getNumOfTiles_MapWidth() )
+                        break;
+                    if( m_cMap->theScreenMap[i][m] == TILE_LASER)
+                    {
+                        m_cMap->theScreenMap[i][m] = 0;
+                    }
+                }
+
+            }
         }
     }
 	//Down
@@ -1607,8 +1699,8 @@ void StudioProject::UpdateInput(double dt)
 
 	f_grappleRotation = Math::RadianToDegree( -atan2(  (posX - hero_x),(posY - hero_y) ));
 
-	std::cout << posX << std::endl;
-	std::cout << hero_x << std::endl;
+	//std::cout << posX << std::endl;
+	//std::cout << hero_x << std::endl;
 }
 
 void StudioProject::UpdateMap(double dt)
@@ -1708,6 +1800,7 @@ void StudioProject::Update(double dt)
 		HeroUpdate(dt);
 		EnemyUpdate(dt);
 
+        UpdateTiles();
 		UpdateWeapon();
 		UpdateSprites(dt);
 		UpdateEnemySprites(dt);
@@ -1718,6 +1811,8 @@ void StudioProject::Update(double dt)
 		//camera.Update(dt);
 
 		fps = (float)(1.f / dt);
+
+        cout << Shuriken_Number << endl;
 	}
 }
 
@@ -2059,17 +2154,20 @@ void StudioProject::RenderWeapon()
 	float hero_y = CHero::GetInstance()->GetHeroPos_y();
 	hero_y += 25.f;
 	Render2DMesh(meshList[GEO_GRAPPLING_HOOK],false,1.f,hero_x,hero_y,true);
-
-	if(shurikenList.size() > 0)
-	{
-		for(unsigned i = 0;i < shurikenList.size(); ++i)
-		{
-			if(shurikenList[i].getActive() == true)
-			{
-				Render2DMesh(shurikenList[i].getMesh(),false,1.f,shurikenList[i].getPos().x,shurikenList[i].getPos().y);
-			}
-		}
-	}
+    //if(Shuriken_Number > 0)
+    //{
+        if(shurikenList.size() > 0)
+        {
+            for(unsigned i = 0;i < shurikenList.size(); ++i)
+            {
+                if(shurikenList[i].getActive() == true)
+                {
+                    Render2DMesh(shurikenList[i].getMesh(),false,1.f,shurikenList[i].getPos().x,shurikenList[i].getPos().y);
+                    
+                }
+            }
+        }
+    //}
 }
 void StudioProject::RenderMenu(int input)
 {
@@ -2247,6 +2345,26 @@ void StudioProject::RenderTileMap()
             else if (m_cMap->theScreenMap[i][m] == TILE_DOOR)
             {
                 Render2DMesh(meshList[GEO_TILE_DOOR], false, 1.f, (float)k*m_cMap->GetTileSize()-CHero::GetInstance()->GetMapFineOffset_x(), 575.f-i*m_cMap->GetTileSize());
+            }
+            else if (m_cMap->theScreenMap[i][m] == TILE_LASER)
+            {
+                Render2DMesh(meshList[GEO_TILE_LASER], false, 1.f, (float)k*m_cMap->GetTileSize()-CHero::GetInstance()->GetMapFineOffset_x(), 575.f-i*m_cMap->GetTileSize());
+            }
+            else if (m_cMap->theScreenMap[i][m] == TILE_LASER_SWITCH)
+            {
+                Render2DMesh(meshList[GEO_TILE_LASER_SWITCH], false, 1.f, (float)k*m_cMap->GetTileSize()-CHero::GetInstance()->GetMapFineOffset_x(), 575.f-i*m_cMap->GetTileSize());
+            }
+            else if (m_cMap->theScreenMap[i][m] == TILE_HEALTH)
+            {
+                Render2DMesh(meshList[GEO_TILE_HEALTH], false, 1.f, (float)k*m_cMap->GetTileSize()-CHero::GetInstance()->GetMapFineOffset_x(), 575.f-i*m_cMap->GetTileSize());
+            }
+            else if (m_cMap->theScreenMap[i][m] == TILE_SCORE)
+            {
+                Render2DMesh(meshList[GEO_TILE_SCORE], false, 1.f, (float)k*m_cMap->GetTileSize()-CHero::GetInstance()->GetMapFineOffset_x(), 575.f-i*m_cMap->GetTileSize());
+            }
+            else if (m_cMap->theScreenMap[i][m] == TILE_SHURIKEN)
+            {
+                Render2DMesh(meshList[GEO_TILE_SHURIKEN], false, 1.f, (float)k*m_cMap->GetTileSize()-CHero::GetInstance()->GetMapFineOffset_x(), 575.f-i*m_cMap->GetTileSize());
             }
 		}
 	}
