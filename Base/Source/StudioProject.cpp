@@ -751,7 +751,7 @@ void StudioProject::LoadEnemies(unsigned Level)
 		{
 			if(Lv1Clear == false)
 			{
-				ifstream datafiles("Source//TextFiles//Guard_Level1Data.txt");
+				ifstream datafiles("Source//TextFiles//Enemies//Guard_Level1Data.txt");
 				if(datafiles.is_open())
 				{
 					while(datafiles.good())
