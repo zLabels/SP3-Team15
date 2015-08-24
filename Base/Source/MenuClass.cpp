@@ -22,7 +22,7 @@ CMenuClass::CMenuClass(void)
 
 	inputDelay = 0.f;
 	DELAY_RATE = 0.2f;
-	DELAY_RATE2 = 0.5f;
+	DELAY_RATE2 = 0.2f;
 
 	Level1Size = 3.f;	//Text size
 	Level2Size = 3.f;
@@ -409,14 +409,47 @@ void CMenuClass::LostScreen()
 		inputDelay = 0.f;
 	}
 }
+
 void CMenuClass::WinScreen()
 {
-	if(Application::IsKeyPressed(VK_RETURN)  && inputDelay > DELAY_RATE)
-	{
-		showMenu = true;
-		Win = false;
-		inputDelay = 0.f;
-	}
+	//if(Application::IsKeyPressed(VK_UP) && inputDelay > DELAY_RATE3)
+	//{
+	//	if(menuOption == B_HEALTH)
+	//	{
+	//		menuOption = B_WEAPON;
+	//	}
+	//	else if(menuOption == B_WEAPON)
+	//	{
+	//		menuOption = B_HEALTH;
+	//	}
+
+	//	inputDelay = 0.f;
+	//}
+
+	//if(Application::IsKeyPressed(VK_DOWN) && inputDelay > DELAY_RATE3)
+	//{
+	//	if(menuOption == B_HEALTH)
+	//	{
+	//		menuOption = B_WEAPON;
+	//	}
+	//	else if(menuOption == B_WEAPON)
+	//	{
+	//		menuOption = B_HEALTH;
+	//	}
+	//	inputDelay = 0.f;
+	//}
+	//if(Application::IsKeyPressed(VK_RETURN) && menuOption == B_HEALTH  && inputDelay > DELAY_RATE3)
+	//{
+	//	cout<<"HEALTH ++"<<endl;
+	//	inputDelay = 0.f;
+	//}
+	//else if(Application::IsKeyPressed(VK_RETURN) && menuOption == B_WEAPON  && inputDelay > DELAY_RATE3)
+	//{
+	//	cout<<"WEAPON ++"<<endl;
+	//	inputDelay = 0.f;
+	//}
+
+	//menuFeedback3();
 }
 
 int CMenuClass::Update(double dt)

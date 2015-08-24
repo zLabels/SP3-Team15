@@ -455,7 +455,7 @@ void StudioProject::InitMap()
 
 	m_cMap_Level3 = new CMap();
 	m_cMap_Level3->Init( ScreenHeight, ScreenWidth, 24, 32, 600, 3200 );
-	m_cMap_Level3->LoadMap( "Image//MapDesigns//Map_Level1.csv");
+	m_cMap_Level3->LoadMap( "Image//MapDesigns//Map_Level3.csv");
 
 	m_cMap_Level4 = new CMap();
 	m_cMap_Level4->Init( ScreenHeight, ScreenWidth, 24, 32, 600, 3200 );
@@ -714,7 +714,7 @@ void StudioProject::LoadMap(int level)
 		break;
 	case 3:
 		{
-			m_cMap = m_cMap_Level1;
+			m_cMap = m_cMap_Level3;
 			LoadEnemies(level);
 		}
 		break;
@@ -1650,8 +1650,7 @@ void StudioProject::UpdateInput(double dt)
 	}
 	if(Application::IsKeyPressed(VK_F10))
 	{
-		load = true;
-		LoadHero();
+		GameMenu.setWinState(true);
 	}
 	//Walk Left
 	if(Application::IsKeyPressed('A') && 
@@ -1908,8 +1907,6 @@ void StudioProject::UpdateMap(double dt)
 	//	}
 	//}
 
-
-
 	if(Lv1Clear)
 	{
 		GameMenu.setWinState(true);
@@ -1933,10 +1930,10 @@ void StudioProject::Update(double dt)
 			m_CurrentLevel = lvl;
 			LoadMap(m_CurrentLevel);
 		}
-		else if(lvl == 0)
-		{
-			cout<<"NO LEVEL SELECTED"<<endl;
-		}
+		//else if(lvl == 0)
+		//{
+		//	//cout<<"NO LEVEL SELECTED"<<endl;
+		//}
 
 		if( (Application::IsKeyPressed(VK_DOWN) || Application::IsKeyPressed(VK_UP) || Application::IsKeyPressed(VK_RETURN)) && GameMenu.inputDelay == 0.f)
 		{
@@ -2399,7 +2396,7 @@ void StudioProject::RenderMenu(int input)
 				RenderTextOnScreen(meshList[GEO_TEXT], "LEVEL 4", Color(1, 1, 1), GameMenu.getLevel4Size(), 15, 26);
 				RenderTextOnScreen(meshList[GEO_TEXT], "LEVEL 5", Color(1, 1, 1), GameMenu.getLevel5Size(), 15, 22);
 
-				RenderTextOnScreen(meshList[GEO_TEXT], "Press 'Enter' to return to main menu", Color(0.3f, 0.3f, 0.3f), 1.5f, 28, 10);
+				RenderTextOnScreen(meshList[GEO_TEXT], "Press 'Enter' to choose level", Color(0.3f, 0.3f, 0.3f), 1.5f, 28, 10);
 			}
 		}
 		break;
@@ -2407,9 +2404,9 @@ void StudioProject::RenderMenu(int input)
 		{
 			if(GameMenu.getLostState())
 			{
-				RenderTextOnScreen(meshList[GEO_TEXT], "Game Over!", Color(1, 0, 0), 2.2f, 34, 54);
+				RenderTextOnScreen(meshList[GEO_TEXT], "Game Over!", Color(1, 0, 0), 5.f, 33, 35);
 
-				RenderTextOnScreen(meshList[GEO_TEXT], "Press 'Enter' to return to main menu", Color(0.3f, 0.3f, 0.3f), 1.5f, 28, 10);
+				RenderTextOnScreen(meshList[GEO_TEXT], "Press 'Enter' to return to main menu", Color(0.3f, 0.3f, 0.3f), 1.5f, 32, 10);
 			}
 		}
 		break;
@@ -2417,8 +2414,9 @@ void StudioProject::RenderMenu(int input)
 		{
 			if(GameMenu.getWinState())
 			{
-				RenderTextOnScreen(meshList[GEO_TEXT], "You have cleared the Game!", Color(1, 0, 0), 2.2f, 28, 35);
-
+				RenderTextOnScreen(meshList[GEO_TEXT], "WELCOME TO THE SHOP", Color(1, 1, 1), 2.f, 15, 42);
+				RenderTextOnScreen(meshList[GEO_TEXT], "+HEALTH($5)", Color(1, 1, 1), 2.f, 15, 38);
+				RenderTextOnScreen(meshList[GEO_TEXT], "+SHIRIKEN($10)", Color(1, 1, 1), 2.f, 15, 34);
 				RenderTextOnScreen(meshList[GEO_TEXT], "Press 'Enter' to return to main menu", Color(0.3f, 0.3f, 0.3f), 2.f, 28, 10);
 			}
 		}

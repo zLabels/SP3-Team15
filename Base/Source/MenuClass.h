@@ -27,6 +27,12 @@ public:
 		LEVEL5,
 		MAX_LEVEL,
 	};
+	enum BUY
+	{
+		B_HEALTH = 1,
+		B_WEAPON,
+		MAX_THINGS,
+	};
 
 	CMenuClass(void);
 	~CMenuClass(void);
