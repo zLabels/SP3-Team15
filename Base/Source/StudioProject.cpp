@@ -627,7 +627,9 @@ void StudioProject::SaveGame()
 			saveFile << (CHero::GetInstance()->Gethero_EP()) <<",";
 
 			saveFile << (CHero::GetInstance()->GetMapOffset_x()) <<",";
-			saveFile << (CHero::GetInstance()->GetMapOffset_y());
+			saveFile << (CHero::GetInstance()->GetMapOffset_y()) <<",";
+
+			saveFile << (m_CurrentLevel);
 
 			Save = false;
 			load = true;
@@ -635,6 +637,7 @@ void StudioProject::SaveGame()
 		saveFile.close();
 	}
 }
+
 void StudioProject::LoadHero()
 {
 	string info = ""; //Used to store string from text file
@@ -677,12 +680,13 @@ void StudioProject::LoadHero()
 	if(Hero_position.size() > 0)
 	{
 		unsigned j = 0; // used to control variables passed in
-		j+=5;	
-		CHero::GetInstance()->HeroInit(Hero_position[j-5],Hero_position[j-4]);
-		CHero::GetInstance()->Gethero_HP() = Hero_position[j-3];
-		CHero::GetInstance()->Gethero_EP() = Hero_position[j-2];
-		CHero::GetInstance()->setMapOffset_x(Hero_position[j-1]);
-		CHero::GetInstance()->setMapOffset_y(Hero_position[j]);
+		j+=6;	
+		CHero::GetInstance()->HeroInit(Hero_position[j-6],Hero_position[j-5]);
+		CHero::GetInstance()->Gethero_HP() = Hero_position[j-4];
+		CHero::GetInstance()->Gethero_EP() = Hero_position[j-3];
+		CHero::GetInstance()->setMapOffset_x(Hero_position[j-2]);
+		CHero::GetInstance()->setMapOffset_y(Hero_position[j-1]);
+		LoadMap(Hero_position[j]);
 	}
 
 }
