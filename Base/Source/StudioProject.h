@@ -119,6 +119,7 @@ class StudioProject : public Scene
         GEO_TILE_HEALTH,
         GEO_TILE_SCORE,
         GEO_TILE_SHURIKEN,
+		GEO_REAR_TILE_DOOR,
 		//Hero,
 		GEO_TILEHERO,
 		GEO_PLAYER_RUN_RIGHT,
@@ -180,6 +181,7 @@ class StudioProject : public Scene
         TILE_HEALTH,
         TILE_SCORE,
         TILE_SHURIKEN,
+		REAR_TILE_DOOR,
 		MAX_TILE,
 	};
 

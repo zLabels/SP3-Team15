@@ -31,6 +31,7 @@ public:
 	{
 		B_HEALTH = 1,
 		B_WEAPON,
+		B_OUT,
 		MAX_THINGS,
 	};
 
@@ -70,6 +71,10 @@ public:
 	float getLevel4Size();
 	float getLevel5Size();
 
+	float getHealthSize();
+	float getWeaponSize();
+	float getOutSize();
+
 	int MenuStates();
 	bool getReset();
 	void setReset(bool input);
@@ -80,11 +85,13 @@ public:
 	float inputDelay;	//limter for input delay
 	float DELAY_RATE;	//Input delay rate
 	float DELAY_RATE2;
+	float DELAY_RATE3;
 
 private:
 	int menuOption;	//Player's option
 	int GameLevels;	//Game Level
 	int LevelOption;
+	int ItemOption;
 
 	Vector2 playPos;	//feedback pos
 	Vector2 controlPos;	//feedback pos
@@ -108,5 +115,8 @@ private:
 	float Level3Size;
 	float Level4Size;
 	float Level5Size;
+	float HealthSize;
+	float WeaponSize;
+	float OutSize;
 };
 

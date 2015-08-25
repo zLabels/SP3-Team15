@@ -6,6 +6,7 @@ CMenuClass::CMenuClass(void)
 	GameLevels = LEVEL1;
 	LevelOption = LEVEL1;
 	menuOption = PLAY_GAME;
+	ItemOption = B_HEALTH;
 	showMenu = true;
 
 	currentSelectionPos.x = 130.f;
@@ -23,12 +24,13 @@ CMenuClass::CMenuClass(void)
 	inputDelay = 0.f;
 	DELAY_RATE = 0.2f;
 	DELAY_RATE2 = 0.2f;
+	DELAY_RATE3 = 0.2f;
 
-	Level1Size = 3.f;	//Text size
-	Level2Size = 3.f;
-	Level3Size = 3.f;
-	Level4Size = 3.f;
-	Level5Size = 3.f;
+	//Level1Size = 3.f;	//Text size
+	//Level2Size = 3.f;
+	//Level3Size = 3.f;
+	//Level4Size = 3.f;
+	//Level5Size = 3.f;
 
 	showControls = false;
 	Loading = false;
@@ -91,6 +93,19 @@ float CMenuClass::getLevel4Size()
 float CMenuClass::getLevel5Size()
 {
 	return this->Level5Size;
+}
+
+float CMenuClass::getHealthSize()
+{
+	return this->HealthSize;
+}
+float CMenuClass::getWeaponSize()
+{
+	return this->WeaponSize;
+}
+float CMenuClass::getOutSize()
+{
+	return this->OutSize;
 }
 
 float CMenuClass::getCurrentSelectPos_X()
@@ -201,6 +216,7 @@ void CMenuClass::menuFeedback2()
 		Level5Size = SELECTED_SIZE;
 	}
 }
+
 
 void CMenuClass::ControlMenu()
 {
@@ -412,44 +428,75 @@ void CMenuClass::LostScreen()
 
 void CMenuClass::WinScreen()
 {
-	//if(Application::IsKeyPressed(VK_UP) && inputDelay > DELAY_RATE3)
-	//{
-	//	if(menuOption == B_HEALTH)
-	//	{
-	//		menuOption = B_WEAPON;
-	//	}
-	//	else if(menuOption == B_WEAPON)
-	//	{
-	//		menuOption = B_HEALTH;
-	//	}
+	if(Application::IsKeyPressed(VK_DOWN) && inputDelay > DELAY_RATE3)
+	{
+		if(ItemOption == B_HEALTH)
+		{
+			ItemOption = B_WEAPON;
+		}
+		else if(ItemOption == B_WEAPON)
+		{
+			ItemOption = B_OUT;
+		}
+		else if(ItemOption == B_OUT)
+		{
+			ItemOption = B_HEALTH;
+		}
 
-	//	inputDelay = 0.f;
-	//}
+		inputDelay = 0.f;
+	}
 
-	//if(Application::IsKeyPressed(VK_DOWN) && inputDelay > DELAY_RATE3)
-	//{
-	//	if(menuOption == B_HEALTH)
-	//	{
-	//		menuOption = B_WEAPON;
-	//	}
-	//	else if(menuOption == B_WEAPON)
-	//	{
-	//		menuOption = B_HEALTH;
-	//	}
-	//	inputDelay = 0.f;
-	//}
-	//if(Application::IsKeyPressed(VK_RETURN) && menuOption == B_HEALTH  && inputDelay > DELAY_RATE3)
-	//{
-	//	cout<<"HEALTH ++"<<endl;
-	//	inputDelay = 0.f;
-	//}
-	//else if(Application::IsKeyPressed(VK_RETURN) && menuOption == B_WEAPON  && inputDelay > DELAY_RATE3)
-	//{
-	//	cout<<"WEAPON ++"<<endl;
-	//	inputDelay = 0.f;
-	//}
+	if(Application::IsKeyPressed(VK_UP) && inputDelay > DELAY_RATE3)
+	{
+		if(ItemOption == B_HEALTH)
+		{
+			ItemOption = B_OUT;
+		}
+		else if(ItemOption == B_WEAPON)
+		{
+			ItemOption = B_HEALTH;
+		}
+		else if(ItemOption == B_OUT)
+		{
+			ItemOption = B_WEAPON;
+		}
+		inputDelay = 0.f;
+	}
+	if(Application::IsKeyPressed(VK_RETURN) && ItemOption == B_HEALTH  && inputDelay > DELAY_RATE3)
+	{
+		cout<<"HEALTH ++"<<endl;
+		inputDelay = 0.f;
+	}
+	else if(Application::IsKeyPressed(VK_RETURN) && ItemOption == B_WEAPON  && inputDelay > DELAY_RATE3)
+	{
+		cout<<"WEAPON ++"<<endl;
+		inputDelay = 0.f;
+	}
+	else if(Application::IsKeyPressed(VK_RETURN) && ItemOption == B_OUT  && inputDelay > DELAY_RATE3)
+	{
+		Win = false;
+		inputDelay = 0.f;
+	}
 
-	//menuFeedback3();
+
+	if(ItemOption == B_HEALTH)
+	{
+		HealthSize = SELECTED_SIZE;
+		WeaponSize = NORMAL_SIZE;
+		OutSize = NORMAL_SIZE;
+	}
+	else if(ItemOption == B_WEAPON)
+	{
+		HealthSize = NORMAL_SIZE;
+		WeaponSize = SELECTED_SIZE;
+		OutSize = NORMAL_SIZE;
+	}
+	else if(ItemOption == B_OUT)
+	{
+		HealthSize = NORMAL_SIZE;
+		WeaponSize = NORMAL_SIZE;
+		OutSize = SELECTED_SIZE;
+	}
 }
 
 int CMenuClass::Update(double dt)

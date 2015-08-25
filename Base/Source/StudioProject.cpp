@@ -469,7 +469,7 @@ void StudioProject::InitMap()
 
 	//Init and load rear tile map
 	m_cRearMap = new CMap();
-	m_cRearMap->Init (600, 800, 24, 32, 600, 1600);
+	m_cRearMap->Init (600, 800, 24, 32, 600, 3200);
 	m_cRearMap->LoadMap("Image//MapDesigns//MapDesign_Rear.csv" );
 
 	//This is the sprite animation seen when transiting from 1 map to another
@@ -522,6 +522,10 @@ void StudioProject::InitTiles()
 
     meshList[GEO_TILE_SHURIKEN] = MeshBuilder::GenerateTile("SHURIKEN",7,14,4,8,26);
 	meshList[GEO_TILE_SHURIKEN]->textureID = LoadTGA("Image//Tiles//Tile_Floor.tga");
+
+	meshList[GEO_REAR_TILE_DOOR] = MeshBuilder::GenerateTile("REAR_TILE_DOOR",4,10, 3,0,26);
+	meshList[GEO_REAR_TILE_DOOR]->textureID = LoadTGA("Image//Tiles//Tile_OfficeDeco.tga");
+
 
 	theArrayOfGoodies = new CGoodies*[10];
 	for(unsigned i = 0; i < 10; ++i)
@@ -2433,9 +2437,9 @@ void StudioProject::RenderMenu(int input)
 			if(GameMenu.getWinState())
 			{
 				RenderTextOnScreen(meshList[GEO_TEXT], "WELCOME TO THE SHOP", Color(1, 1, 1), 2.f, 15, 42);
-				RenderTextOnScreen(meshList[GEO_TEXT], "+HEALTH($5)", Color(1, 1, 1), 2.f, 15, 38);
-				RenderTextOnScreen(meshList[GEO_TEXT], "+SHIRIKEN($10)", Color(1, 1, 1), 2.f, 15, 34);
-				RenderTextOnScreen(meshList[GEO_TEXT], "Press 'Enter' to return to main menu", Color(0.3f, 0.3f, 0.3f), 2.f, 28, 10);
+				RenderTextOnScreen(meshList[GEO_TEXT], "+HEALTH($5)   ", Color(1, 1, 1), GameMenu.getHealthSize(), 15, 38);
+				RenderTextOnScreen(meshList[GEO_TEXT], "+SHIRIKEN($10)", Color(1, 1, 1), GameMenu.getWeaponSize(), 15, 34);
+				RenderTextOnScreen(meshList[GEO_TEXT], "RETURN", Color(0.3f, 0.3f, 0.3f), GameMenu.getOutSize(), 28, 10);
 			}
 		}
 		break;
@@ -2579,7 +2583,7 @@ void StudioProject::RenderRearTileMap()
 				break;
 			if (m_cRearMap->theScreenMap[i][m] == 3)
 			{
-				Render2DMesh(meshList[GEO_TILESTRUCTURE], false, 1.0f, (float)k*m_cRearMap->GetTileSize()-rearWallFineOffset_x, 575.f-i*m_cRearMap->GetTileSize());
+				Render2DMesh(meshList[GEO_REAR_TILE_DOOR], false, 1.0f, (float)k*m_cRearMap->GetTileSize()-rearWallFineOffset_x, 575.f-i*m_cRearMap->GetTileSize());
 			}
 		}
 	}
@@ -2829,9 +2833,10 @@ void StudioProject::Render()
 		=====================*/
 		RenderBackground();
 
-		//RenderRearTileMap();
+		
 
 		RenderTileMap();
+		RenderRearTileMap();
 		RenderGoodies();
 		for(std::vector<CEnemy *>::iterator it = enemyContainer.begin(); it != enemyContainer.end(); ++it)
 		{
