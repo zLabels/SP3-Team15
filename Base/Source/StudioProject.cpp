@@ -523,9 +523,23 @@ void StudioProject::InitTiles()
     meshList[GEO_TILE_SHURIKEN] = MeshBuilder::GenerateTile("SHURIKEN",7,14,4,8,26);
 	meshList[GEO_TILE_SHURIKEN]->textureID = LoadTGA("Image//Tiles//Tile_Floor.tga");
 
-	meshList[GEO_REAR_TILE_DOOR] = MeshBuilder::GenerateTile("REAR_TILE_DOOR",4,10, 3,0,26);
-	meshList[GEO_REAR_TILE_DOOR]->textureID = LoadTGA("Image//Tiles//Tile_OfficeDeco.tga");
+	meshList[GEO_WINDOW_TOP] = MeshBuilder::GenerateTile("GEO_WINDOW",3,7,0,0,26);
+	meshList[GEO_WINDOW_TOP]->textureID = LoadTGA("Image//Tiles//Tile_OfficeWindow.tga");
 
+	meshList[GEO_WINDOW_LEFT] = MeshBuilder::GenerateTile("GEO_WINDOW",3,7,2,5,26);
+	meshList[GEO_WINDOW_LEFT]->textureID = LoadTGA("Image//Tiles//Tile_OfficeWindow.tga");
+	
+	meshList[GEO_WINDOW_RIGHT] = MeshBuilder::GenerateTile("GEO_WINDOW",3,7,2,6,26);
+	meshList[GEO_WINDOW_RIGHT]->textureID = LoadTGA("Image//Tiles//Tile_OfficeWindow.tga");
+	
+	meshList[GEO_WINDOW_BOTTOM] = MeshBuilder::GenerateTile("GEO_WINDOW",3,7,1,0,26);
+	meshList[GEO_WINDOW_BOTTOM]->textureID = LoadTGA("Image//Tiles//Tile_OfficeWindow.tga");
+
+	meshList[GEO_REAR_WALL] = MeshBuilder::GenerateTile("GEO_REAR_WALL",3,7,2,3,26);
+	meshList[GEO_REAR_WALL]->textureID = LoadTGA("Image//Tiles//Tile_OfficeWindow.tga");
+
+	meshList[GEO_REAR_GLASS] = MeshBuilder::GenerateTile("GEO_REAR_GLASS",3,7,2,2,26);
+	meshList[GEO_REAR_GLASS]->textureID = LoadTGA("Image//Tiles//Tile_OfficeWindow.tga");
 
 	theArrayOfGoodies = new CGoodies*[10];
 	for(unsigned i = 0; i < 10; ++i)
@@ -571,7 +585,7 @@ void StudioProject::Reset(bool hasWon)
 	*/
 	if(hasWon == false)
 	{
-		CHero::GetInstance()->HeroInit(50,125);
+		CHero::GetInstance()->HeroInit(50,500);
 		CHero::GetInstance()->Gethero_HP() = 100;
 		CHero::GetInstance()->Gethero_EP() = 0;
 		CHero::GetInstance()->setMapOffset_x(0);
@@ -596,7 +610,7 @@ void StudioProject::Reset(bool hasWon)
 	}
 	if(hasWon == true)
 	{
-		CHero::GetInstance()->HeroInit(50,125);
+		CHero::GetInstance()->HeroInit(50,500);
 		CHero::GetInstance()->Gethero_HP() = 100;
 		CHero::GetInstance()->Gethero_EP() = 0;
 		CHero::GetInstance()->setMapOffset_x(0);
@@ -2581,9 +2595,29 @@ void StudioProject::RenderRearTileMap()
 			// If we have reached the right side of the Map, then do not display the extra column of tiles.
 			if ( (rearWallTileOffset_x+k) >= m_cRearMap->getNumOfTiles_MapWidth() )
 				break;
-			if (m_cRearMap->theScreenMap[i][m] == 3)
+			if (m_cRearMap->theScreenMap[i][m] == WINDOW_TOP)
 			{
-				Render2DMesh(meshList[GEO_REAR_TILE_DOOR], false, 1.0f, (float)k*m_cRearMap->GetTileSize()-rearWallFineOffset_x, 575.f-i*m_cRearMap->GetTileSize());
+				Render2DMesh(meshList[GEO_WINDOW_TOP], false, 1.0f, (float)k*m_cRearMap->GetTileSize()-rearWallFineOffset_x, 575.f-i*m_cRearMap->GetTileSize());
+			}
+			else if (m_cRearMap->theScreenMap[i][m] == WINDOW_LEFT)
+			{
+				Render2DMesh(meshList[GEO_WINDOW_LEFT], false, 1.0f, (float)k*m_cRearMap->GetTileSize()-rearWallFineOffset_x, 575.f-i*m_cRearMap->GetTileSize());
+			}
+			else if (m_cRearMap->theScreenMap[i][m] == WINDOW_RIGHT)
+			{
+				Render2DMesh(meshList[GEO_WINDOW_RIGHT], false, 1.0f, (float)k*m_cRearMap->GetTileSize()-rearWallFineOffset_x, 575.f-i*m_cRearMap->GetTileSize());
+			}
+			else if (m_cRearMap->theScreenMap[i][m] == WINDOW_BOTTOM)
+			{
+				Render2DMesh(meshList[GEO_WINDOW_BOTTOM], false, 1.0f, (float)k*m_cRearMap->GetTileSize()-rearWallFineOffset_x, 575.f-i*m_cRearMap->GetTileSize());
+			}
+			else if (m_cRearMap->theScreenMap[i][m] == REAR_WALL)
+			{
+				Render2DMesh(meshList[GEO_REAR_WALL], false, 1.0f, (float)k*m_cRearMap->GetTileSize()-rearWallFineOffset_x, 575.f-i*m_cRearMap->GetTileSize());
+			}
+			else if (m_cRearMap->theScreenMap[i][m] == REAR_GLASS)
+			{
+				Render2DMesh(meshList[GEO_REAR_GLASS], false, 1.0f, (float)k*m_cRearMap->GetTileSize()-rearWallFineOffset_x, 575.f-i*m_cRearMap->GetTileSize());
 			}
 		}
 	}
@@ -2833,10 +2867,10 @@ void StudioProject::Render()
 		=====================*/
 		RenderBackground();
 
-		
+		RenderRearTileMap();
 
 		RenderTileMap();
-		RenderRearTileMap();
+		
 		RenderGoodies();
 		for(std::vector<CEnemy *>::iterator it = enemyContainer.begin(); it != enemyContainer.end(); ++it)
 		{

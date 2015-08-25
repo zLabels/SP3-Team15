@@ -119,7 +119,12 @@ class StudioProject : public Scene
         GEO_TILE_HEALTH,
         GEO_TILE_SCORE,
         GEO_TILE_SHURIKEN,
-		GEO_REAR_TILE_DOOR,
+		GEO_WINDOW_TOP,
+		GEO_WINDOW_LEFT,
+		GEO_WINDOW_RIGHT,
+		GEO_WINDOW_BOTTOM,
+		GEO_REAR_WALL,
+		GEO_REAR_GLASS,
 		//Hero,
 		GEO_TILEHERO,
 		GEO_PLAYER_RUN_RIGHT,
@@ -181,8 +186,17 @@ class StudioProject : public Scene
         TILE_HEALTH,
         TILE_SCORE,
         TILE_SHURIKEN,
-		REAR_TILE_DOOR,
 		MAX_TILE,
+	};
+	enum REAR_TILE_TYPE
+	{
+		WINDOW_TOP = 1,
+		WINDOW_LEFT,
+		WINDOW_RIGHT,
+		WINDOW_BOTTOM,
+		REAR_WALL,
+		REAR_GLASS,
+		MAX_REAR_TILE,
 	};
 
 public:
