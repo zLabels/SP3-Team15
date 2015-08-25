@@ -931,22 +931,22 @@ void StudioProject::LoadEnemies(unsigned Level)
 				}
 
 				//Attacking animation
-				meshList[GEO_GUARD1_ATTACK_RIGHT] = MeshBuilder::GenerateSpriteAnimation("skele_attack_right",1,4);
-				meshList[GEO_GUARD1_ATTACK_RIGHT]->textureArray[0] = LoadTGA("Image//Skeleton//SkeletonAttack_Right.tga");
+				meshList[GEO_GUARD1_ATTACK_RIGHT] = MeshBuilder::GenerateSpriteAnimation("Guard1_attack_right",1,2);
+				meshList[GEO_GUARD1_ATTACK_RIGHT]->textureArray[0] = LoadTGA("Image//Enemies//Normal//Guard_AttackR.tga");
 				enemy->AttackAnimation_Right = dynamic_cast<CSpriteAnimation*>(meshList[GEO_GUARD1_ATTACK_RIGHT]);
 				if(enemy->AttackAnimation_Right)
 				{
 					enemy->AttackAnimation_Right->m_anim = new Animation();
-					enemy->AttackAnimation_Right->m_anim->Set(0, 3, 0, 1.f, false,Vector3((float)enemy->GetPos_x(),(float)enemy->GetPos_y(),1),0,0.f,100.f);
+					enemy->AttackAnimation_Right->m_anim->Set(0, 1, 0, 1.f, false,Vector3((float)enemy->GetPos_x(),(float)enemy->GetPos_y(),1),0,0.f,ENEMY_SIZE);
 				}
 
-				meshList[GEO_GUARD1_ATTACK_LEFT] = MeshBuilder::GenerateSpriteAnimation("skele_attack_left",1,4);
-				meshList[GEO_GUARD1_ATTACK_LEFT]->textureArray[0] = LoadTGA("Image//Skeleton//SkeletonAttack_Left.tga");
+				meshList[GEO_GUARD1_ATTACK_LEFT] = MeshBuilder::GenerateSpriteAnimation("Guard1_attack_left",1,2);
+				meshList[GEO_GUARD1_ATTACK_LEFT]->textureArray[0] = LoadTGA("Image//Enemies//Normal//Guard_AttackL.tga");
 				enemy->AttackAnimation_Left = dynamic_cast<CSpriteAnimation*>(meshList[GEO_GUARD1_ATTACK_LEFT]);
 				if(enemy->AttackAnimation_Left)
 				{
 					enemy->AttackAnimation_Left->m_anim = new Animation();
-					enemy->AttackAnimation_Left->m_anim->Set(0, 3, 0, 1.f, false,Vector3((float)enemy->GetPos_x(),(float)enemy->GetPos_y(),1),0,0.f,100.f);
+					enemy->AttackAnimation_Left->m_anim->Set(0, 1, 0, 1.f, false,Vector3((float)enemy->GetPos_x(),(float)enemy->GetPos_y(),1),0,0.f,ENEMY_SIZE);
 				}
 
 				enemyContainer.push_back(enemy);
@@ -1214,12 +1214,29 @@ void StudioProject::EnemyUpdate(double dt)
 		if(Enemy->getHealth() > 0)	//Only if enemy is alive
 		{
 			CHero::GetInstance()->HeroDamaged(Enemy->GetPos_x(),Enemy->GetPos_y());
-			if(Enemy->EnemyAttack() != 0)
+
+			float hero_x = CHero::GetInstance()->GetHeroPos_x();
+			hero_x += CHero::GetInstance()->GetMapOffset_x();
+			float hero_y = CHero::GetInstance()->GetHeroPos_y();
+
+			Enemy->EnemyAttack(meshList[GEO_SHURIKEN],hero_x,hero_y);
+			
+		}
+		//Ennemy Bullet updating
+		for(unsigned i = 0;i < Enemy->getEnemyBullet().size(); ++i)
+		{
+			if( Enemy->getEnemyBullet().at(i)->getActive() == true)
 			{
-				CHero::GetInstance()->HeroDamaged( Enemy->EnemyAttack() );
+				Enemy->getEnemyBullet().at(i)->Update(m_cMap);
+			}
+			if( ((CHero::GetInstance()->GetHeroPos_x() + 12.5f) - (Enemy->getEnemyBullet().at(i)->getPos().x - CHero::GetInstance()->GetMapOffset_x())) * ((CHero::GetInstance()->GetHeroPos_x() + 12.5f) - (Enemy->getEnemyBullet().at(i)->getPos().x - CHero::GetInstance()->GetMapOffset_x())) + 
+				((CHero::GetInstance()->GetHeroPos_y() + 25.f) - Enemy->getEnemyBullet().at(i)->getPos().y) * ((CHero::GetInstance()->GetHeroPos_y() + 25.f) - Enemy->getEnemyBullet().at(i)->getPos().y) < 1600 )
+			{
+				CHero::GetInstance()->HeroDamaged(Enemy->getEnemyBullet().at(i)->getDamage());
+				Enemy->getEnemyBullet().at(i)->setActive(false);
 			}
 		}
-
+		
 		//Enemy attacking cool down 
 		if(Enemy->getAttackCD() != 0)
 		{
@@ -1230,6 +1247,7 @@ void StudioProject::EnemyUpdate(double dt)
 			}
 		}
 
+		//Enemy Getting attacked
 		for(std::vector<CShuriken *>::iterator it = shurikenList.begin(); it != shurikenList.end(); ++it)
 		{
 			CShuriken *star = (CShuriken *)*it;
@@ -1602,7 +1620,7 @@ void StudioProject::UpdateInput(double dt)
     //}
 
     //Movement
-    if(Application::IsKeyPressed('W'))	//Move up
+    if(Application::IsKeyPressed('W'))	//Interact
     {
         if(m_cMap->theScreenMap[checkPosition_Y][checkPosition_X] == TILE_METALCORNER)
         {
@@ -1641,7 +1659,7 @@ void StudioProject::UpdateInput(double dt)
             }
         }
     }
-	//Down
+	//Save
 	if(Application::IsKeyPressed(VK_F11))
 	{
 		//CHero::GetInstance()->HeroMoveUpDown(false , 1.0f);
@@ -1653,7 +1671,7 @@ void StudioProject::UpdateInput(double dt)
 		GameMenu.setWinState(true);
 	}
 	//Walk Left
-	if(Application::IsKeyPressed('A') && 
+	if(Application::IsKeyPressed('A') && !GrappleHook.getHooked() &&
 		CHero::GetInstance()->Hero_attack_1_right->m_anim->animActive == false && CHero::GetInstance()->Hero_attack_1_left->m_anim->animActive == false &&
 		CHero::GetInstance()->Hero_attack_2_right->m_anim->animActive == false && CHero::GetInstance()->Hero_attack_2_left->m_anim->animActive == false &&
 		CHero::GetInstance()->Hero_shockwave_right->m_anim->animActive == false && CHero::GetInstance()->Hero_shockwave_left->m_anim->animActive == false &&
@@ -1672,7 +1690,7 @@ void StudioProject::UpdateInput(double dt)
 		CHero::GetInstance()->Hero_run_left->m_anim->animActive = false;
 	}
 	//Walk Right
-	if(Application::IsKeyPressed('D') && 
+	if(Application::IsKeyPressed('D') && !GrappleHook.getHooked() &&
 		CHero::GetInstance()->Hero_attack_1_right->m_anim->animActive == false && CHero::GetInstance()->Hero_attack_1_left->m_anim->animActive == false &&
 		CHero::GetInstance()->Hero_attack_2_right->m_anim->animActive == false && CHero::GetInstance()->Hero_attack_2_left->m_anim->animActive == false &&
 		CHero::GetInstance()->Hero_shockwave_right->m_anim->animActive == false && CHero::GetInstance()->Hero_shockwave_left->m_anim->animActive == false &&
@@ -1864,7 +1882,7 @@ void StudioProject::UpdateInput(double dt)
 			GrappleHook.setHooked(false);
 		}
 	}
-	std::cout <<GrappleHook.getPos().y << std::endl;
+
 	//std::cout << posX << std::endl;
 	//std::cout << hero_x << std::endl;
 }
@@ -1968,7 +1986,7 @@ void StudioProject::Update(double dt)
 		UpdateSprites(dt);
 		UpdateEnemySprites(dt);
 
-		soundplayer.playSounds(soundplayer.GAME_BGM);
+		//soundplayer.playSounds(soundplayer.GAME_BGM);
 
 		load = false;
 		//camera.Update(dt);
@@ -2709,15 +2727,28 @@ void StudioProject::RenderEnemySprites(CEnemy* enemyInput)
 	if(enemyInput->AttackAnimation_Right->m_anim->animActive == true)
 	{
 		Render2DSprite(enemyInput->AttackAnimation_Right,false,enemyInput->AttackAnimation_Right->m_anim->animScale,enemyInput->AttackAnimation_Right->m_anim->animScale,
-			(enemyInput->AttackAnimation_Right->m_anim->animPosition.x - CHero::GetInstance()->GetMapOffset_x()) + ENEMY_OFFSET,enemyInput->AttackAnimation_Right->m_anim->animPosition.y + ENEMY_OFFSET + 13.5f,false);
+			(enemyInput->AttackAnimation_Right->m_anim->animPosition.x - CHero::GetInstance()->GetMapOffset_x()) + ENEMY_OFFSET,enemyInput->AttackAnimation_Right->m_anim->animPosition.y + ENEMY_OFFSET,false);
 	}
 
 	//Attack Left
 	if(enemyInput->AttackAnimation_Left->m_anim->animActive == true)
 	{
-
 		Render2DSprite(enemyInput->AttackAnimation_Left,false,enemyInput->AttackAnimation_Left->m_anim->animScale,enemyInput->AttackAnimation_Left->m_anim->animScale,
-			(enemyInput->AttackAnimation_Left->m_anim->animPosition.x - CHero::GetInstance()->GetMapOffset_x()) + ENEMY_OFFSET,enemyInput->AttackAnimation_Left->m_anim->animPosition.y + ENEMY_OFFSET + 13.5f,false);
+			(enemyInput->AttackAnimation_Left->m_anim->animPosition.x - CHero::GetInstance()->GetMapOffset_x()) + ENEMY_OFFSET,enemyInput->AttackAnimation_Left->m_anim->animPosition.y + ENEMY_OFFSET,false);
+	}
+
+	
+
+	for(std::vector<CEnemy *>::iterator it = enemyContainer.begin(); it != enemyContainer.end(); ++it)
+	{
+		CEnemy *Enemy = (CEnemy *)*it;
+		for(unsigned i = 0;i < Enemy->getEnemyBullet().size(); ++i)
+		{
+			if( Enemy->getEnemyBullet().at(i)->getActive() == true)
+			{
+				Render2DMesh(Enemy->getEnemyBullet().at(i)->getMesh(),false,1.f,Enemy->getEnemyBullet().at(i)->getPos().x - CHero::GetInstance()->GetMapOffset_x(), Enemy->getEnemyBullet().at(i)->getPos().y);
+			}
+		}
 	}
 }
 void StudioProject::RenderTransition(void)

@@ -99,13 +99,12 @@ bool CHero::HeroGrapple(CMap* m_cMap,Vector3 direction,Vector3 hookPosition)
 {
 	hero_grappling = true;
 
-	
 	direction.Normalize();
 
 	tempHeroPos.x = HeroPos.x;
 	tempHeroPos.y = HeroPos.y;
-	HeroPos.x += direction.x * 15;
-	HeroPos.y += direction.y * 15;
+	HeroPos.x += direction.x * 5.f;
+	HeroPos.y += direction.y * 5.f;
 	if( HeroCollisionCheck(m_cMap,true,true,true,true,HeroPos.x,HeroPos.y,mapOffset_X,jumpspeed) == true)
 	{
 		HeroPos.x = tempHeroPos.x;
@@ -233,7 +232,7 @@ void CHero::HeroKnockBack(CMap* m_cMap)
 				HeroPos.x = tempHeroPos.x;
 				hero_damaged = false;
 			}
-			else if( knockbackPos.x > 100 )
+			else if( knockbackPos.x > 25 )
 			{
 				hero_damaged = false;
 			}
@@ -261,7 +260,7 @@ void CHero::HeroKnockBack(CMap* m_cMap)
 				HeroPos.x = tempHeroPos.x;
 				hero_damaged = false;
 			}
-			else if( knockbackPos.x < -100 )
+			else if( knockbackPos.x < -25 )
 			{
 				hero_damaged = false;
 			}

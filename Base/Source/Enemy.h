@@ -3,6 +3,8 @@
 #include "Map.h"
 #include "Strategy.h"
 #include "SpriteAnimation.h"
+#include "EnemyBullet.h"
+#include "Mesh.h"
 
 class CEnemy
 {
@@ -26,48 +28,49 @@ public:
 		GHOST,
 		MAX_ENEMY
 	};
-	
-	// Initialise this class instance
-	void Init(int pos_x,int pos_y,int hp,int dmg,bool active,ENEMY_TYPE type);
-	// Set position x of the player
-	void SetPos_x(int pos_x);
-	// Set position y of the player
-	void SetPos_y(int pos_y);
-	// Set the destination of this enemy
-	void SetDestination(const int pos_x, const int pos_y);
-	// Get position x of the player
-	int GetPos_x(void);
-	// Get position y of the player
-	int GetPos_y(void);
-	// Set the destination of this enemy
-	int GetDestination_x(void);
-	// Set the destination of this enemy
-	int GetDestination_y(void);
-	// ENEMY Update
-	void Update(CMap* m_cMap,int mapWidth, int mapHeight,unsigned maplevel);
-	// Strategy
-	void ChangeStrategy(CStrategy* theNewStrategy, bool bDelete=true);
+
+	void Init(int pos_x,int pos_y,int hp,int dmg,bool active,ENEMY_TYPE type); // Initialise this class instance
+
+	void SetPos_x(int pos_x); // Set position x of the player
+	void SetPos_y(int pos_y); // Set position y of the player
+
+	void SetDestination(const int pos_x, const int pos_y);	// Set the destination of this enemy
+
+	int GetPos_x(void); // Get position x of the player
+	int GetPos_y(void); // Get position y of the player
+
+	int GetDestination_x(void); // Get the destination of this enemy
+	int GetDestination_y(void); // Get the destination of this enemy
+
+	vector<CEnemyBullet*>& getEnemyBullet(void);	//Gets vector of enemy bullets
+
+	void Update(CMap* m_cMap,int mapWidth, int mapHeight,unsigned maplevel); 	// ENEMY Update
+
+	void ChangeStrategy(CStrategy* theNewStrategy, bool bDelete=true); 	//Change/Set Enemy strategy
+
+	CEnemyBullet* FetchBullet();	//Fetch enemy bullet from vector
 
 	int ConstrainEnemyX(const int leftBorder, const int rightBorder, 
 								  const int topBorder, const int bottomBorder, 
-								  float timeDiff,int mapWidth, int mapHeight,unsigned maplevel);
+								  float timeDiff,int mapWidth, int mapHeight,unsigned maplevel);	//Constrain Enemy X axis
 
-	bool CheckCollision (CMap* m_cMap, bool m_bCheckLeft,bool m_bCheckRight, bool m_bCheckUp, bool m_bCheckDown);
+	bool CheckCollision (CMap* m_cMap, bool m_bCheckLeft,bool m_bCheckRight, bool m_bCheckUp, bool m_bCheckDown);	//Enemy CheckCollision
 
 	bool getActive(void);	//Get enemy active state
 	int getHealth(void);	//Get hp
 	int getDamage(void);	//Get Damage
 	float& getAttackCD(void);	//get Enemy attack CD
 
-	int EnemyAttack();	//Enemy attacking player
+	void EnemyAttack(Mesh* ptr,float dir_x,float dir_y);	//Enemy attacking player
 	void EnemyDamaged(int damage,CMap* m_cMap);	//Enemy is hit
 
-	ENEMY_TYPE enemyType;
-	CSpriteAnimation* DeathAnimation_Right;
-	CSpriteAnimation* WalkAnimation_Right;
-	CSpriteAnimation* WalkAnimation_Left;
-	CSpriteAnimation* AttackAnimation_Right;
-	CSpriteAnimation* AttackAnimation_Left;
+	ENEMY_TYPE enemyType;	//Type of enemy
+
+	CSpriteAnimation* DeathAnimation_Right;	//Death Animation
+	CSpriteAnimation* WalkAnimation_Right;	//Walk Animation R
+	CSpriteAnimation* WalkAnimation_Left;	//Walk Animation L
+	CSpriteAnimation* AttackAnimation_Right;	//Attack Animation R
+	CSpriteAnimation* AttackAnimation_Left;		//Attack Animation L
 private:
 	// ENEMY's information
 	Vector2 tempENEMYPosition;
@@ -94,4 +97,6 @@ private:
 
 	int mapOffset_X, mapOffset_Y;	//Map offset X , Y	for sccrolling
 	int mapFineOffset_X, mapFineOffset_Y;	//Map fine offset X , Y for scrolling
+
+	vector<CEnemyBullet*> enemyBulletList;	//Container for enemy bullets
 };

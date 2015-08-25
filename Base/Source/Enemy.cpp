@@ -14,8 +14,8 @@ CEnemy::CEnemy(void)
 	  mapOffset_Y(0),
 	  mapFineOffset_X(0),
 	  mapFineOffset_Y(0),
-	  KNOCKBACK_RANGE(65),
-	  ATTACK_RANGE(2500),
+	  KNOCKBACK_RANGE(25),
+	  ATTACK_RANGE(15625),
 	  enemyAttacking(false),
 	  enemyAttackCD(0.f),
 	  MAX_ATTACK_CD(4.f)
@@ -29,8 +29,14 @@ CEnemy::~CEnemy(void)
 		delete theStrategy;
 		theStrategy = NULL;
 	}
+	while(enemyBulletList.size() > 0)
+	{
+		CEnemyBullet *bullet = enemyBulletList.back();
+		delete bullet;
+		enemyBulletList.pop_back();
+	}
 }
-// Initialise this class instance
+
 void CEnemy::Init(int pos_x,int pos_y,int hp,int dmg,bool active,ENEMY_TYPE type)
 {
 	theENEMYPosition.x = pos_x;
@@ -43,17 +49,16 @@ void CEnemy::Init(int pos_x,int pos_y,int hp,int dmg,bool active,ENEMY_TYPE type
 	this->enemyHealth = hp;
 	this->enemyDamage = dmg;
 }
-// Set position x of the player
+
 void CEnemy::SetPos_x(int pos_x)
 {
 	theENEMYPosition.x = pos_x;
 }
-// Set position y of the player
 void CEnemy::SetPos_y(int pos_y)
 {
 	theENEMYPosition.y = pos_y;
 }
-// Set the destination of this enemy
+
 void CEnemy::SetDestination(const int pos_x, const int pos_y)
 {
 	theDestination.x = pos_x;
@@ -63,22 +68,20 @@ void CEnemy::SetDestination(const int pos_x, const int pos_y)
 		theStrategy->SetDestination(theDestination.x, theDestination.y);
 	}
 }
-// Get position x of the player
+
 int CEnemy::GetPos_x(void)
 {
 	return theENEMYPosition.x;
 }
-// Get position y of the player
 int CEnemy::GetPos_y(void)
 {
 	return theENEMYPosition.y;
 }
-// Set the destination of this enemy
+
 int CEnemy::GetDestination_x(void)
 {
 	return theDestination.x;
 }
-// Set the destination of this enemy
 int CEnemy::GetDestination_y(void)
 {
 	return theDestination.y;
@@ -101,6 +104,11 @@ float& CEnemy::getAttackCD(void)
 	return this->enemyAttackCD;
 }
 
+vector<CEnemyBullet*>& CEnemy::getEnemyBullet(void)
+{
+	return enemyBulletList;
+}
+
 void CEnemy::EnemyDamaged(int damage,CMap* m_cMap)
 {
 	this->enemyHealth -= damage;
@@ -108,7 +116,7 @@ void CEnemy::EnemyDamaged(int damage,CMap* m_cMap)
 	{
 		if(enemyHealth > 0)
 		{
-			theENEMYPosition.x += (KNOCKBACK_RANGE + damage);
+			theENEMYPosition.x += (KNOCKBACK_RANGE);
 			if(theENEMYPosition.x < 0 )
 			{
 				theENEMYPosition.x = 0;
@@ -139,7 +147,7 @@ void CEnemy::EnemyDamaged(int damage,CMap* m_cMap)
 	{
 		if(enemyHealth > 0)
 		{
-			theENEMYPosition.x -= (KNOCKBACK_RANGE + damage);
+			theENEMYPosition.x -= (KNOCKBACK_RANGE);
 			if(theENEMYPosition.x < 0 )
 			{
 				theENEMYPosition.x = 0;
@@ -168,7 +176,28 @@ void CEnemy::EnemyDamaged(int damage,CMap* m_cMap)
 	}
 }
 
-int CEnemy::EnemyAttack()
+CEnemyBullet* CEnemy::FetchBullet()
+{
+	for(std::vector<CEnemyBullet *>::iterator it = enemyBulletList.begin(); it != enemyBulletList.end(); ++it)
+	{
+		CEnemyBullet *bullet = (CEnemyBullet *)*it;
+		if(!bullet->getActive())
+		{
+			bullet->setActive(true);
+			return bullet;
+		}
+	}
+	for(unsigned i = 0; i < 5; ++i)
+	{
+		CEnemyBullet *bullet = new CEnemyBullet();
+		enemyBulletList.push_back(bullet);
+	}
+	CEnemyBullet *bullet = enemyBulletList.back();
+	bullet->setActive(true);
+	return bullet;
+}
+
+void CEnemy::EnemyAttack(Mesh* ptr,float target_x,float target_y)
 {
 	if(enemyAttacking == false && enemyAttackCD == 0)
 	{
@@ -185,34 +214,24 @@ int CEnemy::EnemyAttack()
 		if(enemy_face_right)
 		{
 			AttackAnimation_Right->m_anim->animActive = true;
-			if(AttackAnimation_Right->m_anim->animCurrentFrame == 2)
+			if(AttackAnimation_Right->m_anim->animCurrentFrame == 1)
 			{
-				
-				if( (( (theENEMYPosition.x) - (theDestination.x)) * ((theENEMYPosition.x) - (theDestination.x)) + 
-					(theENEMYPosition.y - theDestination.y) * (theENEMYPosition.y - theDestination.y)) <= ATTACK_RANGE )
-				{	
-					return 10;	
-				}
+				CEnemyBullet* bullet = FetchBullet();
+				bullet->setData(ptr,theENEMYPosition.x+ 25.f, theENEMYPosition.y+ 40.f,20,1,0,true);
 				enemyAttacking = false;
 			}
 		}
 		else if(enemy_face_left)
 		{
 			AttackAnimation_Left->m_anim->animActive = true;
-			if(AttackAnimation_Left->m_anim->animCurrentFrame == 2)
-			{
-				
-				if( (( (theENEMYPosition.x) - (theDestination.x)) * ((theENEMYPosition.x) - (theDestination.x)) + 
-					(theENEMYPosition.y - theDestination.y) * (theENEMYPosition.y - theDestination.y)) <= ATTACK_RANGE )
-				{	
-					return 10;	
-				}
+			if(AttackAnimation_Left->m_anim->animCurrentFrame == 1)
+			{			
+				CEnemyBullet* bullet = FetchBullet();
+				bullet->setData(ptr,theENEMYPosition.x+ 25.f, theENEMYPosition.y + 40.f,20,-1,0,true);
 				enemyAttacking = false;
 			}
 		}
 	}
-
-	return 0;
 }
 
 int CEnemy::ConstrainEnemyX(const int leftBorder, const int rightBorder, 
@@ -346,7 +365,7 @@ bool CEnemy::CheckCollision (CMap* m_cMap, bool m_bCheckLeft,bool m_bCheckRight,
 }
 
 /********************************************************************************
-Hero Update
+Enemy Update
 ********************************************************************************/
 void CEnemy::Update(CMap* m_cMap,int mapWidth, int mapHeight,unsigned maplevel)
 {

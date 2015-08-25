@@ -19,6 +19,7 @@
     <ClCompile Include="Source\Camera.cpp" />
     <ClCompile Include="Source\Camera3.cpp" />
     <ClCompile Include="Source\Enemy.cpp" />
+    <ClCompile Include="Source\EnemyBullet.cpp" />
     <ClCompile Include="Source\Goodies.cpp" />
     <ClCompile Include="Source\GoodiesFactory.cpp" />
     <ClCompile Include="Source\GrapplingHook.cpp" />
@@ -54,6 +55,7 @@
     <ClInclude Include="Source\Camera.h" />
     <ClInclude Include="Source\Camera3.h" />
     <ClInclude Include="Source\Enemy.h" />
+    <ClInclude Include="Source\EnemyBullet.h" />
     <ClInclude Include="Source\Geometry.h" />
     <ClInclude Include="Source\Goodies.h" />
     <ClInclude Include="Source\GoodiesFactory.h" />

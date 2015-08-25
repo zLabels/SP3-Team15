@@ -13,7 +13,7 @@ public:
 
 	void setData(Mesh* ptr,float pos_x,float pos_y,int damage,float dir_x,float dir_y,bool active);	//Sets all data
 
-	Vector3 getPos();	//Get weapon position x
+	Vector3 getPos();	//Get weapon position 
 	void setPos(Vector3 newPos);	//Set weapon position
 
 	Vector3 CWeapon::getDir();	//Get weapon direction

@@ -16,7 +16,8 @@ void CStrategy_Kill::Update(void)
 {
 	int distanceDestinationToEnemy = CalculateDistance();
 	
-	if( distanceDestinationToEnemy < 40000.f)
+	//If distance is lesser than 8 tiles state will change to attack
+	if( distanceDestinationToEnemy < 40000.f && CurrentState != ATTACK)
 	{
 		if( distanceDestinationToEnemy < 2500.f)
 		{
@@ -28,6 +29,13 @@ void CStrategy_Kill::Update(void)
 			AtStart = false;
 		}
 	}
+	//if state is already at attack, distance must be more than 10 tiles to escape
+	else if(CurrentState == ATTACK && distanceDestinationToEnemy < 62500.f)
+	{
+		CurrentState = ATTACK;
+		AtStart = false;
+	}
+	//if distance is more than 10 tiles and enemy position is not at start, state will change to idle
 	else if(theEnemyPosition.x != theEnemyStart.x)
 	{
 		CurrentState = IDLE;
@@ -94,38 +102,7 @@ void CStrategy_Kill::Update(void)
 				}
 			}
 		}
-		/*if( (theDestination.x - theEnemyPosition.x) > 50)
-		{
-			if(theEnemyPosition.x < theDestination.x + 50)
-			{
-				theEnemyPosition.x += AI_ATTACK_MS;
-				if(faceRight != true)
-				{
-					faceRight = true;
-					faceLeft = false;
-				}
-			}
-			if(theEnemyPosition.x > theDestination.x + 50)
-			{
-				theEnemyPosition.x = theDestination.x - 50;
-			}
-		}
-		else if( (theDestination.x - theEnemyPosition.x) < 50)
-		{
-			if(theEnemyPosition.x > theDestination.x + 50)
-			{
-				theEnemyPosition.x += -AI_ATTACK_MS;
-				if(faceLeft != true)
-				{
-					faceRight = false;
-					faceLeft = true;
-				}
-			}
-			if(theEnemyPosition.x < theDestination.x + 50)
-			{
-				theEnemyPosition.x = theDestination.x + 50;
-			}
-		}*/
+		
 		break;
 	case IDLE:
 		if( (theEnemyStart.x - theEnemyPosition.x) < 0 )
