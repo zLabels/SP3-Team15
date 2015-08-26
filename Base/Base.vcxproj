@@ -24,6 +24,7 @@
     <ClCompile Include="Source\GoodiesFactory.cpp" />
     <ClCompile Include="Source\GrapplingHook.cpp" />
     <ClCompile Include="Source\Hero.cpp" />
+    <ClCompile Include="Source\Inventory.cpp" />
     <ClCompile Include="Source\LoadHmap.cpp" />
     <ClCompile Include="Source\LoadOBJ.cpp" />
     <ClCompile Include="Source\LoadTGA.cpp" />
@@ -61,6 +62,7 @@
     <ClInclude Include="Source\GoodiesFactory.h" />
     <ClInclude Include="Source\GrapplingHook.h" />
     <ClInclude Include="Source\Hero.h" />
+    <ClInclude Include="Source\Inventory.h" />
     <ClInclude Include="Source\Light.h" />
     <ClInclude Include="Source\LoadHmap.h" />
     <ClInclude Include="Source\LoadOBJ.h" />

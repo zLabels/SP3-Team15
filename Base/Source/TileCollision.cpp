@@ -9,50 +9,24 @@ bool SingleTileCollisionCheck(CMap* m_cMap, bool m_bCheckLeft,bool m_bCheckRight
 
     if(m_bCheckRight)
     {
-        if (//Border
-            (m_cMap->theScreenMap[checkPosition_Y2][checkPosition_X2] == TILE_BORDER) ||
-            //Grass
-            (m_cMap->theScreenMap[checkPosition_Y2][checkPosition_X2] == TILE_GRASS) ||
-            //Door
-            (m_cMap->theScreenMap[checkPosition_Y2][checkPosition_X2] == TILE_DOOR) ||
-            //laser shooter up
-            (m_cMap->theScreenMap[checkPosition_Y2][checkPosition_X2] == TILE_LASER_SHOOTER_UP) ||
-            //laser shooter down
-            (m_cMap->theScreenMap[checkPosition_Y2][checkPosition_X2] == TILE_LASER_SHOOTER_DOWN) ||
-            //laser shooter left
-            (m_cMap->theScreenMap[checkPosition_Y2][checkPosition_X2] == TILE_LASER_SHOOTER_LEFT) ||
-            //laser shooter right
-            (m_cMap->theScreenMap[checkPosition_Y2][checkPosition_X2] == TILE_LASER_SHOOTER_RIGHT) ||
-            //Tile underground
-            (m_cMap->theScreenMap[checkPosition_Y2][checkPosition_X2] == TILE_UNDERGROUND))
-        {
-            return true;
-        }
+		for(unsigned i = 1; i < TILE_MAX_COLLISION; ++i)
+		{
+			if ( m_cMap->theScreenMap[checkPosition_Y2][checkPosition_X2] == i )
+			{
+				return true;
+			}
+		}
     }
 
     if(m_bCheckLeft)
     {
-        if( //Border
-            (m_cMap->theScreenMap[checkPosition_Y2][checkPosition_X3] == TILE_BORDER ) ||
-            //Grass
-            (m_cMap->theScreenMap[checkPosition_Y2][checkPosition_X3] == TILE_GRASS ) ||
-            //DOOR
-            (m_cMap->theScreenMap[checkPosition_Y2][checkPosition_X3] == TILE_DOOR ) ||
-            //Laser
-            (m_cMap->theScreenMap[checkPosition_Y2][checkPosition_X3] == TILE_LASER_SWITCH ) ||
-            //Laser shooter up
-            (m_cMap->theScreenMap[checkPosition_Y2][checkPosition_X3] == TILE_LASER_SHOOTER_UP) ||
-            //Laser shooter down
-            (m_cMap->theScreenMap[checkPosition_Y2][checkPosition_X3] == TILE_LASER_SHOOTER_DOWN) ||
-            //Laser shooter left
-            (m_cMap->theScreenMap[checkPosition_Y2][checkPosition_X3] == TILE_LASER_SHOOTER_LEFT) ||
-            //Laser shooter right
-            (m_cMap->theScreenMap[checkPosition_Y2][checkPosition_X3] == TILE_LASER_SHOOTER_RIGHT) ||
-            //Tile underground
-            (m_cMap->theScreenMap[checkPosition_Y2][checkPosition_X3] == TILE_UNDERGROUND ) )
-        {
-            return true;
-        }
+		for(unsigned i = 1; i < TILE_MAX_COLLISION; ++i)
+		{
+			if ( m_cMap->theScreenMap[checkPosition_Y2][checkPosition_X3] == i )
+			{
+				return true;
+			}
+		}
     }
 
     if(m_bCheckUp)
@@ -60,25 +34,13 @@ bool SingleTileCollisionCheck(CMap* m_cMap, bool m_bCheckLeft,bool m_bCheckRight
         int checkPosition_X = (int) ((mapOffset_X+ pos_X) / m_cMap->GetTileSize());
         int checkPosition_Y = m_cMap->GetNumOfTiles_Height() - (int) ceil( (float) (pos_Y + m_cMap->GetTileSize()) / m_cMap->GetTileSize());
 
-        if ( //Border
-            (m_cMap->theScreenMap[checkPosition_Y][checkPosition_X] == TILE_BORDER) ||
-            //Grass
-            (m_cMap->theScreenMap[checkPosition_Y][checkPosition_X] == TILE_GRASS) ||
-            //DOOR
-            (m_cMap->theScreenMap[checkPosition_Y][checkPosition_X] == TILE_DOOR) ||
-            //laser shooter up
-            (m_cMap->theScreenMap[checkPosition_Y][checkPosition_X] == TILE_LASER_SHOOTER_UP) ||
-            //laser shooter down
-            (m_cMap->theScreenMap[checkPosition_Y][checkPosition_X] == TILE_LASER_SHOOTER_DOWN) ||
-            //laser shooter left
-            (m_cMap->theScreenMap[checkPosition_Y][checkPosition_X] == TILE_LASER_SHOOTER_LEFT) ||
-            //laser shooter right
-            (m_cMap->theScreenMap[checkPosition_Y][checkPosition_X] == TILE_LASER_SHOOTER_RIGHT) ||
-            //Tile underground
-            (m_cMap->theScreenMap[checkPosition_Y][checkPosition_X] == TILE_GRASS) )
-        {
-            return true;
-        }
+		for(unsigned i = 1; i < TILE_MAX_COLLISION; ++i)
+		{
+			if ( m_cMap->theScreenMap[checkPosition_Y][checkPosition_X] == i )
+			{
+				return true;
+			}
+		}   
     }
 
     if(m_bCheckDown)
@@ -86,23 +48,13 @@ bool SingleTileCollisionCheck(CMap* m_cMap, bool m_bCheckLeft,bool m_bCheckRight
         int checkPosition_X = (int) ((mapOffset_X+pos_X) / m_cMap->GetTileSize());
         int checkPosition_Y = m_cMap->GetNumOfTiles_Height() - (int) ceil( (float) (pos_Y) / m_cMap->GetTileSize());
 
-        if ( (m_cMap->theScreenMap[checkPosition_Y][checkPosition_X] == TILE_GRASS) || 
-            //DOOR
-            (m_cMap->theScreenMap[checkPosition_Y][checkPosition_X] == TILE_DOOR) ||
-            //Laser shooter up
-            (m_cMap->theScreenMap[checkPosition_Y][checkPosition_X] == TILE_LASER_SHOOTER_UP) ||
-            //Laser shooter down
-            (m_cMap->theScreenMap[checkPosition_Y][checkPosition_X] == TILE_LASER_SHOOTER_DOWN) ||
-            //Laser shooter left
-            (m_cMap->theScreenMap[checkPosition_Y][checkPosition_X] == TILE_LASER_SHOOTER_LEFT) ||
-            //Laser shooter right
-            (m_cMap->theScreenMap[checkPosition_Y][checkPosition_X] == TILE_LASER_SHOOTER_RIGHT) ||
-            //Tile underground
-            (m_cMap->theScreenMap[checkPosition_Y][checkPosition_X] == TILE_GRASS))
-        {
-            return true;
-        }
-
+		for(unsigned i = 1; i < TILE_MAX_COLLISION; ++i)
+		{
+			if ( m_cMap->theScreenMap[checkPosition_Y][checkPosition_X] == i )
+			{
+				return true;
+			}
+		}
     }
 
     if(pos_X < 0 )
@@ -124,84 +76,40 @@ bool HeroCollisionCheck( CMap* m_cMap,bool m_bCheckLeft,bool m_bCheckRight, bool
 
     if(m_bCheckRight)
     {
-        if (//Border
-            (m_cMap->theScreenMap[checkPosition_Y2][checkPosition_X2+2] == TILE_BORDER) ||
-            (m_cMap->theScreenMap[checkPosition_Y3][checkPosition_X2+2] == TILE_BORDER) ||
-            (m_cMap->theScreenMap[checkPosition_Y4][checkPosition_X2+2] == TILE_BORDER) ||
-            //Grass
-            (m_cMap->theScreenMap[checkPosition_Y2][checkPosition_X2+2] == TILE_GRASS) ||
-            (m_cMap->theScreenMap[checkPosition_Y3][checkPosition_X2+2] == TILE_GRASS) ||
-            (m_cMap->theScreenMap[checkPosition_Y4][checkPosition_X2+2] == TILE_GRASS) ||
-            //Door
-            (m_cMap->theScreenMap[checkPosition_Y2][checkPosition_X2+1] == TILE_DOOR) ||
-            (m_cMap->theScreenMap[checkPosition_Y3][checkPosition_X2+1] == TILE_DOOR) ||
-            (m_cMap->theScreenMap[checkPosition_Y4][checkPosition_X2+1] == TILE_DOOR) ||
-            //Laser Shooter up
-            (m_cMap->theScreenMap[checkPosition_Y2][checkPosition_X2+1] == TILE_LASER_SHOOTER_UP) ||
-            (m_cMap->theScreenMap[checkPosition_Y3][checkPosition_X2+1] == TILE_LASER_SHOOTER_UP) ||
-            (m_cMap->theScreenMap[checkPosition_Y4][checkPosition_X2+1] == TILE_LASER_SHOOTER_UP) ||
-            //Laser Shooter down
-            (m_cMap->theScreenMap[checkPosition_Y2][checkPosition_X2+1] == TILE_LASER_SHOOTER_DOWN) ||
-            (m_cMap->theScreenMap[checkPosition_Y3][checkPosition_X2+1] == TILE_LASER_SHOOTER_DOWN) ||
-            (m_cMap->theScreenMap[checkPosition_Y4][checkPosition_X2+1] == TILE_LASER_SHOOTER_DOWN) ||
-            //Laser Shooter left
-            (m_cMap->theScreenMap[checkPosition_Y2][checkPosition_X2+1] == TILE_LASER_SHOOTER_LEFT) ||
-            (m_cMap->theScreenMap[checkPosition_Y3][checkPosition_X2+1] == TILE_LASER_SHOOTER_LEFT) ||
-            (m_cMap->theScreenMap[checkPosition_Y4][checkPosition_X2+1] == TILE_LASER_SHOOTER_LEFT) ||
-            //Laser Shooter right
-            (m_cMap->theScreenMap[checkPosition_Y2][checkPosition_X2+1] == TILE_LASER_SHOOTER_RIGHT) ||
-            (m_cMap->theScreenMap[checkPosition_Y3][checkPosition_X2+1] == TILE_LASER_SHOOTER_RIGHT) ||
-            (m_cMap->theScreenMap[checkPosition_Y4][checkPosition_X2+1] == TILE_LASER_SHOOTER_RIGHT) ||
-            //Tile underground
-            (m_cMap->theScreenMap[checkPosition_Y2][checkPosition_X2+2] == TILE_UNDERGROUND) ||
-            (m_cMap->theScreenMap[checkPosition_Y3][checkPosition_X2+2] == TILE_UNDERGROUND) ||
-            (m_cMap->theScreenMap[checkPosition_Y4][checkPosition_X2+2] == TILE_UNDERGROUND))
-        {
-            return true;
-        }
+		for(unsigned i = 1; i < TILE_MAX_COLLISION; ++i)
+		{
+			if( i != TILE_DOOR )
+			{
+				if ( (m_cMap->theScreenMap[checkPosition_Y2][checkPosition_X2+2] == i) ||
+					(m_cMap->theScreenMap[checkPosition_Y3][checkPosition_X2+2] == i) ||
+					(m_cMap->theScreenMap[checkPosition_Y4][checkPosition_X2+2] == i) )
+				{
+					return true;
+				}
+			}
+			else if(i == TILE_DOOR)
+			{
+				if ( (m_cMap->theScreenMap[checkPosition_Y2][checkPosition_X2+1] == i) ||
+					(m_cMap->theScreenMap[checkPosition_Y3][checkPosition_X2+1] == i) ||
+					(m_cMap->theScreenMap[checkPosition_Y4][checkPosition_X2+1] == i) )
+				{
+					return true;
+				}
+			}
+		}
     }
 
     if(m_bCheckLeft)
     {
-        if( //Border
-            (m_cMap->theScreenMap[checkPosition_Y2][checkPosition_X3] == TILE_BORDER ) ||
-            (m_cMap->theScreenMap[checkPosition_Y3][checkPosition_X3] == TILE_BORDER ) ||
-            (m_cMap->theScreenMap[checkPosition_Y4][checkPosition_X3] == TILE_BORDER ) ||
-            //Grass
-            (m_cMap->theScreenMap[checkPosition_Y2][checkPosition_X3] == TILE_GRASS ) ||
-            (m_cMap->theScreenMap[checkPosition_Y3][checkPosition_X3] == TILE_GRASS ) ||
-            (m_cMap->theScreenMap[checkPosition_Y4][checkPosition_X3] == TILE_GRASS ) ||
-            //Door
-            (m_cMap->theScreenMap[checkPosition_Y2][checkPosition_X3] == TILE_DOOR ) ||
-            (m_cMap->theScreenMap[checkPosition_Y3][checkPosition_X3] == TILE_DOOR ) ||
-            (m_cMap->theScreenMap[checkPosition_Y4][checkPosition_X3] == TILE_DOOR ) ||
-            //Laser Switch
-            (m_cMap->theScreenMap[checkPosition_Y2][checkPosition_X3] == TILE_LASER_SWITCH ) ||
-            (m_cMap->theScreenMap[checkPosition_Y3][checkPosition_X3] == TILE_LASER_SWITCH ) ||
-            (m_cMap->theScreenMap[checkPosition_Y4][checkPosition_X3] == TILE_LASER_SWITCH ) ||
-            //Laser Shooter up
-            (m_cMap->theScreenMap[checkPosition_Y2][checkPosition_X3] == TILE_LASER_SHOOTER_UP) ||
-            (m_cMap->theScreenMap[checkPosition_Y3][checkPosition_X3] == TILE_LASER_SHOOTER_UP) ||
-            (m_cMap->theScreenMap[checkPosition_Y4][checkPosition_X3] == TILE_LASER_SHOOTER_UP) ||
-            //Laser Shooter down
-            (m_cMap->theScreenMap[checkPosition_Y2][checkPosition_X3] == TILE_LASER_SHOOTER_DOWN) ||
-            (m_cMap->theScreenMap[checkPosition_Y3][checkPosition_X3] == TILE_LASER_SHOOTER_DOWN) ||
-            (m_cMap->theScreenMap[checkPosition_Y4][checkPosition_X3] == TILE_LASER_SHOOTER_DOWN) ||
-            //Laser Shooter left
-            (m_cMap->theScreenMap[checkPosition_Y2][checkPosition_X3] == TILE_LASER_SHOOTER_LEFT) ||
-            (m_cMap->theScreenMap[checkPosition_Y3][checkPosition_X3] == TILE_LASER_SHOOTER_LEFT) ||
-            (m_cMap->theScreenMap[checkPosition_Y4][checkPosition_X3] == TILE_LASER_SHOOTER_LEFT) ||
-            //Laser Shooter right
-            (m_cMap->theScreenMap[checkPosition_Y2][checkPosition_X3] == TILE_LASER_SHOOTER_RIGHT) ||
-            (m_cMap->theScreenMap[checkPosition_Y3][checkPosition_X3] == TILE_LASER_SHOOTER_RIGHT) ||
-            (m_cMap->theScreenMap[checkPosition_Y4][checkPosition_X3] == TILE_LASER_SHOOTER_RIGHT) ||
-            //Tile underground
-            (m_cMap->theScreenMap[checkPosition_Y2][checkPosition_X3] == TILE_UNDERGROUND ) ||
-            (m_cMap->theScreenMap[checkPosition_Y3][checkPosition_X3] == TILE_UNDERGROUND ) ||
-            (m_cMap->theScreenMap[checkPosition_Y4][checkPosition_X3] == TILE_UNDERGROUND ))
-        {
-            return true;
-        }
+		for(unsigned i = 1; i < TILE_MAX_COLLISION; ++i)
+		{
+			if (  (m_cMap->theScreenMap[checkPosition_Y2][checkPosition_X3] == i ) ||
+				(m_cMap->theScreenMap[checkPosition_Y3][checkPosition_X3] == i ) ||
+				(m_cMap->theScreenMap[checkPosition_Y4][checkPosition_X3] == i ) )
+			{
+				return true;
+			}
+		}
     }
 
     if(m_bCheckUp)
@@ -209,36 +117,14 @@ bool HeroCollisionCheck( CMap* m_cMap,bool m_bCheckLeft,bool m_bCheckRight, bool
         int checkPosition_X = (int) ((mapOffset_X + pos_X) / m_cMap->GetTileSize());
         int checkPosition_Y = m_cMap->GetNumOfTiles_Height() - (int) ceil( (float) (pos_Y + m_cMap->GetTileSize() + jumpspeed + 39.f) / m_cMap->GetTileSize());
 
-        if ( //Border
-            (m_cMap->theScreenMap[checkPosition_Y][checkPosition_X] == TILE_BORDER) ||
-            (m_cMap->theScreenMap[checkPosition_Y][checkPosition_X+2] == TILE_BORDER) ||
-            //Grass
-            (m_cMap->theScreenMap[checkPosition_Y][checkPosition_X] == TILE_GRASS) ||
-            (m_cMap->theScreenMap[checkPosition_Y][checkPosition_X+2] == TILE_GRASS) ||
-            //Door
-            (m_cMap->theScreenMap[checkPosition_Y][checkPosition_X] == TILE_DOOR) ||
-            (m_cMap->theScreenMap[checkPosition_Y][checkPosition_X+2] == TILE_DOOR) ||
-            //Laser Switch
-            (m_cMap->theScreenMap[checkPosition_Y][checkPosition_X] == TILE_LASER_SWITCH) ||
-            (m_cMap->theScreenMap[checkPosition_Y][checkPosition_X+2] == TILE_LASER_SWITCH) ||
-            //Laser Shooter up
-            (m_cMap->theScreenMap[checkPosition_Y][checkPosition_X] == TILE_LASER_SHOOTER_UP) ||
-            (m_cMap->theScreenMap[checkPosition_Y][checkPosition_X+2] == TILE_LASER_SHOOTER_UP) ||
-            //Laser Shooter down
-            (m_cMap->theScreenMap[checkPosition_Y][checkPosition_X] == TILE_LASER_SHOOTER_DOWN) ||
-            (m_cMap->theScreenMap[checkPosition_Y][checkPosition_X+2] == TILE_LASER_SHOOTER_DOWN) ||
-            //Laser Shooter left
-            (m_cMap->theScreenMap[checkPosition_Y][checkPosition_X] == TILE_LASER_SHOOTER_LEFT) ||
-            (m_cMap->theScreenMap[checkPosition_Y][checkPosition_X+2] == TILE_LASER_SHOOTER_LEFT) ||
-            //Laser Shooter right
-            (m_cMap->theScreenMap[checkPosition_Y][checkPosition_X] == TILE_LASER_SHOOTER_RIGHT) ||
-            (m_cMap->theScreenMap[checkPosition_Y][checkPosition_X+2] == TILE_LASER_SHOOTER_RIGHT) ||
-            //Tile underground
-            (m_cMap->theScreenMap[checkPosition_Y][checkPosition_X] == TILE_GRASS) ||
-            (m_cMap->theScreenMap[checkPosition_Y][checkPosition_X+2] == TILE_GRASS))
-        {
-            return true;
-        }
+		for(unsigned i = 1; i < TILE_MAX_COLLISION; ++i)
+		{
+			if (  (m_cMap->theScreenMap[checkPosition_Y][checkPosition_X] == i) ||
+				  (m_cMap->theScreenMap[checkPosition_Y][checkPosition_X+2] == i) )
+			{
+				return true;
+			}
+		}
     }
 
     if(m_bCheckDown)
@@ -246,41 +132,15 @@ bool HeroCollisionCheck( CMap* m_cMap,bool m_bCheckLeft,bool m_bCheckRight, bool
         int checkPosition_X = (int) ((mapOffset_X + pos_X) / m_cMap->GetTileSize());
         int checkPosition_Y = m_cMap->GetNumOfTiles_Height() - (int) ceil( (float) (pos_Y - jumpspeed) / m_cMap->GetTileSize());
 
-        if ( (m_cMap->theScreenMap[checkPosition_Y][checkPosition_X] == TILE_GRASS) || 
-            (m_cMap->theScreenMap[checkPosition_Y][checkPosition_X+1] == TILE_GRASS) || 
-            (m_cMap->theScreenMap[checkPosition_Y][checkPosition_X+2] == TILE_GRASS) ||
-            //Door
-            (m_cMap->theScreenMap[checkPosition_Y][checkPosition_X] == TILE_DOOR) || 
-            (m_cMap->theScreenMap[checkPosition_Y][checkPosition_X+1] == TILE_DOOR) || 
-            (m_cMap->theScreenMap[checkPosition_Y][checkPosition_X+2] == TILE_DOOR) ||
-            //Laser Switch
-            (m_cMap->theScreenMap[checkPosition_Y][checkPosition_X] == TILE_LASER_SWITCH) || 
-            (m_cMap->theScreenMap[checkPosition_Y][checkPosition_X+1] == TILE_LASER_SWITCH) || 
-            (m_cMap->theScreenMap[checkPosition_Y][checkPosition_X+2] == TILE_LASER_SWITCH) ||
-            //Laser Shooter UP
-            (m_cMap->theScreenMap[checkPosition_Y][checkPosition_X] == TILE_LASER_SHOOTER_UP) || 
-            (m_cMap->theScreenMap[checkPosition_Y][checkPosition_X+1] == TILE_LASER_SHOOTER_UP) || 
-            (m_cMap->theScreenMap[checkPosition_Y][checkPosition_X+2] == TILE_LASER_SHOOTER_UP) ||
-            //Laser Shooter DOWN
-            (m_cMap->theScreenMap[checkPosition_Y][checkPosition_X] == TILE_LASER_SHOOTER_DOWN) || 
-            (m_cMap->theScreenMap[checkPosition_Y][checkPosition_X+1] == TILE_LASER_SHOOTER_DOWN) || 
-            (m_cMap->theScreenMap[checkPosition_Y][checkPosition_X+2] == TILE_LASER_SHOOTER_DOWN) ||
-            //Laser Shooter LEFT
-            (m_cMap->theScreenMap[checkPosition_Y][checkPosition_X] == TILE_LASER_SHOOTER_LEFT) || 
-            (m_cMap->theScreenMap[checkPosition_Y][checkPosition_X+1] == TILE_LASER_SHOOTER_LEFT) || 
-            (m_cMap->theScreenMap[checkPosition_Y][checkPosition_X+2] == TILE_LASER_SHOOTER_LEFT) ||
-            //Laser Shooter RIGHT
-            (m_cMap->theScreenMap[checkPosition_Y][checkPosition_X] == TILE_LASER_SHOOTER_RIGHT) || 
-            (m_cMap->theScreenMap[checkPosition_Y][checkPosition_X+1] == TILE_LASER_SHOOTER_RIGHT) || 
-            (m_cMap->theScreenMap[checkPosition_Y][checkPosition_X+2] == TILE_LASER_SHOOTER_RIGHT) ||
-            //Tile underground
-            (m_cMap->theScreenMap[checkPosition_Y][checkPosition_X] == TILE_GRASS) || 
-            (m_cMap->theScreenMap[checkPosition_Y][checkPosition_X+1] == TILE_GRASS) || 
-            (m_cMap->theScreenMap[checkPosition_Y][checkPosition_X+2] == TILE_GRASS))
-        {
-            return true;
-        }
-
+		for(unsigned i = 1; i < TILE_MAX_COLLISION; ++i)
+		{
+			if (  (m_cMap->theScreenMap[checkPosition_Y][checkPosition_X] == i) || 
+				  (m_cMap->theScreenMap[checkPosition_Y][checkPosition_X+1] == i) || 
+				  (m_cMap->theScreenMap[checkPosition_Y][checkPosition_X+2] == i) )
+			{
+				return true;
+			}
+		}
     }
 
     return false;

@@ -3,6 +3,8 @@
 #include "Vector3.h"
 #include "Map.h"
 #include "SpriteAnimation.h"
+#include "Inventory.h"
+#include "Mesh.h"
 #include <cmath>
 
 class CHero
@@ -23,7 +25,7 @@ public:
 	void HeroMoveUpDown(const bool mode, const float timeDiff);	//Hero Moving up / down function
 	void HeroMoveLeftRight(const bool mode , const float timeDiff);	//Hero Moving left/right function
 	bool HeroGrapple(CMap* m_cMap,Vector3 direction,Vector3 hookPosition);	//Hero moving towards grapple direction
-	int HeroAttack(int enemy_x,int enemy_y, ATTACK_TYPE type);	//Hero attacking
+	void HeroThrowShuriken(Mesh* ptr,float target_x,float target_y);	//Hero using shuriken
 	void HeroDamaged(int enemy_x, int enemy_y);	//Hero Damaged by colliding with enemy
 	void HeroDamaged(int Damage);	//Hero Damaged by enemy
 	void HeroKnockBack(CMap* m_cMap);	//Hero knocked back
@@ -35,6 +37,8 @@ public:
 						float timeDiff, int screenWidth, int screenHeight,unsigned maplevel);	//Constraining Hero's Y position
 
 	void CollisionResponse(bool m_bCheckLeft,bool m_bCheckRight, bool m_bCheckUp, bool m_bCheckDown);	//Collision	Response function
+
+	CInventory getInventory(void);	//Getting hero's inventory
 
 	float& GetHeroPos_x(void);	//Getting hero X
 	float& GetHeroPos_y(void);	//Getting hero Y
@@ -115,16 +119,13 @@ private:
 	float MAX_INVUL;	//Maximum invulnerable time
 	float kb_MS;	//Knockback speed
 	float hero_MS;	//Movement speed
-	int ATTACK_RANGE;	//Hero's attack range
-	int ATTACK_DAMAGE;	//Hero's attack damage
-	int SHOCKWAVE_DAMAGE;	//Hero's shockwave damage
 
 	static CHero* heroInstance;	//singleton hero instance
 
 	int mapOffset_X, mapOffset_Y;	//Map offset X , Y	for sccrolling
 	int mapFineOffset_X, mapFineOffset_Y;	//Map fine offset X , Y for scrolling
-
-
+	
+	CInventory hero_invent;
     //Physics Code Declaration
     float f_Current_Acceleration; // Acceleration of the character
     float hero_mass;              // Player's mass

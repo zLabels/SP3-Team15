@@ -235,9 +235,6 @@ void StudioProject::InitVariables()
 	//Sound
 	soundplayer.Init();
 
-	Sound_shockwave_delay = 0.6f;
-	Sound_swordswing_delay = 0.4f;
-
 	//Level
 	m_CurrentLevel = 1;
 	Lv1Clear = false;
@@ -259,7 +256,6 @@ void StudioProject::InitVariables()
 
     //Init for Tiles || Game related stuff
     Money_Score = 0;
-    Shuriken_Number = 0;
 }
 void StudioProject::InitHUD()
 {
@@ -623,9 +619,6 @@ void StudioProject::Reset(bool hasWon)
 
 		m_CurrentLevel = 1;
 
-		Sound_shockwave_delay = 0.6f;
-		Sound_swordswing_delay = 0.4f;
-
 		//Level
 		m_CurrentLevel = 1;
 		Lv1Clear = false;
@@ -647,9 +640,6 @@ void StudioProject::Reset(bool hasWon)
 		CHero::GetInstance()->setMapOffset_y(0);
 
 		m_CurrentLevel = 1;
-
-		Sound_shockwave_delay = 0.6f;
-		Sound_swordswing_delay = 0.4f;
 
 		//Level
 		m_CurrentLevel = 1;
@@ -1061,26 +1051,6 @@ void StudioProject::LoadEnemies(unsigned Level)
 		}
 	}
 }
-CShuriken* StudioProject::FetchShuriken()
-{
-	for(std::vector<CShuriken *>::iterator it = shurikenList.begin(); it != shurikenList.end(); ++it)
-	{
-		CShuriken *star = (CShuriken *)*it;
-		if(!star->getActive())
-		{
-			star->setActive(true);
-			return star;
-		}
-	}
-	for(unsigned i = 0; i < 5; ++i)
-	{
-		CShuriken *star = new CShuriken();
-		shurikenList.push_back(star);
-	}
-	CShuriken *star = shurikenList.back();
-	star->setActive(true);
-	return star;
-}
 
 void StudioProject::LoadConsumables()
 {
@@ -1118,67 +1088,6 @@ void StudioProject::LoadConsumables()
             {
                 unsigned j = 0;
             }
-}
-
-void StudioProject::AttackResponse(CHero::ATTACK_TYPE type)
-{
-	/*
-	This function determines what kind of response happens after the player attack is triggered
-	*/
-	switch(type)
-	{
-	case CHero::SHOCKWAVE:
-		{
-			soundplayer.playSounds(soundplayer.SABER_SHOCKWAVE);
-			for(unsigned i = 0; i < enemyContainer.size(); ++i)
-			{													//Mapping enemy position to screen
-				if(CHero::GetInstance()->HeroAttack(enemyContainer[i]->GetPos_x() - CHero::GetInstance()->GetMapOffset_x(),enemyContainer[i]->GetPos_y(),CHero::SHOCKWAVE) != 0)
-				{
-					enemyContainer[i]->EnemyDamaged(CHero::GetInstance()->HeroAttack(enemyContainer[i]->GetPos_x() - CHero::GetInstance()->GetMapOffset_x(),enemyContainer[i]->GetPos_y(),CHero::SHOCKWAVE),m_cMap);
-				}
-			}
-			Sound_shockwave_delay = 0.f;
-		}
-		break;
-	case CHero::ATTACK_1:
-		{
-			if(CHero::GetInstance()->Gethero_EP() < 100)
-			{
-				CHero::GetInstance()->Gethero_EP() += 5;
-			}
-
-			soundplayer.playSounds(soundplayer.SABER_SWING);
-			for(unsigned i = 0; i < enemyContainer.size(); ++i)
-			{													//Mapping enemy position to screen
-				if(CHero::GetInstance()->HeroAttack(enemyContainer[i]->GetPos_x() - CHero::GetInstance()->GetMapOffset_x(),enemyContainer[i]->GetPos_y(),CHero::ATTACK_1) != 0 && enemyContainer[i]->getActive() == true)
-				{
-					enemyContainer[i]->EnemyDamaged(CHero::GetInstance()->HeroAttack(enemyContainer[i]->GetPos_x() - CHero::GetInstance()->GetMapOffset_x(),enemyContainer[i]->GetPos_y(),CHero::ATTACK_1),m_cMap);
-					soundplayer.playSounds(soundplayer.SWORD_IMPACT);
-				}
-			}
-			Sound_swordswing_delay = 0.f;
-		}
-		break;
-	case CHero::ATTACK_2:
-		{
-			if(CHero::GetInstance()->Gethero_EP() < 100)
-			{
-				CHero::GetInstance()->Gethero_EP() += 5;
-			}
-
-			soundplayer.playSounds(soundplayer.SABER_SWING);
-			for(unsigned i = 0; i < enemyContainer.size(); ++i)
-			{													//Mapping enemy position to screen
-				if(CHero::GetInstance()->HeroAttack(enemyContainer[i]->GetPos_x() - CHero::GetInstance()->GetMapOffset_x(),enemyContainer[i]->GetPos_y(),CHero::ATTACK_2) != 0 && enemyContainer[i]->getActive() == true)
-				{
-					enemyContainer[i]->EnemyDamaged(CHero::GetInstance()->HeroAttack(enemyContainer[i]->GetPos_x() - CHero::GetInstance()->GetMapOffset_x(),enemyContainer[i]->GetPos_y(),CHero::ATTACK_2),m_cMap);
-					soundplayer.playSounds(soundplayer.SWORD_IMPACT);
-				}
-			}
-			Sound_swordswing_delay = 0.f;
-		}
-		break;
-	}
 }
 
 void StudioProject::UpdateDebug(double dt)
@@ -1335,7 +1244,7 @@ void StudioProject::EnemyUpdate(double dt)
 		}
 
 		//Enemy Getting attacked
-		for(std::vector<CShuriken *>::iterator it = shurikenList.begin(); it != shurikenList.end(); ++it)
+		/*for(std::vector<CShuriken *>::iterator it = CHero::GetInstance()->getInventory().getShurikenList().begin(); it != CHero::GetInstance()->getInventory().getShurikenList().end(); ++it)
 		{
 			CShuriken *star = (CShuriken *)*it;
 			if(star->getActive() && Enemy->getActive())
@@ -1344,6 +1253,20 @@ void StudioProject::EnemyUpdate(double dt)
 				{
 					Enemy->EnemyDamaged(100,m_cMap);
 					star->setActive(false);
+				}
+			}
+		}*/
+		for(unsigned i = 0; i < CHero::GetInstance()->getInventory().getShurikenList().size(); ++i)
+		{
+			if(CHero::GetInstance()->getInventory().getShurikenList().at(i)->getActive() && Enemy->getActive())
+			{
+				if( ((Enemy->GetPos_x() + 12.5f) - (CHero::GetInstance()->getInventory().getShurikenList().at(i)->getPos().x + CHero::GetInstance()->GetMapOffset_x())) * 
+					((Enemy->GetPos_x() + 12.5f) - (CHero::GetInstance()->getInventory().getShurikenList().at(i)->getPos().x + CHero::GetInstance()->GetMapOffset_x())) + 
+					((Enemy->GetPos_y() + 25.f) - CHero::GetInstance()->getInventory().getShurikenList().at(i)->getPos().y) * 
+					((Enemy->GetPos_y() + 25.f) - CHero::GetInstance()->getInventory().getShurikenList().at(i)->getPos().y) < 1600)
+				{
+					Enemy->EnemyDamaged(100,m_cMap);
+					CHero::GetInstance()->getInventory().getShurikenList().at(i)->setActive(false);
 				}
 			}
 		}
@@ -1416,103 +1339,6 @@ void StudioProject::UpdateSprites(double dt)
 	if(CHero::GetInstance()->Hero_jump_left)
 	{
 		CHero::GetInstance()->Hero_jump_right->Update(dt);
-	}
-
-
-	//===================================//
-	//	Shockwave						//
-	//=================================//
-
-	CHero::GetInstance()->Hero_shockwave_right->m_anim->animPosition.x = CHero::GetInstance()->GetHeroPos_x();	//Setting sprite position to hero position
-	CHero::GetInstance()->Hero_shockwave_right->m_anim->animPosition.y =  CHero::GetInstance()->GetHeroPos_y();	//Setting sprite position to hero position
-	if(CHero::GetInstance()->Hero_shockwave_right)
-	{
-		CHero::GetInstance()->Hero_shockwave_right->Update(dt);
-		//Response happens after a certain delay
-		if(Sound_shockwave_delay >= 0.6f && CHero::GetInstance()->Hero_shockwave_right->m_anim->animeCurrentTime >= 0.4f)
-		{
-			AttackResponse(CHero::SHOCKWAVE);
-		}
-	}
-
-	CHero::GetInstance()->Hero_shockwave_left->m_anim->animPosition.x = CHero::GetInstance()->GetHeroPos_x();	//Setting sprite position to hero position
-	CHero::GetInstance()->Hero_shockwave_left->m_anim->animPosition.y =  CHero::GetInstance()->GetHeroPos_y();	//Setting sprite position to hero position
-	if(CHero::GetInstance()->Hero_shockwave_left)
-	{
-		CHero::GetInstance()->Hero_shockwave_left->Update(dt);
-		//Response happens after a certain delay
-		if(Sound_shockwave_delay >= 0.6f && CHero::GetInstance()->Hero_shockwave_left->m_anim->animeCurrentTime >= 0.4f) //Plays sound after certain time
-		{
-			AttackResponse(CHero::SHOCKWAVE);
-		}
-	}
-
-	//===================================//
-	//	Attack 1						//
-	//=================================//
-
-	//Sound needs changing after enemy added
-	CHero::GetInstance()->Hero_attack_1_right->m_anim->animPosition.x = CHero::GetInstance()->GetHeroPos_x();	//Setting sprite position to hero position
-	CHero::GetInstance()->Hero_attack_1_right->m_anim->animPosition.y =  CHero::GetInstance()->GetHeroPos_y();	//Setting sprite position to hero position
-	if(CHero::GetInstance()->Hero_attack_1_right)
-	{
-		CHero::GetInstance()->Hero_attack_1_right->Update(dt);
-		//Response happens after a certain delay
-		if(CHero::GetInstance()->Hero_attack_1_right->m_anim->animeCurrentTime >= 0.69f)
-		{
-			if(Sound_swordswing_delay >= 0.2f)
-			{
-				AttackResponse(CHero::ATTACK_1);
-			}
-		}
-	}
-	CHero::GetInstance()->Hero_attack_1_left->m_anim->animPosition.x = CHero::GetInstance()->GetHeroPos_x();	//Setting sprite position to hero position
-	CHero::GetInstance()->Hero_attack_1_left->m_anim->animPosition.y =  CHero::GetInstance()->GetHeroPos_y();	//Setting sprite position to hero position
-	if(CHero::GetInstance()->Hero_attack_1_left)
-	{
-		CHero::GetInstance()->Hero_attack_1_left->Update(dt);
-
-		if(CHero::GetInstance()->Hero_attack_1_left->m_anim->animeCurrentTime >= 0.69f)
-		{
-			//Response happens after a certain delay
-			if(Sound_swordswing_delay >= 0.2f)
-			{
-				AttackResponse(CHero::ATTACK_1);
-			}
-		}
-	}
-	//===================================//
-	//	Attack 2						//
-	//=================================//
-
-	CHero::GetInstance()->Hero_attack_2_right->m_anim->animPosition.x = CHero::GetInstance()->GetHeroPos_x();	//Setting sprite position to hero position
-	CHero::GetInstance()->Hero_attack_2_right->m_anim->animPosition.y =  CHero::GetInstance()->GetHeroPos_y();	//Setting sprite position to hero position
-	if(CHero::GetInstance()->Hero_attack_2_right)
-	{
-		CHero::GetInstance()->Hero_attack_2_right->Update(dt);
-		if(CHero::GetInstance()->Hero_attack_2_right->m_anim->animeCurrentTime >= 0.5f) 
-		{
-			//Response happens after a certain delay
-			if(Sound_swordswing_delay >= 0.2f)
-			{
-				AttackResponse(CHero::ATTACK_2);
-			}
-		}
-	}
-
-	CHero::GetInstance()->Hero_attack_2_left->m_anim->animPosition.x = CHero::GetInstance()->GetHeroPos_x();	//Setting sprite position to hero position
-	CHero::GetInstance()->Hero_attack_2_left->m_anim->animPosition.y =  CHero::GetInstance()->GetHeroPos_y();	//Setting sprite position to hero position
-	if(CHero::GetInstance()->Hero_attack_2_left)
-	{
-		CHero::GetInstance()->Hero_attack_2_left->Update(dt);
-		if(CHero::GetInstance()->Hero_attack_2_left->m_anim->animeCurrentTime >= 0.69f)
-		{
-			//Response happens after a certain delay
-			if(Sound_swordswing_delay >= 0.1f)
-			{
-				AttackResponse(CHero::ATTACK_2);
-			}
-		}
 	}
 
 	//===================================//
@@ -1627,13 +1453,13 @@ void StudioProject::UpdateEnemySprites(double dt)
 }
 void StudioProject::UpdateWeapon()
 {
-	if(shurikenList.size() > 0)
+	if(CHero::GetInstance()->getInventory().getShurikenList().size() > 0)
 	{
-		for(unsigned i = 0;i < shurikenList.size(); ++i)
+		for(unsigned i = 0;i < CHero::GetInstance()->getInventory().getShurikenList().size(); ++i)
 		{
-			if(shurikenList[i]->getActive() == true)
+			if(CHero::GetInstance()->getInventory().getShurikenList().at(i)->getActive() == true)
 			{
-				shurikenList[i]->Update(m_cMap,CHero::GetInstance()->GetMapOffset_x(),CHero::GetInstance()->GetMapOffset_y());
+				CHero::GetInstance()->getInventory().getShurikenList().at(i)->Update(m_cMap,CHero::GetInstance()->GetMapOffset_x(),CHero::GetInstance()->GetMapOffset_y());
 			}
 		}
 	}
@@ -1873,82 +1699,6 @@ void StudioProject::UpdateInput(double dt)
 		CHero::GetInstance()->HeroJump();
 	}
 
-	//Attacks (checks if any other actions are being performed)
-	Sound_swordswing_delay += (float)dt;
-
-	if(Application::IsKeyPressed('X') && 
-		CHero::GetInstance()->Hero_shockwave_right->m_anim->animActive == false && CHero::GetInstance()->Hero_shockwave_left->m_anim->animActive == false &&
-		CHero::GetInstance()->Hero_attack_2_right->m_anim->animActive == false && CHero::GetInstance()->Hero_attack_2_left->m_anim->animActive == false)
-	{
-		if(CHero::GetInstance()->Gethero_face_right() == true)
-		{
-			CHero::GetInstance()->Hero_attack_1_right->m_anim->animActive = true;
-			CHero::GetInstance()->Hero_attack_1_left->m_anim->animActive = false;
-		}
-		else if(CHero::GetInstance()->Gethero_face_left() == true)
-		{
-			CHero::GetInstance()->Hero_attack_1_right->m_anim->animActive = false;
-			CHero::GetInstance()->Hero_attack_1_left->m_anim->animActive = true;
-		}
-	}
-	else
-	{
-		CHero::GetInstance()->Hero_attack_1_right->m_anim->animActive = false;
-		CHero::GetInstance()->Hero_attack_1_right->m_anim->animCurrentFrame = 0;
-		CHero::GetInstance()->Hero_attack_1_right->m_anim->animeCurrentTime = 0.f;
-
-		CHero::GetInstance()->Hero_attack_1_left->m_anim->animActive = false;
-		CHero::GetInstance()->Hero_attack_1_left->m_anim->animCurrentFrame = 0;
-		CHero::GetInstance()->Hero_attack_1_left->m_anim->animeCurrentTime = 0.f;
-	}
-
-	if(Application::IsKeyPressed('Z') && 
-		CHero::GetInstance()->Hero_shockwave_right->m_anim->animActive == false && CHero::GetInstance()->Hero_shockwave_left->m_anim->animActive == false &&
-		CHero::GetInstance()->Hero_attack_1_right->m_anim->animActive == false && CHero::GetInstance()->Hero_attack_1_left->m_anim->animActive == false)
-	{
-		if(CHero::GetInstance()->Gethero_face_right() == true)
-		{
-			CHero::GetInstance()->Hero_attack_2_right->m_anim->animActive = true;
-			CHero::GetInstance()->Hero_attack_2_left->m_anim->animActive = false;
-		}
-		else if(CHero::GetInstance()->Gethero_face_left() == true)
-		{
-			CHero::GetInstance()->Hero_attack_2_right->m_anim->animActive = false;
-			CHero::GetInstance()->Hero_attack_2_left->m_anim->animActive = true;
-		}
-	}
-	else
-	{
-		CHero::GetInstance()->Hero_attack_2_right->m_anim->animActive = false;
-		CHero::GetInstance()->Hero_attack_2_right->m_anim->animCurrentFrame = 0;
-		CHero::GetInstance()->Hero_attack_2_right->m_anim->animeCurrentTime = 0.f;
-
-		CHero::GetInstance()->Hero_attack_2_left->m_anim->animActive = false;
-		CHero::GetInstance()->Hero_attack_2_left->m_anim->animCurrentFrame = 0;
-		CHero::GetInstance()->Hero_attack_2_left->m_anim->animeCurrentTime = 0.f;
-	}
-
-	Sound_shockwave_delay += (float)dt;
-	//Shockwave (checks if any other actions are being performed)
-	if(Application::IsKeyPressed('C') && 
-		CHero::GetInstance()->Hero_attack_1_right->m_anim->animActive == false && CHero::GetInstance()->Hero_attack_1_left->m_anim->animActive == false &&
-		CHero::GetInstance()->Hero_attack_2_right->m_anim->animActive == false && CHero::GetInstance()->Hero_attack_2_left->m_anim->animActive == false &&
-		CHero::GetInstance()->Hero_shockwave_right->m_anim->animActive == false && CHero::GetInstance()->Hero_shockwave_left->m_anim->animActive == false &&
-		CHero::GetInstance()->Gethero_EP() >= 10)
-	{
-		if(CHero::GetInstance()->Gethero_face_right() == true)
-		{
-			CHero::GetInstance()->Hero_shockwave_left->m_anim->animActive = false;
-			CHero::GetInstance()->Hero_shockwave_right->m_anim->animActive = true;
-		}
-		else if(CHero::GetInstance()->Gethero_face_left() == true)
-		{
-			CHero::GetInstance()->Hero_shockwave_left->m_anim->animActive = true;
-			CHero::GetInstance()->Hero_shockwave_right->m_anim->animActive = false;
-		}
-		CHero::GetInstance()->Gethero_EP() -= 10;
-	}
-	
 	/*
 		Clicking
 		Grappling Hook
@@ -1972,11 +1722,7 @@ void StudioProject::UpdateInput(double dt)
 	{
 		bLButtonState = true;
 		std::cout << "LBUTTON DOWN" << std::endl;
-		CShuriken* shuriken = FetchShuriken();
-		shuriken->setData(meshList[GEO_SHURIKEN],hero_x - CHero::GetInstance()->GetMapOffset_x(),hero_y,
-						10,posX - hero_x,posY - hero_y,true);
-
-		CHero::GetInstance()->Gethero_EP() -= 10;
+		CHero::GetInstance()->HeroThrowShuriken(meshList[GEO_SHURIKEN],posX,posY);
 	}
 	else if(bLButtonState && !Application::IsMousePressed(0))
 	{
@@ -2465,27 +2211,20 @@ void StudioProject::Render2DSprite(Mesh *mesh, bool enableLight, float sizex, fl
 }
 
 void StudioProject::RenderWeapon()
-{
-	float hero_x = CHero::GetInstance()->GetHeroPos_x();
-	//hero_x += CHero::GetInstance()->GetMapOffset_x();
-	hero_x += 50.f;
-	float hero_y = CHero::GetInstance()->GetHeroPos_y();
-	hero_y += 25.f;
-	Render2DMesh(meshList[GEO_GRAPPLING_HOOK],false,1.f,hero_x,hero_y,true);
-    //if(Shuriken_Number > 0)
-    //{
-        if(shurikenList.size() > 0)
-        {
-            for(unsigned i = 0;i < shurikenList.size(); ++i)
-            {
-                if(shurikenList[i]->getActive() == true)
-                {
-					Render2DMesh(shurikenList[i]->getMesh(),false,1.f,shurikenList[i]->getPos().x,shurikenList[i]->getPos().y);
-                }
-            }
-        }
-    //}
-
+{  
+	if(CHero::GetInstance()->getInventory().getShurikenList().size() > 0)
+	{
+		for(unsigned i = 0;i < CHero::GetInstance()->getInventory().getShurikenList().size(); ++i)
+		{
+			if(CHero::GetInstance()->getInventory().getShurikenList().at(i)->getActive() == true)
+			{
+				Render2DMesh(CHero::GetInstance()->getInventory().getShurikenList().at(i)->getMesh(),false,1.f,
+					CHero::GetInstance()->getInventory().getShurikenList().at(i)->getPos().x,
+					CHero::GetInstance()->getInventory().getShurikenList().at(i)->getPos().y);
+			}
+		}
+	}
+  
 	if(GrappleHook.getActive())
 	{
 		Render2DMesh(GrappleHook.getMesh(),false,1.f,GrappleHook.getPos().x,GrappleHook.getPos().y,true,GrappleHook.getRotation());
@@ -2586,11 +2325,11 @@ void StudioProject::RenderHUD(void)
 	//RenderMeshIn2D(meshList[GEO_ICON],false,0.7f,0.7f,-69.f,51.f,false);
 
 	//HUD template
-	RenderMeshIn2D(meshList[GEO_HUD_TEMPLATE],false,2.f,2.f,-40.f,51.f,false);
+	RenderMeshIn2D(meshList[GEO_HUD_TEMPLATE],false,2.f,2.f,-57.f,51.f,false);
 	//Health points
-	RenderMeshIn2D(meshList[GEO_HUD_HP],false,0.032f * CHero::GetInstance()->Gethero_HP(),2.f,-52.8f,53.7f,false);
+	RenderMeshIn2D(meshList[GEO_HUD_HP],false,0.032f * CHero::GetInstance()->Gethero_HP(),2.f,-69.8f,53.7f,false);
 	//Energy points
-	RenderMeshIn2D(meshList[GEO_HUD_EP],false,0.032f * CHero::GetInstance()->Gethero_EP(),2.f,-52.8f,48.1f,false);
+	RenderMeshIn2D(meshList[GEO_HUD_EP],false,0.032f * CHero::GetInstance()->Gethero_EP(),2.f,-69.8f,48.1f,false);
 	//RenderMeshIn2D(meshList[GEO_HEALTHBAR],false,player.getHitpoints() * 0.025f,0.3f,-79.0f,-57.5f,false);
 
 	/*std::ostringstream ss3;
@@ -2833,41 +2572,6 @@ void StudioProject::RenderHeroSprites(void)
 
 	//===================================================================================//
 	//				
-	//							ATTACKS													//
-	//
-	//==================================================================================//
-	//Attack 1
-	if(CHero::GetInstance()->Hero_attack_1_right->m_anim->animActive == true)
-	{
-		Render2DSprite(CHero::GetInstance()->Hero_attack_1_right,false,CHero::GetInstance()->Hero_attack_1_right->m_anim->animScale,CHero::GetInstance()->Hero_attack_1_right->m_anim->animScale,CHero::GetInstance()->Hero_attack_1_right->m_anim->animPosition.x + HERO_OFFSET + 16.5f,CHero::GetInstance()->Hero_attack_1_right->m_anim->animPosition.y + HERO_OFFSET + 16.5f,false);
-	}
-
-	if(CHero::GetInstance()->Hero_attack_1_left->m_anim->animActive == true)
-	{
-		Render2DSprite(CHero::GetInstance()->Hero_attack_1_left,false,CHero::GetInstance()->Hero_attack_1_left->m_anim->animScale,CHero::GetInstance()->Hero_attack_1_left->m_anim->animScale,CHero::GetInstance()->Hero_attack_1_left->m_anim->animPosition.x + HERO_OFFSET + 16.5f,CHero::GetInstance()->Hero_attack_1_left->m_anim->animPosition.y + HERO_OFFSET + 16.5f,false);
-	}
-
-	//Attack 2
-	if(CHero::GetInstance()->Hero_attack_2_right->m_anim->animActive == true)
-	{
-		Render2DSprite(CHero::GetInstance()->Hero_attack_2_right,false,CHero::GetInstance()->Hero_attack_2_right->m_anim->animScale,CHero::GetInstance()->Hero_attack_2_right->m_anim->animScale,CHero::GetInstance()->Hero_attack_2_right->m_anim->animPosition.x + HERO_OFFSET + 4.125f,CHero::GetInstance()->Hero_attack_2_right->m_anim->animPosition.y + HERO_OFFSET + 4.125f,false);
-	}
-	if(CHero::GetInstance()->Hero_attack_2_left->m_anim->animActive == true)
-	{
-		Render2DSprite(CHero::GetInstance()->Hero_attack_2_left,false,CHero::GetInstance()->Hero_attack_2_left->m_anim->animScale,CHero::GetInstance()->Hero_attack_2_left->m_anim->animScale,CHero::GetInstance()->Hero_attack_2_left->m_anim->animPosition.x + HERO_OFFSET + 4.125f,CHero::GetInstance()->Hero_attack_2_left->m_anim->animPosition.y + HERO_OFFSET + 4.125f,false);
-	}
-
-	//Shockwave
-	if(CHero::GetInstance()->Hero_shockwave_right->m_anim->animActive == true)
-	{
-		Render2DSprite(CHero::GetInstance()->Hero_shockwave_right,false,CHero::GetInstance()->Hero_shockwave_right->m_anim->animScale,CHero::GetInstance()->Hero_shockwave_right->m_anim->animScale,CHero::GetInstance()->Hero_shockwave_right->m_anim->animPosition.x + HERO_OFFSET,CHero::GetInstance()->Hero_shockwave_right->m_anim->animPosition.y + HERO_OFFSET,false);
-	}
-	if(CHero::GetInstance()->Hero_shockwave_left->m_anim->animActive == true)
-	{
-		Render2DSprite(CHero::GetInstance()->Hero_shockwave_left,false,CHero::GetInstance()->Hero_shockwave_left->m_anim->animScale,CHero::GetInstance()->Hero_shockwave_left->m_anim->animScale,CHero::GetInstance()->Hero_shockwave_left->m_anim->animPosition.x + HERO_OFFSET,CHero::GetInstance()->Hero_shockwave_left->m_anim->animPosition.y + HERO_OFFSET,false);
-	}
-	//===================================================================================//
-	//				
 	//							JUMP													//
 	//
 	//==================================================================================//
@@ -3070,13 +2774,6 @@ void StudioProject::Exit()
 		CEnemy *enemy = enemyContainer.back();
 		delete enemy;
 		enemyContainer.pop_back();
-	}
-
-	while(shurikenList.size() > 0)
-	{
-		CShuriken *star = shurikenList.back();
-		delete star;
-		shurikenList.pop_back();
 	}
 	glDeleteProgram(m_programID);
 	glDeleteVertexArrays(1, &m_vertexArrayID);

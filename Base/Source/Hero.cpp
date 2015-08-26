@@ -20,9 +20,6 @@ CHero::CHero(void):
 	mapFineOffset_X(0),
 	mapFineOffset_Y(0),
 	MAX_FALLSPEED(14),
-	ATTACK_RANGE(3600),
-	ATTACK_DAMAGE(20),
-	SHOCKWAVE_DAMAGE(40),
 	hero_damaged(false),
 	kb_direction(false),
 	invul_frame(0.f),
@@ -35,10 +32,16 @@ CHero::CHero(void):
     hero_SCORE(0)
 {
 }
-
 CHero::~CHero(void)
 {
+	while(hero_invent.getShurikenList().size() > 0)
+	{
+		CShuriken *star = hero_invent.getShurikenList().back();
+		delete star;
+		hero_invent.getShurikenList().pop_back();
+	}
 }
+
 void CHero::HeroInit(float posX,float posY)
 {
 	this->HeroPos.x = posX;
@@ -118,47 +121,15 @@ bool CHero::HeroGrapple(CMap* m_cMap,Vector3 direction,Vector3 hookPosition)
 	
 	return false;
 }
-/********************************************************************************
-Hero Attacking
-********************************************************************************/
-int CHero::HeroAttack(int enemy_x,int enemy_y, ATTACK_TYPE type)
-{	
-	if( hero_face_left && enemy_x < HeroPos.x && type != SHOCKWAVE )	//Ensures that hero is only able to attack what is infront of him
+
+void CHero::HeroThrowShuriken(Mesh* ptr,float target_x,float target_y)
+{
+	if( hero_invent.getShurikenCount() > 0 )
 	{
-		if( ((enemy_x - (HeroPos.x)) * (enemy_x - (HeroPos.x)) + (enemy_y - HeroPos.y) * (enemy_y - HeroPos.y)) < ATTACK_RANGE)	//Checking if enemy is within attack range
-		{
-			if(type == ATTACK_1)
-			{
-				return ATTACK_DAMAGE;
-			}
-			else if(type == ATTACK_2)
-			{
-				return ATTACK_DAMAGE;
-			}
-		}
+		CShuriken* shuriken = hero_invent.FetchShuriken();
+		shuriken->setData(ptr,HeroPos.x + 25.f,HeroPos.y + 40.f,
+			10,target_x - (HeroPos.x + this->mapOffset_X + 25.f),target_y - (HeroPos.y + 40.f),true);
 	}
-	else if( hero_face_right && enemy_x > HeroPos.x && type != SHOCKWAVE ) //Ensures that hero is only able to attack what is infront of him
-	{
-		if( ((enemy_x - (HeroPos.x)) * (enemy_x - (HeroPos.x)) + (enemy_y - HeroPos.y) * (enemy_y - HeroPos.y)) < ATTACK_RANGE)	//Checking if enemy is within attack range
-		{
-			if(type == ATTACK_1)
-			{
-				return ATTACK_DAMAGE;
-			}
-			else if(type == ATTACK_2)
-			{
-				return ATTACK_DAMAGE;
-			}
-		}
-	}
-	else if(type == SHOCKWAVE)	// IF Shockwave is used, front and back is affected
-	{
-		if( ((enemy_x - (HeroPos.x)) * (enemy_x - (HeroPos.x)) + (enemy_y - HeroPos.y) * (enemy_y - HeroPos.y)) < ATTACK_RANGE)	//Checking if enemy is within attack range
-		{
-			return SHOCKWAVE_DAMAGE;
-		}
-	}
-	return 0;
 }
 /********************************************************************************
 Hero Damaged by colliding with enemy
@@ -405,13 +376,13 @@ void CHero::Update(CMap* m_cMap,int mapWidth, int mapHeight,unsigned maplevel)
 		}
 	}
 
-    if(HeroTileCheck(m_cMap, TILE_TYPE::TILE_LASER,true,true,true,true,GetHeroPos_x(),GetHeroPos_y(),GetMapOffset_x(),Getjumpspeed()) == true)
+    if(HeroTileCheck(m_cMap, TILE_LASER,true,true,true,true,GetHeroPos_x(),GetHeroPos_y(),GetMapOffset_x(),Getjumpspeed()) == true)
     {
         hero_HP -= 1; // Minus health for touching the lasers.
     }
 
     
-    if(HeroTileCheck(m_cMap, TILE_TYPE::TILE_HEALTH,true,true,true,true,GetHeroPos_x(),GetHeroPos_y(),GetMapOffset_x(),Getjumpspeed()) == true)
+    if(HeroTileCheck(m_cMap, TILE_HEALTH,true,true,true,true,GetHeroPos_x(),GetHeroPos_y(),GetMapOffset_x(),Getjumpspeed()) == true)
     {
         float tempHeroPos_x = CHero::GetInstance()->GetHeroPos_x();	//Hero current position X
         float tempHeroPos_y = CHero::GetInstance()->GetHeroPos_y();	//Hero current position Y
@@ -446,7 +417,7 @@ void CHero::Update(CMap* m_cMap,int mapWidth, int mapHeight,unsigned maplevel)
         m_cMap->theScreenMap[checkPosition_Y4][checkPosition_X + 2] = 0;
     }
         
-    if(HeroTileCheck(m_cMap, TILE_TYPE::TILE_SCORE,true,true,true,true,GetHeroPos_x(),GetHeroPos_y(),GetMapOffset_x(),Getjumpspeed()) == true)
+    if(HeroTileCheck(m_cMap, TILE_SCORE,true,true,true,true,GetHeroPos_x(),GetHeroPos_y(),GetMapOffset_x(),Getjumpspeed()) == true)
     {
         float tempHeroPos_x = CHero::GetInstance()->GetHeroPos_x();	//Hero current position X
         float tempHeroPos_y = CHero::GetInstance()->GetHeroPos_y();	//Hero current position Y
@@ -474,6 +445,11 @@ void CHero::Update(CMap* m_cMap,int mapWidth, int mapHeight,unsigned maplevel)
 	ConstrainHeroX(100, 600, 25, 575, 1.0f,mapWidth,mapHeight,maplevel);
 	// Calculate the fine offset
 	mapFineOffset_X = mapOffset_X % m_cMap->GetTileSize();
+}
+
+CInventory CHero::getInventory(void)
+{
+	return this->hero_invent;
 }
 
 float& CHero::GetHeroPos_x(void)

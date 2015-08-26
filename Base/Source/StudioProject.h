@@ -183,31 +183,6 @@ class StudioProject : public Scene
 		NUM_GEOMETRY,
 	};
 
-    
-	enum TILE_TYPE
-	{
-        //---STUFF THAT NEEDS COLLISION---
-		TILE_METALFLOOR = 1,
-		TILE_METALSUPPORT_RIGHT,
-		TILE_BORDER,
-		TILE_METALCORNER,
-		TILE_METALSUPPORT_LEFT,
-        TILE_DOOR,
-        TILE_LASER_SWITCH,
-        TILE_OBJECTIVE,
-        TILE_LASER_SHOOTER_UP,
-        TILE_LASER_SHOOTER_DOWN,
-        TILE_LASER_SHOOTER_LEFT,
-        TILE_LASER_SHOOTER_RIGHT,
-        //---STUFF THAT DOESN'T NEED COLLISION---
-        TILE_LASER = 25,
-        TILE_HEALTH,
-        TILE_SCORE,
-        TILE_SHURIKEN,
-        
-		MAX_TILE,
-	};
-
 	enum REAR_TILE_TYPE
 	{
 		WINDOW_TOP = 1,
@@ -249,7 +224,6 @@ public:
 	void LoadMap(int level);	//Load map
 	void LoadHero();//Load Hero
     void LoadConsumables();
-	CShuriken* FetchShuriken(void);	//Fetch weapon from vector
 
 	void UpdateDebug(double dt);	//Update debug related information
 	void UpdateSprites(double dt);	//Update sprite animations
@@ -322,8 +296,6 @@ private:
 
 	//Sound
 	CSoundManager soundplayer;	//Sound player 
-	float Sound_shockwave_delay;	//Delay for sound
-	float Sound_swordswing_delay;	//Delay for sound
 
 	//Maps
 	unsigned m_CurrentLevel;	//Current Level
@@ -351,7 +323,6 @@ private:
 	float jump_input_delay;	//Delay input for double jump
 
 	//Weapon
-	vector<CShuriken*> shurikenList;
 	CGrapplingHook GrappleHook;
 
 	//Menu
@@ -376,11 +347,9 @@ private:
 
     //Tiles || Game related
     int Money_Score;
-    int Shuriken_Number;
 
     bool GetorNot;
 
-    
     vector<CTreasureChest*> Treasure;
     //CTreasureChest* Chest;
     float CollisionRange;
