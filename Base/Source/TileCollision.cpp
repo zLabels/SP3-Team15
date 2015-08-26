@@ -160,7 +160,10 @@ bool HeroTileCheck(CMap* m_cMap,TILE_TYPE type,bool m_bCheckLeft,bool m_bCheckRi
         if (//Border
             (m_cMap->theScreenMap[checkPosition_Y2][checkPosition_X2+2] == type) ||
             (m_cMap->theScreenMap[checkPosition_Y3][checkPosition_X2+2] == type) ||
-            (m_cMap->theScreenMap[checkPosition_Y4][checkPosition_X2+2] == type))
+            (m_cMap->theScreenMap[checkPosition_Y4][checkPosition_X2+2] == type) ||
+			(m_cMap->theScreenMap[checkPosition_Y2][checkPosition_X2+1] == type) ||
+            (m_cMap->theScreenMap[checkPosition_Y3][checkPosition_X2+1] == type) ||
+            (m_cMap->theScreenMap[checkPosition_Y4][checkPosition_X2+1] == type))
         {
             return true;
         }

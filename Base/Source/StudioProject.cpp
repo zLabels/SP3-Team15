@@ -1405,12 +1405,12 @@ void StudioProject::EnemyUpdate(double dt)
 			if( Enemy->getEnemyBullet().at(i)->getActive() == true)
 			{
 				Enemy->getEnemyBullet().at(i)->Update(m_cMap);
-			}
-			if( ((CHero::GetInstance()->GetHeroPos_x() + 12.5f) - (Enemy->getEnemyBullet().at(i)->getPos().x - CHero::GetInstance()->GetMapOffset_x())) * ((CHero::GetInstance()->GetHeroPos_x() + 12.5f) - (Enemy->getEnemyBullet().at(i)->getPos().x - CHero::GetInstance()->GetMapOffset_x())) + 
-				((CHero::GetInstance()->GetHeroPos_y() + 25.f) - Enemy->getEnemyBullet().at(i)->getPos().y) * ((CHero::GetInstance()->GetHeroPos_y() + 25.f) - Enemy->getEnemyBullet().at(i)->getPos().y) < 1600 )
-			{
-				CHero::GetInstance()->HeroDamaged(Enemy->getEnemyBullet().at(i)->getDamage());
-				Enemy->getEnemyBullet().at(i)->setActive(false);
+				if( ((CHero::GetInstance()->GetHeroPos_x() + 12.5f) - (Enemy->getEnemyBullet().at(i)->getPos().x - CHero::GetInstance()->GetMapOffset_x())) * ((CHero::GetInstance()->GetHeroPos_x() + 12.5f) - (Enemy->getEnemyBullet().at(i)->getPos().x - CHero::GetInstance()->GetMapOffset_x())) + 
+					((CHero::GetInstance()->GetHeroPos_y() + 25.f) - Enemy->getEnemyBullet().at(i)->getPos().y) * ((CHero::GetInstance()->GetHeroPos_y() + 25.f) - Enemy->getEnemyBullet().at(i)->getPos().y) < 1600 )
+				{
+					CHero::GetInstance()->HeroDamaged(Enemy->getEnemyBullet().at(i)->getDamage());
+					Enemy->getEnemyBullet().at(i)->setActive(false);
+				}
 			}
 		}
 		
@@ -1465,7 +1465,8 @@ void StudioProject::HeroUpdate(double dt)
 }
 void StudioProject::UpdateSprites(double dt)
 {
-    if(CHero::GetInstance()->getHero_Invi())
+	static bool invisLoaded = false;
+    if( ( CHero::GetInstance()->getHero_Invi() == true && invisLoaded == false ) )
     {
         //----------IDLE----------//
 	    meshList[GEO_PLAYER_IDLE_LEFT]->textureArray[0] = LoadTGA("Image//Player//Invisible//Player_Idle_Invisible.tga");           //Left
@@ -1481,8 +1482,9 @@ void StudioProject::UpdateSprites(double dt)
         meshList[GEO_PLAYER_JUMP_LEFT]->textureArray[0] = LoadTGA("Image//Player//Invisible//Player_Jump_Left_Invisible.tga");      //Left
         meshList[GEO_PLAYER_JUMP_RIGHT]->textureArray[0] = LoadTGA("Image//Player//Invisible//Player_Jump_Right_Invisible.tga");    //Right
         //-----------------------//
+		invisLoaded = true;
     }
-    else
+    else if( (CHero::GetInstance()->getHero_Invi() == false && invisLoaded == true) )
     {
         //----------IDLE----------//
         meshList[GEO_PLAYER_IDLE_LEFT]->textureArray[0] = LoadTGA("Image//Player//Player_Idle.tga");               //Left
@@ -1498,6 +1500,7 @@ void StudioProject::UpdateSprites(double dt)
         meshList[GEO_PLAYER_JUMP_LEFT]->textureArray[0] = LoadTGA("Image//Player//Player_Jump_Left.tga");          //Left
         meshList[GEO_PLAYER_JUMP_RIGHT]->textureArray[0] = LoadTGA("Image//Player//Player_Jump_Right.tga");        //Right
         //-----------------------//
+		invisLoaded = false;
     }
 	//==================================//
 	//	Jump 							//
@@ -1850,7 +1853,7 @@ void StudioProject::UpdateInput(double dt)
 
 	//JUMPING
 	jump_input_delay += (float)dt;
-	if(Application::IsKeyPressed(' ') && jump_input_delay > 0.3f)
+	if(Application::IsKeyPressed(VK_SPACE) && jump_input_delay > 0.3f &&!CHero::GetInstance()->getInventory().getGrapple().getHooked() )
 	{
 		CHero::GetInstance()->Getjumpcount()++;
 		jump_input_delay = 0.f;
@@ -2704,10 +2707,6 @@ void StudioProject::RenderHeroSprites(void)
 	//							IDLE													//
 	//
 	//==================================================================================//
-    if(CHero::GetInstance()->getHero_Invi())
-    {
-
-    }
 	if(CHero::GetInstance()->Hero_idle_right->m_anim->animActive == true)
 	{
 		Render2DSprite(CHero::GetInstance()->Hero_idle_right,false,CHero::GetInstance()->Hero_idle_right->m_anim->animScale,CHero::GetInstance()->Hero_idle_right->m_anim->animScale,CHero::GetInstance()->Hero_idle_right->m_anim->animPosition.x + HERO_OFFSET,CHero::GetInstance()->Hero_idle_right->m_anim->animPosition.y + HERO_OFFSET,false);
