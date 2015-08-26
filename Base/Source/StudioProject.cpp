@@ -567,14 +567,14 @@ void StudioProject::InitTiles()
 	}
     
     //---TREASURE CHEST---
-    for(int i = 0; i < 1; i++)
+    /*for(int i = 0; i < 1; i++)
     {
         CTreasureChest* Chest = new CTreasureChest();
         Chest->SetActive(true);
         Chest->setPositionX(300);
         Chest->setPositionY(50);
         Treasure.push_back(Chest);
-    }
+    }*/
 }
 void StudioProject::InitWeapon()
 {
@@ -600,6 +600,7 @@ void StudioProject::Init()
 	InitHero();
 	InitWeapon();
 	LoadEnemies(m_CurrentLevel);
+    LoadConsumables(m_CurrentLevel);
 
 }
 
@@ -623,7 +624,7 @@ void StudioProject::Reset(bool hasWon)
 		m_CurrentLevel = 1;
 		Lv1Clear = false;
 		LoadEnemies(m_CurrentLevel);
-        LoadConsumables();
+        LoadConsumables(m_CurrentLevel);
 		//Map
 		Transiting = false;
 		m_cMap = m_cMap_Level1;
@@ -742,30 +743,35 @@ void StudioProject::LoadMap(int level)
 		{
 			m_cMap = m_cMap_Level1;
 			LoadEnemies(level);
+            LoadConsumables(level);
 		}
 		break;
 	case 2:
 		{
 			m_cMap = m_cMap_Level1;
 			LoadEnemies(level);
+            LoadConsumables(level);
 		}
 		break;
 	case 3:
 		{
 			m_cMap = m_cMap_Level3;
 			LoadEnemies(level);
+            LoadConsumables(level);
 		}
 		break;
 	case 4:
 		{
 			m_cMap = m_cMap_Level4;
 			LoadEnemies(level);
+            LoadConsumables(level);
 		}
 		break;
 	case 5:
 		{
 			m_cMap = m_cMap_Level1;
 			LoadEnemies(level);
+            LoadConsumables(level);
 		}
 		break;
 	}
@@ -1052,42 +1058,179 @@ void StudioProject::LoadEnemies(unsigned Level)
 	}
 }
 
-void StudioProject::LoadConsumables()
+void StudioProject::LoadConsumables(unsigned level)
 {
     /*
 	This function reads the enemies data from a text file based on the level
 	Example, if 1 is passed into the function, the switch case will open the Level1 text file,
 	Add more if required.
 	*/
-	enemyContainer.clear();	//Clearing the vector of enemies
+	Treasure.clear();	//Clearing the vector of enemies
 	string data = "";	//Used to store string from text file
 	vector<int> ConsumablePosition;	//Local vector to store the data from text file to be used later on
-    
-    ifstream datafiles("Source//TextFiles//Powerups//Powerups_Level4Data.txt");
-			if(datafiles.is_open())
-			{
-				while(datafiles.good())
-				{
-					getline(datafiles, data);
 
-					istringstream is(data);
-					// If this line is not a comment line, then process it
-					if(!(data.find("//") == NULL) && data != "")
-					{
-						//Stores data into vector
-						for(string line; getline(is, line, ','); )
-						{
-							ConsumablePosition.push_back((atoi(line.c_str())));
-						}
-					}
-				}
-			}
-			datafiles.close();
-
-            if(ConsumablePosition.size() > 0)
+    switch(level)
+    {
+    case 1:
+        {
+            ifstream datafiles("Source//TextFiles//Powerups//Powerups_Level1Data.txt");
+            if(datafiles.is_open())
             {
-                unsigned j = 0;
+                while(datafiles.good())
+                {
+                    getline(datafiles, data);
+
+                    istringstream is(data);
+                    // If this line is not a comment line, then process it
+                    if(!(data.find("//") == NULL) && data != "")
+                    {
+                        //Stores data into vector
+
+                        for(string line; getline(is, line, ','); )
+                        {
+                            ConsumablePosition.push_back((atoi(line.c_str())));
+                        }
+                    }
+                }
             }
+            else
+            {
+                cout << "Error on opening" << endl;
+            }
+            datafiles.close();
+        }
+        break;
+
+    case 2:
+        {
+            ifstream datafiles("Source//TextFiles//Powerups//Powerups_Level2Data.txt");
+            if(datafiles.is_open())
+            {
+                while(datafiles.good())
+                {
+                    getline(datafiles, data);
+
+                    istringstream is(data);
+                    // If this line is not a comment line, then process it
+                    if(!(data.find("//") == NULL) && data != "")
+                    {
+                        //Stores data into vector
+                        for(string line; getline(is, line, ','); )
+                        {
+                            ConsumablePosition.push_back((atoi(line.c_str())));
+                        }
+                    }
+                }
+            }
+            else
+            {
+                cout << "Error on opening" << endl;
+            }
+            datafiles.close();
+        }
+        break;
+    case 3:
+        {
+            ifstream datafiles("Source//TextFiles//Powerups//Powerups_Level3Data.txt");
+            if(datafiles.is_open())
+            {
+                while(datafiles.good())
+                {
+                    getline(datafiles, data);
+
+                    istringstream is(data);
+                    // If this line is not a comment line, then process it
+                    if(!(data.find("//") == NULL) && data != "")
+                    {
+                        //Stores data into vector
+                        for(string line; getline(is, line, ','); )
+                        {
+                            ConsumablePosition.push_back((atoi(line.c_str())));
+                        }
+                    }
+                }
+            }
+            else
+            {
+                cout << "Error on opening" << endl;
+            }
+            datafiles.close();
+        }
+        break;
+    case 4:
+        {
+
+            ifstream datafiles("Source//TextFiles//Powerups//Powerups_Level4Data.txt");
+            if(datafiles.is_open())
+            {
+                while(datafiles.good())
+                {
+                    getline(datafiles, data);
+
+                    istringstream is(data);
+                    // If this line is not a comment line, then process it
+                    if(!(data.find("//") == NULL) && data != "")
+                    {
+                        //Stores data into vector
+                        for(string line; getline(is, line, ','); )
+                        {
+                            ConsumablePosition.push_back((atoi(line.c_str())));
+                        }
+                    }
+                }
+            }
+            else
+            {
+                cout << "Error on opening" << endl;
+            }
+            datafiles.close();
+
+            break;
+        }
+    case 5:
+        {
+            ifstream datafiles("Source//TextFiles//Powerups//Powerups_Level5Data.txt");
+            if(datafiles.is_open())
+            {
+                while(datafiles.good())
+                {
+                    getline(datafiles, data);
+
+                    istringstream is(data);
+                    // If this line is not a comment line, then process it
+                    if(!(data.find("//") == NULL) && data != "")
+                    {
+                        //Stores data into vector
+                        for(string line; getline(is, line, ','); )
+                        {
+                            ConsumablePosition.push_back((atoi(line.c_str())));
+                        }
+                    }
+                }
+            }
+            else
+            {
+                cout << "Error on opening" << endl;
+            }
+            datafiles.close();
+        }
+        break;
+    }
+        
+    if(ConsumablePosition.size() > 0)
+    {
+        int j = -1;
+        for(unsigned i = 0; i < (ConsumablePosition.size() / 2); ++i)
+        {
+            j += 2;
+            CTreasureChest * Chest = new CTreasureChest();
+            Chest->SetActive(true);
+            Chest->setPositionX(ConsumablePosition[j-1]);
+            Chest->setPositionY(ConsumablePosition[j]);
+            //Chest->ChestInit(ConsumablePosition[j-2],ConsumablePosition[j-1],true);
+            Treasure.push_back(Chest);
+        }
+    }
 }
 
 void StudioProject::UpdateDebug(double dt)
@@ -1457,6 +1600,7 @@ void StudioProject::UpdateWeapon()
 		CHero::GetInstance()->getInventory().getGrapple().Update(m_cMap,CHero::GetInstance()->GetMapOffset_x(),CHero::GetInstance()->GetMapOffset_y());
 	}
 }
+
 void StudioProject::UpdateTiles()
 {
     float tempHeroPos_x = CHero::GetInstance()->GetHeroPos_x();	//Hero current position X
@@ -1466,39 +1610,19 @@ void StudioProject::UpdateTiles()
     int checkPosition_Y3 = m_cMap->GetNumOfTiles_Height() - (int) ceil( (float) (tempHeroPos_y + m_cMap->GetTileSize() + 25.f) / m_cMap->GetTileSize());
     int checkPosition_Y4 = m_cMap->GetNumOfTiles_Height() - (int) ceil( (float) (tempHeroPos_y + m_cMap->GetTileSize() + 40.f) / m_cMap->GetTileSize());
 
-    ////---LASER---// //Need a Function maybe?
-    //if(m_cMap->theScreenMap[checkPosition_Y][checkPosition_X+2] == TILE_LASER)
-    //{
-    //    CHero::GetInstance()->setHero_Health(CHero::GetInstance()->Gethero_HP() - 3);
-    //}
-    ////-----------//
-
-    ////---HEALTH---//
-    //if(m_cMap->theScreenMap[checkPosition_Y][checkPosition_X] == TILE_HEALTH)
-    //{
-    //    m_cMap->theScreenMap[checkPosition_Y][checkPosition_X] = 0; //Despawn the health pickup
-    //}
-    ////----------//
-
-    ////---Score---//
-    //if(m_cMap->theScreenMap[checkPosition_Y][checkPosition_X] == TILE_SCORE)
-    //{
-    //    Money_Score += 100;
-    //    m_cMap->theScreenMap[checkPosition_Y][checkPosition_X] = 0; //Despawn the score pickup
-    //}
-    ////-----------//
     
     for(std::vector<CTreasureChest *>::iterator it = Treasure.begin(); it != Treasure.end(); ++it)
     {
         float hero_x = CHero::GetInstance()->GetHeroPos_x();
         hero_x += 25;
+        hero_x += CHero::GetInstance()->GetMapOffset_x();
         float hero_y = CHero::GetInstance()->GetHeroPos_y();
         hero_y += 25;
 
         CTreasureChest * Chest= (CTreasureChest *)*it;
-        if(Chest->getActive())
+        if(Chest->getActive()) //If it is active it will check
         {
-            if((Chest->getPositionX() - hero_x) * (Chest->getPositionX() - hero_x) + (Chest->getPositionY() - hero_y) * (Chest->getPositionY() - hero_y) <= CollisionRange)
+            if(((Chest->getPositionX() - hero_x) * (Chest->getPositionX() - hero_x)) + (Chest->getPositionY() - hero_y) * (Chest->getPositionY() - hero_y) <= CollisionRange) // Collision check
             {
                 if(CHero::GetInstance()->Gethero_HP() != 100) // If not 100 goes in here
                 {
@@ -1508,31 +1632,13 @@ void StudioProject::UpdateTiles()
                     }
                     else if(CHero::GetInstance()->Gethero_HP() <= 75) // If health is lower or equals to 75, health plus 25.
                     {
-                        //CHero::GetInstance()->setHero_Health(CHero::GetInstance()->Gethero_HP() + 25);
                         CHero::GetInstance()->setHero_Health(CHero::GetInstance()->Gethero_HP() + 25);
                     }
                 }
-                //CHero::GetInstance()->setHero_Health(CHero::GetInstance()->Gethero_HP() + 25);
                 Chest->SetActive(false);
             }
         }
     }
-    /*
-    //---Shuriken---//
-    if(m_cMap->theScreenMap[checkPosition_Y][checkPosition_X] == TILE_SHURIKEN)
-    {
-        Shuriken_Number += 5;
-        m_cMap->theScreenMap[checkPosition_Y][checkPosition_X] = 0; //Despawn the shuriken pickup
-    }
-    //--------------//
-    
-    
-    if(m_cMap->theScreenMap[checkPosition_Y][checkPosition_X] == TILE_OBJECTIVE)
-    {
-
-        m_cMap->theScreenMap[checkPosition_Y][checkPosition_X] = 0; //Despawn the shuriken pickup
-    }
-    */
     
 }
 void StudioProject::UpdateInput(double dt)
@@ -2377,7 +2483,7 @@ void StudioProject::RenderGoodies(void)
         CTreasureChest * Chest= (CTreasureChest *)*it;
         if(Chest->getActive())
         {
-            Render2DMesh(meshList[GEO_TILE_TREASURECHEST],false,1.0f,Chest->getPositionX(),Chest->getPositionY());
+            Render2DMesh(meshList[GEO_TILE_TREASURECHEST],false,1.0f,Chest->getPositionX() - CHero::GetInstance()->GetMapOffset_x(),Chest->getPositionY());
         }
     }
 }
@@ -2716,7 +2822,7 @@ void StudioProject::Render()
 		=====================*/
 		RenderBackground();
 
-		RenderRearTileMap();
+		//RenderRearTileMap();
 
 		RenderTileMap();
 		
@@ -2766,6 +2872,12 @@ void StudioProject::Exit()
 		delete enemy;
 		enemyContainer.pop_back();
 	}
+    while(Treasure.size() > 0)
+    {
+        CTreasureChest* Chest = Treasure.back();
+        delete Chest;
+        Treasure.pop_back();
+    }
 	glDeleteProgram(m_programID);
 	glDeleteVertexArrays(1, &m_vertexArrayID);
 }

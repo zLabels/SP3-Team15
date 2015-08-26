@@ -223,7 +223,7 @@ public:
 	void LoadEnemies(unsigned Level);	//Loads enemies on map based on map 
 	void LoadMap(int level);	//Load map
 	void LoadHero();//Load Hero
-    void LoadConsumables();
+    void LoadConsumables(unsigned Level);
 
 	void UpdateDebug(double dt);	//Update debug related information
 	void UpdateSprites(double dt);	//Update sprite animations
@@ -347,8 +347,8 @@ private:
 
     bool GetorNot;
 
+    //Vector for the powerups
     vector<CTreasureChest*> Treasure;
-    //CTreasureChest* Chest;
     float CollisionRange;
 };
 

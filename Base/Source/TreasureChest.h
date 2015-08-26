@@ -6,6 +6,8 @@ class CTreasureChest : public CGoodies
 public:
 	CTreasureChest(void);
 	~CTreasureChest(void);
+    
+    void ChestInit(float posX, float posY,bool active);
 
     void setPositionX(float);
     float getPositionX();

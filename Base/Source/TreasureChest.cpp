@@ -12,6 +12,14 @@ CTreasureChest::~CTreasureChest(void)
 {
 }
 
+void CTreasureChest::ChestInit(float posX, float posY,bool NewActive)
+{
+    this->Position.x = posX;
+    this->Position.y = posY;
+
+    this->active = NewActive;
+}
+
 void CTreasureChest::setPositionX(float NewPositionX)
 {
     Position.x = NewPositionX;
