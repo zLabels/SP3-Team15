@@ -1243,19 +1243,7 @@ void StudioProject::EnemyUpdate(double dt)
 			}
 		}
 
-		//Enemy Getting attacked
-		/*for(std::vector<CShuriken *>::iterator it = CHero::GetInstance()->getInventory().getShurikenList().begin(); it != CHero::GetInstance()->getInventory().getShurikenList().end(); ++it)
-		{
-			CShuriken *star = (CShuriken *)*it;
-			if(star->getActive() && Enemy->getActive())
-			{
-				if( ((Enemy->GetPos_x() + 12.5f) - (star->getPos().x + CHero::GetInstance()->GetMapOffset_x())) * ((Enemy->GetPos_x() + 12.5f) - (star->getPos().x + CHero::GetInstance()->GetMapOffset_x())) + ((Enemy->GetPos_y() + 25.f) - star->getPos().y) * ((Enemy->GetPos_y() + 25.f) - star->getPos().y) < 1600)
-				{
-					Enemy->EnemyDamaged(100,m_cMap);
-					star->setActive(false);
-				}
-			}
-		}*/
+		//Enemy getting attacked
 		for(unsigned i = 0; i < CHero::GetInstance()->getInventory().getShurikenList().size(); ++i)
 		{
 			if(CHero::GetInstance()->getInventory().getShurikenList().at(i)->getActive() && Enemy->getActive())
@@ -1464,9 +1452,9 @@ void StudioProject::UpdateWeapon()
 		}
 	}
 
-	if(GrappleHook.getActive())
+	if(CHero::GetInstance()->getInventory().getGrapple().getActive())
 	{
-		GrappleHook.Update(m_cMap,CHero::GetInstance()->GetMapOffset_x(),CHero::GetInstance()->GetMapOffset_y());
+		CHero::GetInstance()->getInventory().getGrapple().Update(m_cMap,CHero::GetInstance()->GetMapOffset_x(),CHero::GetInstance()->GetMapOffset_y());
 	}
 }
 void StudioProject::UpdateTiles()
@@ -1622,7 +1610,7 @@ void StudioProject::UpdateInput(double dt)
 		GameMenu.setWinState(true);
 	}
 	//Walk Left
-	if(Application::IsKeyPressed('A') && !GrappleHook.getHooked() &&
+	if(Application::IsKeyPressed('A') && !CHero::GetInstance()->getInventory().getGrapple().getHooked() &&
 		CHero::GetInstance()->Hero_attack_1_right->m_anim->animActive == false && CHero::GetInstance()->Hero_attack_1_left->m_anim->animActive == false &&
 		CHero::GetInstance()->Hero_attack_2_right->m_anim->animActive == false && CHero::GetInstance()->Hero_attack_2_left->m_anim->animActive == false &&
 		CHero::GetInstance()->Hero_shockwave_right->m_anim->animActive == false && CHero::GetInstance()->Hero_shockwave_left->m_anim->animActive == false &&
@@ -1641,7 +1629,7 @@ void StudioProject::UpdateInput(double dt)
 		CHero::GetInstance()->Hero_run_left->m_anim->animActive = false;
 	}
 	//Walk Right
-	if(Application::IsKeyPressed('D') && !GrappleHook.getHooked() &&
+	if(Application::IsKeyPressed('D') && !CHero::GetInstance()->getInventory().getGrapple().getHooked() &&
 		CHero::GetInstance()->Hero_attack_1_right->m_anim->animActive == false && CHero::GetInstance()->Hero_attack_1_left->m_anim->animActive == false &&
 		CHero::GetInstance()->Hero_attack_2_right->m_anim->animActive == false && CHero::GetInstance()->Hero_attack_2_left->m_anim->animActive == false &&
 		CHero::GetInstance()->Hero_shockwave_right->m_anim->animActive == false && CHero::GetInstance()->Hero_shockwave_left->m_anim->animActive == false &&
@@ -1684,10 +1672,7 @@ void StudioProject::UpdateInput(double dt)
             }
             CHero::GetInstance()->setHero_Deceleration(true,temp);
 
-        }
-    
-
-        
+        }   
     }
 
 	//JUMPING
@@ -1703,6 +1688,7 @@ void StudioProject::UpdateInput(double dt)
 		Clicking
 		Grappling Hook
 	*/
+	//Used for calculating mouse position on the screen
 	double x, y;
 	Application::GetCursorPos(&x, &y);
 	int w = Application::GetWindowWidth();
@@ -1711,51 +1697,55 @@ void StudioProject::UpdateInput(double dt)
 	posX += CHero::GetInstance()->GetMapOffset_x();
 	float posY = (h - static_cast<float>(y)) * 600 / h;
 
-	float hero_x = CHero::GetInstance()->GetHeroPos_x();
-	hero_x += CHero::GetInstance()->GetMapOffset_x();
-	hero_x += 25.f;
-	float hero_y = CHero::GetInstance()->GetHeroPos_y();
-	hero_y += 50.f;
-
+	//Left mouse click controlling shuriken throws
 	static bool bLButtonState = false;
-	if(!bLButtonState && Application::IsMousePressed(0) )
+	if( !bLButtonState && Application::IsMousePressed(0) )
 	{
 		bLButtonState = true;
 		std::cout << "LBUTTON DOWN" << std::endl;
 		CHero::GetInstance()->HeroThrowShuriken(meshList[GEO_SHURIKEN],posX,posY);
 	}
-	else if(bLButtonState && !Application::IsMousePressed(0))
+	else if( bLButtonState && !Application::IsMousePressed(0) )
 	{
 		bLButtonState = false;
 	}
 
+	//Right mouse click, controls grappling hook
 	static bool bRButtonState = false;
-	if(!bRButtonState && Application::IsMousePressed(1) && GrappleHook.getActive() == false && GrappleHook.getHooked() == false)
+	if(!bRButtonState && Application::IsMousePressed(1) 
+		&& CHero::GetInstance()->getInventory().getGrapple().getActive() == false 
+		&& CHero::GetInstance()->getInventory().getGrapple().getHooked() == false)
 	{
 		bRButtonState = true;
 		std::cout << "RBUTTON DOWN" << std::endl;
-		GrappleHook.setData(meshList[GEO_GRAPPLING_HOOK],hero_x - CHero::GetInstance()->GetMapOffset_x(),hero_y,
-						10,posX - hero_x,posY - hero_y,true);
-		GrappleHook.setRotation(Math::RadianToDegree( -atan2(  (posX - hero_x),(posY - hero_y) )));
-		GrappleHook.setActive(true);
+		CHero::GetInstance()->HeroUseGrapple(meshList[GEO_GRAPPLING_HOOK],posX,posY);
 	}
 	else if(bRButtonState && !Application::IsMousePressed(0))
 	{
 		bRButtonState = false;
 	}
 
-	f_grappleRotation = Math::RadianToDegree( -atan2(  (posX - (hero_x - CHero::GetInstance()->GetMapOffset_x())),(posY - hero_y) ));
+	//Used for calculating grappling hook rotation for visual purposes
+	float hero_x = CHero::GetInstance()->GetHeroPos_x();
+	hero_x += CHero::GetInstance()->GetMapOffset_x();
+	hero_x += 25.f;
+	float hero_y = CHero::GetInstance()->GetHeroPos_y();
+	hero_y += 50.f;
 
-	if(GrappleHook.getHooked())
+	//Calculating grappling hook rotation for visual purposes
+	f_grappleRotation = Math::RadianToDegree( -atan2(  (posX - (hero_x - CHero::GetInstance()->GetMapOffset_x())),(posY - hero_y) ));
+	
+	//If grappling hook has collided with something
+	if(CHero::GetInstance()->getInventory().getGrapple().getHooked())
 	{
-		if(CHero::GetInstance()->HeroGrapple(m_cMap,GrappleHook.getDir(),GrappleHook.getPos()))
+		//Moves hero towards it, if true is returned, hero has reached destination or collided with something
+		if( CHero::GetInstance()->HeroGrapple( m_cMap,CHero::GetInstance()->getInventory().getGrapple().getDir(),
+			CHero::GetInstance()->getInventory().getGrapple().getPos() ) )
 		{
-			GrappleHook.setHooked(false);
+			//Hooked status will return to false
+			CHero::GetInstance()->getInventory().getGrapple().setHooked(false);
 		}
 	}
-
-	//std::cout << posX << std::endl;
-	//std::cout << hero_x << std::endl;
 }
 void StudioProject::UpdateMap(double dt)
 {
@@ -2225,9 +2215,11 @@ void StudioProject::RenderWeapon()
 		}
 	}
   
-	if(GrappleHook.getActive())
+	if(CHero::GetInstance()->getInventory().getGrapple().getActive())
 	{
-		Render2DMesh(GrappleHook.getMesh(),false,1.f,GrappleHook.getPos().x,GrappleHook.getPos().y,true,GrappleHook.getRotation());
+		Render2DMesh( CHero::GetInstance()->getInventory().getGrapple().getMesh(),false,1.f,CHero::GetInstance()->getInventory().getGrapple().getPos().x,
+			CHero::GetInstance()->getInventory().getGrapple().getPos().y,true,
+			CHero::GetInstance()->getInventory().getGrapple().getRotation() );
 	}
 }
 void StudioProject::RenderMenu(int input)
@@ -2712,7 +2704,6 @@ void StudioProject::Render()
 	else if(GameMenu.getMenuState() == true && GameMenu.getLoadingLevels() == true && GameMenu.getControlState() == false && GameMenu.getChoosingLevels() == false  && GameMenu.getLostState() == false)	//Rendering Control Screen
 	{
 		RenderMenu(CMenuClass::LOAD);
-
 	}
 	else if(GameMenu.getMenuState() == true && GameMenu.getLoadingLevels() == false && GameMenu.getChoosingLevels() == true && GameMenu.getControlState() == false  && GameMenu.getLostState() == false)	//Rendering Control Screen
 	{

@@ -122,13 +122,20 @@ bool CHero::HeroGrapple(CMap* m_cMap,Vector3 direction,Vector3 hookPosition)
 	return false;
 }
 
+void CHero::HeroUseGrapple(Mesh* ptr,float target_x,float target_y)
+{
+	hero_invent.getGrapple().setData(ptr,HeroPos.x + 25.f,HeroPos.y + 40.f,
+			0,target_x - (HeroPos.x + this->mapOffset_X + 25.f),target_y - (HeroPos.y + 40.f),true);
+	hero_invent.getGrapple().setRotation(Math::RadianToDegree( -atan2(  ( target_x - (HeroPos.x + this->mapOffset_X + 25.f) ),(target_y - (HeroPos.y + 40.f) ) )));
+	hero_invent.getGrapple().setActive(true);
+}
 void CHero::HeroThrowShuriken(Mesh* ptr,float target_x,float target_y)
 {
 	if( hero_invent.getShurikenCount() > 0 )
 	{
 		CShuriken* shuriken = hero_invent.FetchShuriken();
 		shuriken->setData(ptr,HeroPos.x + 25.f,HeroPos.y + 40.f,
-			10,target_x - (HeroPos.x + this->mapOffset_X + 25.f),target_y - (HeroPos.y + 40.f),true);
+			100,target_x - (HeroPos.x + this->mapOffset_X + 25.f),target_y - (HeroPos.y + 40.f),true);
 	}
 }
 /********************************************************************************
@@ -447,7 +454,7 @@ void CHero::Update(CMap* m_cMap,int mapWidth, int mapHeight,unsigned maplevel)
 	mapFineOffset_X = mapOffset_X % m_cMap->GetTileSize();
 }
 
-CInventory CHero::getInventory(void)
+CInventory& CHero::getInventory(void)
 {
 	return this->hero_invent;
 }

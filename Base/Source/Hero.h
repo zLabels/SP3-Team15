@@ -20,12 +20,17 @@ public:
 	};
 	//Hero related functions
 	void HeroInit(float posX,float posY);	//Initialize hero positions
+
 	void Update(CMap* m_cMap,int mapWidth, int mapHeight,unsigned maplevel);	//Update hero
+
 	void HeroJump();	//Hero jump function
 	void HeroMoveUpDown(const bool mode, const float timeDiff);	//Hero Moving up / down function
 	void HeroMoveLeftRight(const bool mode , const float timeDiff);	//Hero Moving left/right function
 	bool HeroGrapple(CMap* m_cMap,Vector3 direction,Vector3 hookPosition);	//Hero moving towards grapple direction
+
 	void HeroThrowShuriken(Mesh* ptr,float target_x,float target_y);	//Hero using shuriken
+	void HeroUseGrapple(Mesh* ptr,float target_x,float target_y);	//Hero using grappling hook
+
 	void HeroDamaged(int enemy_x, int enemy_y);	//Hero Damaged by colliding with enemy
 	void HeroDamaged(int Damage);	//Hero Damaged by enemy
 	void HeroKnockBack(CMap* m_cMap);	//Hero knocked back
@@ -38,7 +43,7 @@ public:
 
 	void CollisionResponse(bool m_bCheckLeft,bool m_bCheckRight, bool m_bCheckUp, bool m_bCheckDown);	//Collision	Response function
 
-	CInventory getInventory(void);	//Getting hero's inventory
+	CInventory& getInventory(void);	//Getting hero's inventory
 
 	float& GetHeroPos_x(void);	//Getting hero X
 	float& GetHeroPos_y(void);	//Getting hero Y

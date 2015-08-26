@@ -322,9 +322,6 @@ private:
 	float HERO_OFFSET;	//Offset of hero for tile
 	float jump_input_delay;	//Delay input for double jump
 
-	//Weapon
-	CGrapplingHook GrappleHook;
-
 	//Menu
 	CMenuClass GameMenu;
 	

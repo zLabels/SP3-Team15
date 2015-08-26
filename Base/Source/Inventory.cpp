@@ -9,7 +9,7 @@ CInventory::~CInventory(void)
 {
 }
 
-CGrapplingHook CInventory::getGrapple(void)
+CGrapplingHook& CInventory::getGrapple(void)
 {
 	return this->GrappleHook;
 }
