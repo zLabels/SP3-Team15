@@ -558,8 +558,8 @@ void StudioProject::InitTiles()
     meshList[GEO_TILE_TREASURECHEST] = MeshBuilder::Generate2DMesh("GEO_TILE_TREASURECHEST", Color(1,1,1), 0,0,25,25);
 	meshList[GEO_TILE_TREASURECHEST]->textureID = LoadTGA("Image//Tiles//tile4_treasurechest.tga");
 
-    meshList[GEO_STEALTH_BOX] = MeshBuilder::GenerateTile("Objective",7,14,3,13,26);
-	meshList[GEO_STEALTH_BOX]->textureID = LoadTGA("Image//Tiles//Tile_Floor.tga");
+    meshList[GEO_STEALTH_BOX] = MeshBuilder::GenerateTile("Objective",1,1,1,1,26);
+	meshList[GEO_STEALTH_BOX]->textureID = LoadTGA("Image//Tiles//Tile_Stealth_Box.tga");
 
 	theArrayOfGoodies = new CGoodies*[10];
 	for(unsigned i = 0; i < 10; ++i)
@@ -1463,6 +1463,7 @@ void StudioProject::HeroUpdate(double dt)
 	if (tileOffset_x + m_cMap->GetNumOfTiles_Width() > m_cMap->getNumOfTiles_MapWidth())
 		tileOffset_x = m_cMap->getNumOfTiles_MapWidth() - m_cMap->GetNumOfTiles_Width();
 }
+static bool Invi_isLoaded = false;
 void StudioProject::UpdateSprites(double dt)
 {
 	static bool invisLoaded = false;
