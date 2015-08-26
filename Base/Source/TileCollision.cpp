@@ -150,7 +150,7 @@ bool HeroTileCheck(CMap* m_cMap,TILE_TYPE type,bool m_bCheckLeft,bool m_bCheckRi
 {
     int mapFineOffset_x = mapOffset_X % m_cMap->GetTileSize();
     int checkPosition_X2 = (int) ((mapOffset_X + pos_X + 25.f - mapFineOffset_x) / m_cMap->GetTileSize());
-    int checkPosition_X3 = (int) ((mapOffset_X + pos_X - mapFineOffset_x) / m_cMap->GetTileSize());
+    int checkPosition_X3 = (int) ((mapOffset_X + pos_X + 25.f - mapFineOffset_x) / m_cMap->GetTileSize());
     int checkPosition_Y2 = m_cMap->GetNumOfTiles_Height() - (int) ceil( (float) (pos_Y + m_cMap->GetTileSize()) / m_cMap->GetTileSize());
     int checkPosition_Y3 = m_cMap->GetNumOfTiles_Height() - (int) ceil( (float) (pos_Y + m_cMap->GetTileSize() + 25.f) / m_cMap->GetTileSize());
     int checkPosition_Y4 = m_cMap->GetNumOfTiles_Height() - (int) ceil( (float) (pos_Y + m_cMap->GetTileSize() + 40.f) / m_cMap->GetTileSize());
@@ -158,9 +158,9 @@ bool HeroTileCheck(CMap* m_cMap,TILE_TYPE type,bool m_bCheckLeft,bool m_bCheckRi
     if(m_bCheckRight)
     {
         if (//Border
-            (m_cMap->theScreenMap[checkPosition_Y2][checkPosition_X2+2] == type) ||
-            (m_cMap->theScreenMap[checkPosition_Y3][checkPosition_X2+2] == type) ||
-            (m_cMap->theScreenMap[checkPosition_Y4][checkPosition_X2+2] == type) ||
+            (m_cMap->theScreenMap[checkPosition_Y2][checkPosition_X2] == type) ||
+            (m_cMap->theScreenMap[checkPosition_Y3][checkPosition_X2] == type) ||
+            (m_cMap->theScreenMap[checkPosition_Y4][checkPosition_X2] == type) ||
 			(m_cMap->theScreenMap[checkPosition_Y2][checkPosition_X2+1] == type) ||
             (m_cMap->theScreenMap[checkPosition_Y3][checkPosition_X2+1] == type) ||
             (m_cMap->theScreenMap[checkPosition_Y4][checkPosition_X2+1] == type))

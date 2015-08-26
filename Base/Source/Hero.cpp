@@ -394,7 +394,7 @@ void CHero::Update(CMap* m_cMap,int mapWidth, int mapHeight,unsigned maplevel)
         hero_HP -= 1; // Minus health for touching the lasers.
     }
 
-    if(HeroTileCheck(m_cMap, TILE_STEALTH_BOX,true,true,true,true,GetHeroPos_x(),GetHeroPos_y(),GetMapOffset_x(),Getjumpspeed()) == true)
+    if(HeroTileCheck(m_cMap, TILE_STEALTH_BOX,true,true,false,false,GetHeroPos_x(),GetHeroPos_y(),GetMapOffset_x(),Getjumpspeed()) == true)
     {
         hero_invisible = true;
     }
