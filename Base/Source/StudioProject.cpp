@@ -19,7 +19,9 @@ StudioProject::StudioProject()
 	rearWallTileOffset_x(0),
 	rearWallTileOffset_y(0),
 	rearWallFineOffset_x(0),
-	rearWallFineOffset_y(0)
+	rearWallFineOffset_y(0),
+    GetorNot(false),
+    CollisionRange(40*40)
 {
 
 }
@@ -541,6 +543,24 @@ void StudioProject::InitTiles()
 	meshList[GEO_REAR_GLASS] = MeshBuilder::GenerateTile("GEO_REAR_GLASS",3,7,2,2,26);
 	meshList[GEO_REAR_GLASS]->textureID = LoadTGA("Image//Tiles//Tile_OfficeWindow.tga");
 
+    meshList[GEO_TILE_OBJECTIVE] = MeshBuilder::GenerateTile("Objective",7,14,1,13,26);
+	meshList[GEO_TILE_OBJECTIVE]->textureID = LoadTGA("Image//Tiles//Tile_Floor.tga");
+    
+    meshList[GEO_TILE_LASER_SHOOTER_UP] = MeshBuilder::GenerateTile("Objective",7,14,6,7,26);
+	meshList[GEO_TILE_LASER_SHOOTER_UP]->textureID = LoadTGA("Image//Tiles//Tile_Floor.tga");
+
+    meshList[GEO_TILE_LASER_SHOOTER_DOWN] = MeshBuilder::GenerateTile("Objective",7,14,5,7,26);
+	meshList[GEO_TILE_LASER_SHOOTER_DOWN]->textureID = LoadTGA("Image//Tiles//Tile_Floor.tga");
+
+    meshList[GEO_TILE_LASER_SHOOTER_LEFT] = MeshBuilder::GenerateTile("Objective",7,14,5,6,26);
+	meshList[GEO_TILE_LASER_SHOOTER_LEFT]->textureID = LoadTGA("Image//Tiles//Tile_Floor.tga");
+
+    meshList[GEO_TILE_LASER_SHOOTER_RIGHT] = MeshBuilder::GenerateTile("Objective",7,14,6,6,26);
+	meshList[GEO_TILE_LASER_SHOOTER_RIGHT]->textureID = LoadTGA("Image//Tiles//Tile_Floor.tga");
+
+    meshList[GEO_TILE_TREASURECHEST] = MeshBuilder::Generate2DMesh("GEO_TILE_TREASURECHEST", Color(1,1,1), 0,0,25,25);
+	meshList[GEO_TILE_TREASURECHEST]->textureID = LoadTGA("Image//Tiles//tile4_treasurechest.tga");
+
 	theArrayOfGoodies = new CGoodies*[10];
 	for(unsigned i = 0; i < 10; ++i)
 	{
@@ -549,6 +569,16 @@ void StudioProject::InitTiles()
 		theArrayOfGoodies[i]->SetMesh(MeshBuilder::Generate2DMesh("GEO_TILE_TREASURECHEST", Color(1,1,1), 0,0,25,25));
 		theArrayOfGoodies[i]->SetTextureID(LoadTGA("Image//Tiles//tile4_treasurechest.tga"));
 	}
+    
+    //---TREASURE CHEST---
+    for(int i = 0; i < 1; i++)
+    {
+        CTreasureChest* Chest = new CTreasureChest();
+        Chest->SetActive(true);
+        Chest->setPositionX(300);
+        Chest->setPositionY(50);
+        Treasure.push_back(Chest);
+    }
 }
 void StudioProject::InitWeapon()
 {
@@ -600,7 +630,7 @@ void StudioProject::Reset(bool hasWon)
 		m_CurrentLevel = 1;
 		Lv1Clear = false;
 		LoadEnemies(m_CurrentLevel);
-
+        LoadConsumables();
 		//Map
 		Transiting = false;
 		m_cMap = m_cMap_Level1;
@@ -1051,6 +1081,45 @@ CShuriken* StudioProject::FetchShuriken()
 	star->setActive(true);
 	return star;
 }
+
+void StudioProject::LoadConsumables()
+{
+    /*
+	This function reads the enemies data from a text file based on the level
+	Example, if 1 is passed into the function, the switch case will open the Level1 text file,
+	Add more if required.
+	*/
+	enemyContainer.clear();	//Clearing the vector of enemies
+	string data = "";	//Used to store string from text file
+	vector<int> ConsumablePosition;	//Local vector to store the data from text file to be used later on
+    
+    ifstream datafiles("Source//TextFiles//Powerups//Powerups_Level4Data.txt");
+			if(datafiles.is_open())
+			{
+				while(datafiles.good())
+				{
+					getline(datafiles, data);
+
+					istringstream is(data);
+					// If this line is not a comment line, then process it
+					if(!(data.find("//") == NULL) && data != "")
+					{
+						//Stores data into vector
+						for(string line; getline(is, line, ','); )
+						{
+							ConsumablePosition.push_back((atoi(line.c_str())));
+						}
+					}
+				}
+			}
+			datafiles.close();
+
+            if(ConsumablePosition.size() > 0)
+            {
+                unsigned j = 0;
+            }
+}
+
 void StudioProject::AttackResponse(CHero::ATTACK_TYPE type)
 {
 	/*
@@ -1583,46 +1652,74 @@ void StudioProject::UpdateTiles()
     int checkPosition_Y3 = m_cMap->GetNumOfTiles_Height() - (int) ceil( (float) (tempHeroPos_y + m_cMap->GetTileSize() + 25.f) / m_cMap->GetTileSize());
     int checkPosition_Y4 = m_cMap->GetNumOfTiles_Height() - (int) ceil( (float) (tempHeroPos_y + m_cMap->GetTileSize() + 40.f) / m_cMap->GetTileSize());
 
-    //---LASER---// //Need a Function maybe?
-    if(m_cMap->theScreenMap[checkPosition_Y][checkPosition_X+2] == TILE_LASER)
-    {
-        CHero::GetInstance()->setHero_Health(CHero::GetInstance()->Gethero_HP() - 3);
-    }
-    //-----------//
+    ////---LASER---// //Need a Function maybe?
+    //if(m_cMap->theScreenMap[checkPosition_Y][checkPosition_X+2] == TILE_LASER)
+    //{
+    //    CHero::GetInstance()->setHero_Health(CHero::GetInstance()->Gethero_HP() - 3);
+    //}
+    ////-----------//
 
-    //---HEALTH---//
-    if(m_cMap->theScreenMap[checkPosition_Y][checkPosition_X] == TILE_HEALTH)
+    ////---HEALTH---//
+    //if(m_cMap->theScreenMap[checkPosition_Y][checkPosition_X] == TILE_HEALTH)
+    //{
+    //    m_cMap->theScreenMap[checkPosition_Y][checkPosition_X] = 0; //Despawn the health pickup
+    //}
+    ////----------//
+
+    ////---Score---//
+    //if(m_cMap->theScreenMap[checkPosition_Y][checkPosition_X] == TILE_SCORE)
+    //{
+    //    Money_Score += 100;
+    //    m_cMap->theScreenMap[checkPosition_Y][checkPosition_X] = 0; //Despawn the score pickup
+    //}
+    ////-----------//
+    
+    for(std::vector<CTreasureChest *>::iterator it = Treasure.begin(); it != Treasure.end(); ++it)
     {
-        if(CHero::GetInstance()->Gethero_HP() != 100) // If not 100 goes in here
+        float hero_x = CHero::GetInstance()->GetHeroPos_x();
+        hero_x += 25;
+        float hero_y = CHero::GetInstance()->GetHeroPos_y();
+        hero_y += 25;
+
+        CTreasureChest * Chest= (CTreasureChest *)*it;
+        if(Chest->getActive())
         {
-            if(CHero::GetInstance()->Gethero_HP() < 100 && CHero::GetInstance()->Gethero_HP() > 75) // if Health is in between 75 to 100, set it to 100
+            if((Chest->getPositionX() - hero_x) * (Chest->getPositionX() - hero_x) + (Chest->getPositionY() - hero_y) * (Chest->getPositionY() - hero_y) <= CollisionRange)
             {
-                CHero::GetInstance()->setHero_Health(100);
-            }
-            else if(CHero::GetInstance()->Gethero_HP() <= 75) // If health is lower or equals to 75, health plus 25.
-            {
-                CHero::GetInstance()->setHero_Health(CHero::GetInstance()->Gethero_HP() + 25);
+                if(CHero::GetInstance()->Gethero_HP() != 100) // If not 100 goes in here
+                {
+                    if(CHero::GetInstance()->Gethero_HP() < 100 && CHero::GetInstance()->Gethero_HP() > 75) // if Health is in between 75 to 100, set it to 100
+                    {
+                        CHero::GetInstance()->setHero_Health(100);
+                    }
+                    else if(CHero::GetInstance()->Gethero_HP() <= 75) // If health is lower or equals to 75, health plus 25.
+                    {
+                        //CHero::GetInstance()->setHero_Health(CHero::GetInstance()->Gethero_HP() + 25);
+                        CHero::GetInstance()->setHero_Health(CHero::GetInstance()->Gethero_HP() + 25);
+                    }
+                }
+                //CHero::GetInstance()->setHero_Health(CHero::GetInstance()->Gethero_HP() + 25);
+                Chest->SetActive(false);
             }
         }
-        m_cMap->theScreenMap[checkPosition_Y][checkPosition_X] = 0; //Despawn the health pickup
     }
-    //----------//
-
-    //---Score---//
-    if(m_cMap->theScreenMap[checkPosition_Y][checkPosition_X] == TILE_SCORE)
-    {
-        Money_Score += 100;
-        m_cMap->theScreenMap[checkPosition_Y][checkPosition_X] = 0; //Despawn the score pickup
-    }
-    //-----------//
-
+    /*
     //---Shuriken---//
     if(m_cMap->theScreenMap[checkPosition_Y][checkPosition_X] == TILE_SHURIKEN)
     {
         Shuriken_Number += 5;
-        m_cMap->theScreenMap[checkPosition_Y][checkPosition_X] = 0; //Despawn the score pickup
+        m_cMap->theScreenMap[checkPosition_Y][checkPosition_X] = 0; //Despawn the shuriken pickup
     }
     //--------------//
+    
+    
+    if(m_cMap->theScreenMap[checkPosition_Y][checkPosition_X] == TILE_OBJECTIVE)
+    {
+
+        m_cMap->theScreenMap[checkPosition_Y][checkPosition_X] = 0; //Despawn the shuriken pickup
+    }
+    */
+    
 }
 void StudioProject::UpdateInput(double dt)
 {
@@ -1648,14 +1745,24 @@ void StudioProject::UpdateInput(double dt)
         if( 
             m_cMap->theScreenMap[checkPosition_Y][checkPosition_X + 2]  == TILE_DOOR ||
             m_cMap->theScreenMap[checkPosition_Y3][checkPosition_X + 2] == TILE_DOOR ||
-            m_cMap->theScreenMap[checkPosition_Y4][checkPosition_X + 2] == TILE_DOOR
-            )
+            m_cMap->theScreenMap[checkPosition_Y4][checkPosition_X + 2] == TILE_DOOR 
+           )
         {
             m_cMap->theScreenMap[checkPosition_Y][checkPosition_X + 2]  = 0;
             m_cMap->theScreenMap[checkPosition_Y3][checkPosition_X + 2] = 0;
             m_cMap->theScreenMap[checkPosition_Y4][checkPosition_X + 2] = 0;
         }
 
+        if(
+            m_cMap->theScreenMap[checkPosition_Y][checkPosition_X - 1]  == TILE_DOOR ||
+            m_cMap->theScreenMap[checkPosition_Y3][checkPosition_X - 1] == TILE_DOOR ||
+            m_cMap->theScreenMap[checkPosition_Y4][checkPosition_X - 1] == TILE_DOOR 
+           )
+        {
+            m_cMap->theScreenMap[checkPosition_Y][checkPosition_X -1]  = 0;
+            m_cMap->theScreenMap[checkPosition_Y3][checkPosition_X -1] = 0;
+            m_cMap->theScreenMap[checkPosition_Y4][checkPosition_X -1] = 0;
+        }
         //LASER SWITCH
         if(m_cMap->theScreenMap[checkPosition_Y3][checkPosition_X + 3] == TILE_LASER_SWITCH || m_cMap->theScreenMap[checkPosition_Y3][checkPosition_X - 1] == TILE_LASER_SWITCH )
         {
@@ -2013,6 +2120,18 @@ void StudioProject::Update(double dt)
 
         //cout << Shuriken_Number << endl;
 	}
+    
+/*
+    theArrayOfGoodies = new CGoodies*[10];
+	for(unsigned i = 0; i < 10; ++i)
+	{
+		theArrayOfGoodies[i] = theGoodiesFactory.Create(CGoodiesFactory::TREASURE_CHEST);
+		theArrayOfGoodies[i]->SetPos(150 + i*25, 150);
+		theArrayOfGoodies[i]->SetMesh(MeshBuilder::Generate2DMesh("GEO_TILE_TREASURECHEST", Color(1,1,1), 0,0,25,25));
+		theArrayOfGoodies[i]->SetTextureID(LoadTGA("Image//Tiles//tile4_treasurechest.tga"));
+	}
+    CHero::GetInstance()->GetHeroPos_x() ;
+    */
 }
 
 void StudioProject::RenderText(Mesh* mesh, std::string text, Color color)
@@ -2511,10 +2630,25 @@ void StudioProject::RenderBackground(void)
 }
 void StudioProject::RenderGoodies(void)
 {
-	/*for(unsigned i = 0; i< 10; ++i)
-	{
-		Render2DMesh(theArrayOfGoodies[i]->GetMesh(),false,1.0f,(float)theArrayOfGoodies[i]->GetPos_x(),(float)theArrayOfGoodies[i]->GetPos_y());
-	}*/
+    //if(!GetorNot)
+    //{
+    //    for(unsigned i = 0; i< 10; ++i)
+    //    {
+    //        //Render2DMesh(theArrayOfGoodies[i]->GetMesh(),false,1.0f,(float)theArrayOfGoodies[i]->GetPos_x(),(float)theArrayOfGoodies[i]->GetPos_y());
+    //    }
+    //}
+    //else
+    //{
+    //}
+
+    for(std::vector<CTreasureChest *>::iterator it = Treasure.begin(); it != Treasure.end(); ++it)
+    {
+        CTreasureChest * Chest= (CTreasureChest *)*it;
+        if(Chest->getActive())
+        {
+            Render2DMesh(meshList[GEO_TILE_TREASURECHEST],false,1.0f,Chest->getPositionX(),Chest->getPositionY());
+        }
+    }
 }
 /********************************************************************************
  Render the tile map. This is a private function for use in this class only
@@ -2569,6 +2703,26 @@ void StudioProject::RenderTileMap()
             else if (m_cMap->theScreenMap[i][m] == TILE_SHURIKEN)
             {
                 Render2DMesh(meshList[GEO_TILE_SHURIKEN], false, 1.f, (float)k*m_cMap->GetTileSize()-CHero::GetInstance()->GetMapFineOffset_x(), 575.f-i*m_cMap->GetTileSize());
+            }
+            else if (m_cMap->theScreenMap[i][m] == TILE_OBJECTIVE)
+            {
+                Render2DMesh(meshList[GEO_TILE_OBJECTIVE], false, 1.f, (float)k*m_cMap->GetTileSize()-CHero::GetInstance()->GetMapFineOffset_x(), 575.f-i*m_cMap->GetTileSize());
+            }
+            else if (m_cMap->theScreenMap[i][m] == TILE_LASER_SHOOTER_UP)
+            {
+                Render2DMesh(meshList[GEO_TILE_LASER_SHOOTER_UP], false, 1.f, (float)k*m_cMap->GetTileSize()-CHero::GetInstance()->GetMapFineOffset_x(), 575.f-i*m_cMap->GetTileSize());
+            }
+            else if (m_cMap->theScreenMap[i][m] == TILE_LASER_SHOOTER_DOWN)
+            {
+                Render2DMesh(meshList[GEO_TILE_LASER_SHOOTER_DOWN], false, 1.f, (float)k*m_cMap->GetTileSize()-CHero::GetInstance()->GetMapFineOffset_x(), 575.f-i*m_cMap->GetTileSize());
+            }
+            else if (m_cMap->theScreenMap[i][m] == TILE_LASER_SHOOTER_LEFT)
+            {
+                Render2DMesh(meshList[GEO_TILE_LASER_SHOOTER_LEFT], false, 1.f, (float)k*m_cMap->GetTileSize()-CHero::GetInstance()->GetMapFineOffset_x(), 575.f-i*m_cMap->GetTileSize());
+            }
+            else if (m_cMap->theScreenMap[i][m] == TILE_LASER_SHOOTER_RIGHT)
+            {
+                Render2DMesh(meshList[GEO_TILE_LASER_SHOOTER_RIGHT], false, 1.f, (float)k*m_cMap->GetTileSize()-CHero::GetInstance()->GetMapFineOffset_x(), 575.f-i*m_cMap->GetTileSize());
             }
 		}
 	}

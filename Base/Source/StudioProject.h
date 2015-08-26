@@ -35,6 +35,9 @@
 //Sound
 #include "SoundManager.h"
 
+//Tile Collision
+#include "TileCollision.h"
+
 using std::vector;
 
 class StudioProject : public Scene
@@ -119,12 +122,18 @@ class StudioProject : public Scene
         GEO_TILE_HEALTH,
         GEO_TILE_SCORE,
         GEO_TILE_SHURIKEN,
+        GEO_TILE_OBJECTIVE,
+        GEO_TILE_LASER_SHOOTER_UP,
+        GEO_TILE_LASER_SHOOTER_DOWN,
+        GEO_TILE_LASER_SHOOTER_LEFT,
+        GEO_TILE_LASER_SHOOTER_RIGHT,
 		GEO_WINDOW_TOP,
 		GEO_WINDOW_LEFT,
 		GEO_WINDOW_RIGHT,
 		GEO_WINDOW_BOTTOM,
 		GEO_REAR_WALL,
 		GEO_REAR_GLASS,
+
 		//Hero,
 		GEO_TILEHERO,
 		GEO_PLAYER_RUN_RIGHT,
@@ -173,21 +182,32 @@ class StudioProject : public Scene
 		GEO_TILE_TREASURECHEST,
 		NUM_GEOMETRY,
 	};
+
+    
 	enum TILE_TYPE
 	{
+        //---STUFF THAT NEEDS COLLISION---
 		TILE_METALFLOOR = 1,
 		TILE_METALSUPPORT_RIGHT,
 		TILE_BORDER,
 		TILE_METALCORNER,
 		TILE_METALSUPPORT_LEFT,
         TILE_DOOR,
-        TILE_LASER,
         TILE_LASER_SWITCH,
+        TILE_OBJECTIVE,
+        TILE_LASER_SHOOTER_UP,
+        TILE_LASER_SHOOTER_DOWN,
+        TILE_LASER_SHOOTER_LEFT,
+        TILE_LASER_SHOOTER_RIGHT,
+        //---STUFF THAT DOESN'T NEED COLLISION---
+        TILE_LASER = 25,
         TILE_HEALTH,
         TILE_SCORE,
         TILE_SHURIKEN,
+        
 		MAX_TILE,
 	};
+
 	enum REAR_TILE_TYPE
 	{
 		WINDOW_TOP = 1,
@@ -228,6 +248,7 @@ public:
 	void LoadEnemies(unsigned Level);	//Loads enemies on map based on map 
 	void LoadMap(int level);	//Load map
 	void LoadHero();//Load Hero
+    void LoadConsumables();
 	CShuriken* FetchShuriken(void);	//Fetch weapon from vector
 
 	void UpdateDebug(double dt);	//Update debug related information
@@ -356,6 +377,13 @@ private:
     //Tiles || Game related
     int Money_Score;
     int Shuriken_Number;
+
+    bool GetorNot;
+
+    
+    vector<CTreasureChest*> Treasure;
+    //CTreasureChest* Chest;
+    float CollisionRange;
 };
 
 #endif

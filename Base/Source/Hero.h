@@ -109,6 +109,7 @@ private:
 
 	int hero_HP;	//Health points
 	int hero_EP;	//Energy points
+    int hero_SCORE; //Score Points
 
 	float invul_frame;	//Invulnerable to damage for a set amount of time
 	float MAX_INVUL;	//Maximum invulnerable time
@@ -122,6 +123,7 @@ private:
 
 	int mapOffset_X, mapOffset_Y;	//Map offset X , Y	for sccrolling
 	int mapFineOffset_X, mapFineOffset_Y;	//Map fine offset X , Y for scrolling
+
 
     //Physics Code Declaration
     float f_Current_Acceleration; // Acceleration of the character

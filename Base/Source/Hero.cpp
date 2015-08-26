@@ -31,7 +31,8 @@ CHero::CHero(void):
     hero_mass(4),
     hero_velocity(0),
     hero_maxspeed(3),
-    f_force(1)
+    f_force(1),
+    hero_SCORE(0)
 {
 }
 
@@ -42,6 +43,8 @@ void CHero::HeroInit(float posX,float posY)
 {
 	this->HeroPos.x = posX;
 	this->HeroPos.y = posY;
+
+    
 }
 /********************************************************************************
 Hero Jump
@@ -401,6 +404,72 @@ void CHero::Update(CMap* m_cMap,int mapWidth, int mapHeight,unsigned maplevel)
 			}
 		}
 	}
+
+    if(HeroTileCheck(m_cMap, TILE_TYPE::TILE_LASER,true,true,true,true,GetHeroPos_x(),GetHeroPos_y(),GetMapOffset_x(),Getjumpspeed()) == true)
+    {
+        hero_HP -= 1; // Minus health for touching the lasers.
+    }
+
+    
+    if(HeroTileCheck(m_cMap, TILE_TYPE::TILE_HEALTH,true,true,true,true,GetHeroPos_x(),GetHeroPos_y(),GetMapOffset_x(),Getjumpspeed()) == true)
+    {
+        float tempHeroPos_x = CHero::GetInstance()->GetHeroPos_x();	//Hero current position X
+        float tempHeroPos_y = CHero::GetInstance()->GetHeroPos_y();	//Hero current position Y
+        int checkPosition_X = (int)((CHero::GetInstance()->GetMapOffset_x() + tempHeroPos_x) / m_cMap->GetTileSize());	//Hero tile position X
+        int checkPosition_Y = m_cMap->GetNumOfTiles_Height() - (int) ( (tempHeroPos_y + m_cMap->GetTileSize()) / m_cMap->GetTileSize());
+        int checkPosition_Y3 = m_cMap->GetNumOfTiles_Height() - (int) ceil( (float) (tempHeroPos_y + m_cMap->GetTileSize() + 25.f) / m_cMap->GetTileSize());
+        int checkPosition_Y4 = m_cMap->GetNumOfTiles_Height() - (int) ceil( (float) (tempHeroPos_y + m_cMap->GetTileSize() + 40.f) / m_cMap->GetTileSize());
+
+        if(hero_HP != 100) // If not 100 goes in here
+        {
+            if(hero_HP < 100 && hero_HP > 75) // if Health is in between 75 to 100, set it to 100
+            {
+                //CHero::GetInstance()->setHero_Health(100);
+                hero_HP = 100;
+            }
+            else if(hero_HP <= 75) // If health is lower or equals to 75, health plus 25.
+            {
+                //CHero::GetInstance()->setHero_Health(CHero::GetInstance()->Gethero_HP() + 25);
+                hero_HP += 25;
+            }
+        }
+
+        cout << " TOUCH RED" << endl;
+         m_cMap->theScreenMap[checkPosition_Y][checkPosition_X] = 0;
+        m_cMap->theScreenMap[checkPosition_Y][checkPosition_X + 1] = 0;
+        m_cMap->theScreenMap[checkPosition_Y][checkPosition_X + 2] = 0;
+        m_cMap->theScreenMap[checkPosition_Y3][checkPosition_X] = 0;
+        m_cMap->theScreenMap[checkPosition_Y3][checkPosition_X + 1] = 0;
+        m_cMap->theScreenMap[checkPosition_Y3][checkPosition_X + 2] = 0;
+        m_cMap->theScreenMap[checkPosition_Y4][checkPosition_X] = 0;
+        m_cMap->theScreenMap[checkPosition_Y4][checkPosition_X + 1] = 0;
+        m_cMap->theScreenMap[checkPosition_Y4][checkPosition_X + 2] = 0;
+    }
+        
+    if(HeroTileCheck(m_cMap, TILE_TYPE::TILE_SCORE,true,true,true,true,GetHeroPos_x(),GetHeroPos_y(),GetMapOffset_x(),Getjumpspeed()) == true)
+    {
+        float tempHeroPos_x = CHero::GetInstance()->GetHeroPos_x();	//Hero current position X
+        float tempHeroPos_y = CHero::GetInstance()->GetHeroPos_y();	//Hero current position Y
+        int checkPosition_X = (int)((CHero::GetInstance()->GetMapOffset_x() + tempHeroPos_x) / m_cMap->GetTileSize());	//Hero tile position X
+        int checkPosition_Y = m_cMap->GetNumOfTiles_Height() - (int) ( (tempHeroPos_y + m_cMap->GetTileSize()) / m_cMap->GetTileSize());
+        int checkPosition_Y3 = m_cMap->GetNumOfTiles_Height() - (int) ceil( (float) (tempHeroPos_y + m_cMap->GetTileSize() + 25.f) / m_cMap->GetTileSize());
+        int checkPosition_Y4 = m_cMap->GetNumOfTiles_Height() - (int) ceil( (float) (tempHeroPos_y + m_cMap->GetTileSize() + 40.f) / m_cMap->GetTileSize());
+
+        hero_SCORE += 100;
+
+        m_cMap->theScreenMap[checkPosition_Y][checkPosition_X] = 0;
+        m_cMap->theScreenMap[checkPosition_Y][checkPosition_X + 1] = 0;
+        m_cMap->theScreenMap[checkPosition_Y][checkPosition_X + 2] = 0;
+        m_cMap->theScreenMap[checkPosition_Y3][checkPosition_X] = 0;
+        m_cMap->theScreenMap[checkPosition_Y3][checkPosition_X + 1] = 0;
+        m_cMap->theScreenMap[checkPosition_Y3][checkPosition_X + 2] = 0;
+        m_cMap->theScreenMap[checkPosition_Y4][checkPosition_X] = 0;
+        m_cMap->theScreenMap[checkPosition_Y4][checkPosition_X + 1] = 0;
+        m_cMap->theScreenMap[checkPosition_Y4][checkPosition_X + 2] = 0;
+        
+        cout << "TOUCH GREEN -> " << hero_SCORE << endl;
+    }
+
 	HeroKnockBack(m_cMap);
 	ConstrainHeroX(100, 600, 25, 575, 1.0f,mapWidth,mapHeight,maplevel);
 	// Calculate the fine offset
@@ -566,3 +635,4 @@ void CHero::setHero_Health(int newHealth)
 {
     hero_HP = newHealth;
 }
+
