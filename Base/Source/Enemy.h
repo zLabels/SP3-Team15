@@ -44,8 +44,9 @@ public:
 
 	vector<CEnemyBullet*>& getEnemyBullet(void);	//Gets vector of enemy bullets
 
-	void Update(CMap* m_cMap,int mapWidth, int mapHeight,unsigned maplevel); 	// ENEMY Update
+	void Update(CMap* m_cMap,int mapWidth, int mapHeight,unsigned maplevel,bool heroInvisible); 	// ENEMY Update
 
+	CStrategy* getStrategy(void);	//Get enemy strategy
 	void ChangeStrategy(CStrategy* theNewStrategy, bool bDelete=true); 	//Change/Set Enemy strategy
 
 	CEnemyBullet* FetchBullet();	//Fetch enemy bullet from vector

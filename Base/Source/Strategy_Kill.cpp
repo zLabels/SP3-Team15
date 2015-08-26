@@ -4,7 +4,7 @@
 CStrategy_Kill::CStrategy_Kill() :
 		AI_ATTACK_MS(2.f),
 		AI_PATROL_MS(1.f),
-		PATROL_OFFSET(100),
+		PATROL_OFFSET(300),
 		AtStart(true)
 {
 }
@@ -12,12 +12,12 @@ CStrategy_Kill::~CStrategy_Kill()
 {
 }
 
-void CStrategy_Kill::Update(void)
+void CStrategy_Kill::Update(bool heroInvisible)
 {
 	int distanceDestinationToEnemy = CalculateDistance();
 	
 	//If distance is lesser than 8 tiles state will change to attack
-	if( distanceDestinationToEnemy < 40000.f && CurrentState != ATTACK)
+	if( distanceDestinationToEnemy < 40000.f && CurrentState != ATTACK && heroInvisible == false)
 	{
 		if( distanceDestinationToEnemy < 2500.f)
 		{
@@ -199,9 +199,9 @@ void CStrategy_Kill::SetEnemyStart(const float x, const float y)
 	theEnemyStart.y = y;
 }
 
-CStrategy_Kill::CURRENT_STATE CStrategy_Kill::GetState(void)
+int CStrategy_Kill::getState(void)
 {
-	return CurrentState;
+	return this->CurrentState;
 }
 void CStrategy_Kill::SetState(CStrategy_Kill::CURRENT_STATE theEnemyState)
 {

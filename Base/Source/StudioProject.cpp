@@ -1343,22 +1343,7 @@ void StudioProject::EnemyUpdate(double dt)
 {
 	float tempHeroPos_x = CHero::GetInstance()->GetHeroPos_x();	//Hero current position X
 	float tempHeroPos_y = CHero::GetInstance()->GetHeroPos_y();	//Hero current position Y
-	int checkPosition_X = (int)((CHero::GetInstance()->GetMapOffset_x() + tempHeroPos_x) / m_cMap->GetTileSize());	//Hero's tile position X
-	int checkPosition_Y = m_cMap->GetNumOfTiles_Height() - (int) ( (tempHeroPos_y + m_cMap->GetTileSize()) / m_cMap->GetTileSize());	//Hero's tile positiion Y
-
-	//if(m_cMap->theScreenMap[checkPosition_Y][checkPosition_X] == 10)	//Check if hero is in zone
-	//{
-	//	enemy->ChangeStrategy(new CStrategy_Kill());
-	//}
-	//else if(m_cMap->theScreenMap[checkPosition_Y][checkPosition_X] == 11)	//Check if hero is in zone
-	//{
-	//	enemy->ChangeStrategy(NULL);
-	//}
-	//else
-	//{
-	////	enemy->ChangeStrategy(NULL);
-	//}
-
+	
 	//Updates the enemies
 	for(std::vector<CEnemy *>::iterator it = enemyContainer.begin(); it != enemyContainer.end(); ++it)
 	{
@@ -1368,7 +1353,7 @@ void StudioProject::EnemyUpdate(double dt)
 		if(Enemy->getActive())
 		{
 			Enemy->SetDestination((int)tempHeroPos_x + CHero::GetInstance()->GetMapOffset_x(),(int)tempHeroPos_y +CHero::GetInstance()->GetMapOffset_y());
-			Enemy->Update(m_cMap,ScreenWidth,ScreenHeight,m_CurrentLevel);
+			Enemy->Update(m_cMap,ScreenWidth,ScreenHeight,m_CurrentLevel,CHero::GetInstance()->getHero_Invi());
 
 			/*int enemy_x = Enemy->GetPos_x() + CHero::GetInstance()->GetMapOffset_x();
 			int enemy_y = Enemy->GetPos_y();
@@ -1390,16 +1375,18 @@ void StudioProject::EnemyUpdate(double dt)
 		//Hero getting attacked by enemy
 		if(Enemy->getHealth() > 0)	//Only if enemy is alive
 		{
-			CHero::GetInstance()->HeroDamaged(Enemy->GetPos_x(),Enemy->GetPos_y());
-
 			float hero_x = CHero::GetInstance()->GetHeroPos_x();
 			hero_x += CHero::GetInstance()->GetMapOffset_x();
 			float hero_y = CHero::GetInstance()->GetHeroPos_y();
 
-			Enemy->EnemyAttack(meshList[GEO_BULLET],hero_x,hero_y);
+			//Needs changing
+			if(Enemy->getStrategy()->getState() == 2)
+			{
+				Enemy->EnemyAttack(meshList[GEO_BULLET],hero_x,hero_y);
+			}
 			
 		}
-		//Ennemy Bullet updating
+		//Enemy Bullet updating
 		for(unsigned i = 0;i < Enemy->getEnemyBullet().size(); ++i)
 		{
 			if( Enemy->getEnemyBullet().at(i)->getActive() == true)
@@ -1463,7 +1450,6 @@ void StudioProject::HeroUpdate(double dt)
 	if (tileOffset_x + m_cMap->GetNumOfTiles_Width() > m_cMap->getNumOfTiles_MapWidth())
 		tileOffset_x = m_cMap->getNumOfTiles_MapWidth() - m_cMap->GetNumOfTiles_Width();
 }
-static bool Invi_isLoaded = false;
 void StudioProject::UpdateSprites(double dt)
 {
 	static bool invisLoaded = false;

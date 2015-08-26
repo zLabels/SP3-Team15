@@ -103,6 +103,10 @@ float& CEnemy::getAttackCD(void)
 {
 	return this->enemyAttackCD;
 }
+CStrategy* CEnemy::getStrategy(void)
+{
+	return this->theStrategy;
+}
 
 vector<CEnemyBullet*>& CEnemy::getEnemyBullet(void)
 {
@@ -367,7 +371,7 @@ bool CEnemy::CheckCollision (CMap* m_cMap, bool m_bCheckLeft,bool m_bCheckRight,
 /********************************************************************************
 Enemy Update
 ********************************************************************************/
-void CEnemy::Update(CMap* m_cMap,int mapWidth, int mapHeight,unsigned maplevel)
+void CEnemy::Update(CMap* m_cMap,int mapWidth, int mapHeight,unsigned maplevel,bool heroInvisible)
 {
 	tempENEMYPosition.x = theENEMYPosition.x;
 	tempENEMYPosition.y = theENEMYPosition.y;
@@ -382,7 +386,7 @@ void CEnemy::Update(CMap* m_cMap,int mapWidth, int mapHeight,unsigned maplevel)
 	if(AttackAnimation_Left->m_anim->animActive == false && AttackAnimation_Right->m_anim->animActive == false)
 	{
 		theStrategy->SetDestination(theDestination.x,theDestination.y);
-		theStrategy->Update();
+		theStrategy->Update(heroInvisible);
 		theStrategy->GetEnemyPosition( (theENEMYPosition.x),(theENEMYPosition.y) );
 		theStrategy->GetEnemyDirection( enemy_face_left,enemy_face_right );
 	}

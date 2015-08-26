@@ -6,7 +6,7 @@ CStrategy::CStrategy()
 CStrategy::~CStrategy()
 {
 }
-void CStrategy::Update()
+void CStrategy::Update(bool)
 {
 	cout << "void CStrategy::Update()" << endl;
 }

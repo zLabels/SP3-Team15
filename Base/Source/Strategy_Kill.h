@@ -8,16 +8,7 @@ class CStrategy_Kill
 public:
 	CStrategy_Kill(void);
 	~CStrategy_Kill(void);
-
-	void Update(void);	//Update enemy
-	void SetDestination(const float x, const float y);	//Set Enemy Destination
-	void GetEnemyPosition(float& x, float& y);	//Get Enemy position
-	void SetEnemyPosition(const float x, const float y);	//Set Enemy position
-	void SetEnemyStart(const float x, const float y);	//Set Enemy start position
-
-	void GetEnemyDirection(bool &left, bool &right);	//Get enemy direction
-	void SetEnemyDirection(const bool left,const bool right);	//Set enemy direction
-
+	
 	/*AI Current state*/
 	enum CURRENT_STATE
 	{
@@ -28,7 +19,16 @@ public:
 		MAX_ENEMY_STATE,
 	};
 
-	CStrategy_Kill::CURRENT_STATE GetState(void);
+	void Update(bool heroInvisible);	//Update enemy
+	void SetDestination(const float x, const float y);	//Set Enemy Destination
+	void GetEnemyPosition(float& x, float& y);	//Get Enemy position
+	void SetEnemyPosition(const float x, const float y);	//Set Enemy position
+	void SetEnemyStart(const float x, const float y);	//Set Enemy start position
+
+	void GetEnemyDirection(bool &left, bool &right);	//Get enemy direction
+	void SetEnemyDirection(const bool left,const bool right);	//Set enemy direction
+	int getState(void);	//Get enemy state
+
 	void SetState(CStrategy_Kill::CURRENT_STATE theEnemyState);
 
 private:

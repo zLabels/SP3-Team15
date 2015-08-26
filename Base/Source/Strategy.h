@@ -10,7 +10,7 @@ class CStrategy
 public:
 	CStrategy(void);
 	~CStrategy(void);
-	virtual void Update()=0;
+	virtual void Update(bool)=0;
 	virtual void SetDestination(const float x, const float y)=0;
 	virtual void GetEnemyPosition(float& x, float& y)=0;
 	virtual void SetEnemyPosition(const float x, const float y)=0;
@@ -19,6 +19,8 @@ public:
 
 	virtual void GetEnemyDirection(bool& left, bool& right)=0;
 	virtual void SetEnemyDirection(const bool left,const bool right)=0;
+
+	virtual int getState(void) = 0;
 
 	int CalculateDistance(void);
 
