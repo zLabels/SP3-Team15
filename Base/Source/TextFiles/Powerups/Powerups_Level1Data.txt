@@ -1,0 +1,6 @@
+//Position Of PowerUps in level 1
+// X Coord,Y Coord
+//-------------------------------
+300,150
+375,175
+375,200

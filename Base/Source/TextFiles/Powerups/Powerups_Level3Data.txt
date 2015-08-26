@@ -1,0 +1,4 @@
+//Position Of PowerUps in level 3
+// X Coord, Y Coord
+350,100
+200,300
