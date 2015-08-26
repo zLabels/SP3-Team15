@@ -12,11 +12,12 @@ CTreasureChest::~CTreasureChest(void)
 {
 }
 
-void CTreasureChest::ChestInit(float posX, float posY,bool NewActive)
+void CTreasureChest::ChestInit(float posX, float posY,int NewType,bool NewActive)
 {
     this->Position.x = posX;
     this->Position.y = posY;
 
+    this->type = NewType;
     this->active = NewActive;
 }
 

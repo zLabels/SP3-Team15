@@ -21,7 +21,8 @@ StudioProject::StudioProject()
 	rearWallFineOffset_x(0),
 	rearWallFineOffset_y(0),
     GetorNot(false),
-    CollisionRange(40*40)
+    CollisionRange(40*40),
+    POWERUP_SIZE(25.f)
 {
 
 }
@@ -556,6 +557,9 @@ void StudioProject::InitTiles()
 
     meshList[GEO_TILE_TREASURECHEST] = MeshBuilder::Generate2DMesh("GEO_TILE_TREASURECHEST", Color(1,1,1), 0,0,25,25);
 	meshList[GEO_TILE_TREASURECHEST]->textureID = LoadTGA("Image//Tiles//tile4_treasurechest.tga");
+
+    meshList[GEO_STEALTH_BOX] = MeshBuilder::Generate2DMesh("GEO_TILE_TREASURECHEST", Color(1,1,1), 0,0,25,25);
+	meshList[GEO_STEALTH_BOX]->textureID = LoadTGA("Image//Tiles//tile4_treasurechest.tga");
 
 	theArrayOfGoodies = new CGoodies*[10];
 	for(unsigned i = 0; i < 10; ++i)
@@ -1223,14 +1227,45 @@ void StudioProject::LoadConsumables(unsigned level)
     if(ConsumablePosition.size() > 0)
     {
         int j = -1;
-        for(unsigned i = 0; i < (ConsumablePosition.size() / 2); ++i)
+        for(unsigned i = 0; i < (ConsumablePosition.size() / 3); ++i)
         {
-            j += 2;
+            j += 3;
             CTreasureChest * Chest = new CTreasureChest();
-            Chest->SetActive(true);
-            Chest->setPositionX(ConsumablePosition[j-1]);
-            Chest->setPositionY(ConsumablePosition[j]);
-            //Chest->ChestInit(ConsumablePosition[j-2],ConsumablePosition[j-1],true);
+            Chest->ChestInit(ConsumablePosition[j-2],ConsumablePosition[j-1],ConsumablePosition[j],true);
+
+            if(ConsumablePosition[j] == 1)
+            {
+                meshList[GEO_POWERUP_ANIMATION] = MeshBuilder::GenerateSpriteAnimation("Health",3,10);
+                meshList[GEO_POWERUP_ANIMATION]->textureArray[0] = LoadTGA("Image//PowerUp//PowerUp_Sprite.tga");
+                Chest->Powerup_Animation = dynamic_cast<CSpriteAnimation*>(meshList[GEO_POWERUP_ANIMATION]);
+                if(Chest->Powerup_Animation)
+                {
+                    Chest->Powerup_Animation->m_anim = new Animation();
+                    Chest->Powerup_Animation->m_anim->Set(10, 17, 1, 1.f, true,Vector3((float)ConsumablePosition[j-2],(float)ConsumablePosition[j-1],1),0,0.f,25.f);
+                }
+            }
+            if(ConsumablePosition[j] == 2)
+            {
+                meshList[GEO_POWERUP_ANIMATION] = MeshBuilder::GenerateSpriteAnimation("Score",3,10);
+                meshList[GEO_POWERUP_ANIMATION]->textureArray[0] = LoadTGA("Image//PowerUp//PowerUp_Sprite.tga");
+                Chest->Powerup_Animation = dynamic_cast<CSpriteAnimation*>(meshList[GEO_POWERUP_ANIMATION]);
+                if(Chest->Powerup_Animation)
+                {
+                    Chest->Powerup_Animation->m_anim = new Animation();
+                    Chest->Powerup_Animation->m_anim->Set(0, 9, 1, 1.f, true,Vector3((float)ConsumablePosition[j-2],(float)ConsumablePosition[j-1],1),0,0.f,25.f);
+                }
+            }
+            if(ConsumablePosition[j] == 3)
+            {
+                meshList[GEO_POWERUP_ANIMATION] = MeshBuilder::GenerateSpriteAnimation("Energy",3,10);
+                meshList[GEO_POWERUP_ANIMATION]->textureArray[0] = LoadTGA("Image//PowerUp//PowerUp_Sprite.tga");
+                Chest->Powerup_Animation = dynamic_cast<CSpriteAnimation*>(meshList[GEO_POWERUP_ANIMATION]);
+                if(Chest->Powerup_Animation)
+                {
+                    Chest->Powerup_Animation->m_anim = new Animation();
+                    Chest->Powerup_Animation->m_anim->Set(20, 29, 1, 1.f, true,Vector3((float)ConsumablePosition[j-2],(float)ConsumablePosition[j-1],1),0,0.f,25.f);
+                }
+            }
             Treasure.push_back(Chest);
         }
     }
@@ -1604,16 +1639,8 @@ void StudioProject::UpdateWeapon()
 	}
 }
 
-void StudioProject::UpdateTiles()
+void StudioProject::UpdatePowerUp(double dt)
 {
-    float tempHeroPos_x = CHero::GetInstance()->GetHeroPos_x();	//Hero current position X
-    float tempHeroPos_y = CHero::GetInstance()->GetHeroPos_y();	//Hero current position Y
-    int checkPosition_X = (int)((CHero::GetInstance()->GetMapOffset_x() + tempHeroPos_x) / m_cMap->GetTileSize());	//Hero tile position X
-    int checkPosition_Y = m_cMap->GetNumOfTiles_Height() - (int) ( (tempHeroPos_y + m_cMap->GetTileSize()) / m_cMap->GetTileSize());	//Hero tile position Y
-    int checkPosition_Y3 = m_cMap->GetNumOfTiles_Height() - (int) ceil( (float) (tempHeroPos_y + m_cMap->GetTileSize() + 25.f) / m_cMap->GetTileSize());
-    int checkPosition_Y4 = m_cMap->GetNumOfTiles_Height() - (int) ceil( (float) (tempHeroPos_y + m_cMap->GetTileSize() + 40.f) / m_cMap->GetTileSize());
-
-    
     for(std::vector<CTreasureChest *>::iterator it = Treasure.begin(); it != Treasure.end(); ++it)
     {
         float hero_x = CHero::GetInstance()->GetHeroPos_x();
@@ -1625,6 +1652,8 @@ void StudioProject::UpdateTiles()
         CTreasureChest * Chest= (CTreasureChest *)*it;
         if(Chest->getActive()) //If it is active it will check
         {
+            Chest->Powerup_Animation->Update(dt);
+
             if(((Chest->getPositionX() - hero_x) * (Chest->getPositionX() - hero_x)) + (Chest->getPositionY() - hero_y) * (Chest->getPositionY() - hero_y) <= CollisionRange) // Collision check
             {
                 if(CHero::GetInstance()->Gethero_HP() != 100) // If not 100 goes in here
@@ -1951,7 +1980,7 @@ void StudioProject::Update(double dt)
 		HeroUpdate(dt);
 		EnemyUpdate(dt);
 
-        UpdateTiles();
+        UpdatePowerUp(dt);
 		UpdateWeapon();
 		UpdateSprites(dt);
 		UpdateEnemySprites(dt);
@@ -2468,25 +2497,14 @@ void StudioProject::RenderBackground(void)
 	//Render2DMesh(meshList[GEO_LAYER_3], false, 1.0f,(float)(100 - rearWallOffset_x));
 	//Render2DMesh(meshList[GEO_LAYER_3], false, 1.0f,(float)(1000 - rearWallOffset_x));
 }
-void StudioProject::RenderGoodies(void)
+void StudioProject::RenderPowerUp(void)
 {
-    //if(!GetorNot)
-    //{
-    //    for(unsigned i = 0; i< 10; ++i)
-    //    {
-    //        //Render2DMesh(theArrayOfGoodies[i]->GetMesh(),false,1.0f,(float)theArrayOfGoodies[i]->GetPos_x(),(float)theArrayOfGoodies[i]->GetPos_y());
-    //    }
-    //}
-    //else
-    //{
-    //}
-
     for(std::vector<CTreasureChest *>::iterator it = Treasure.begin(); it != Treasure.end(); ++it)
     {
-        CTreasureChest * Chest= (CTreasureChest *)*it;
+        CTreasureChest * Chest = (CTreasureChest *)*it;
         if(Chest->getActive())
         {
-            Render2DMesh(meshList[GEO_TILE_TREASURECHEST],false,1.0f,Chest->getPositionX() - CHero::GetInstance()->GetMapOffset_x(),Chest->getPositionY());
+            Render2DSprite(Chest->Powerup_Animation,false,Chest->Powerup_Animation->m_anim->animScale,Chest->Powerup_Animation->m_anim->animScale,Chest->Powerup_Animation->m_anim->animPosition.x - CHero::GetInstance()->GetMapOffset_x(),Chest->Powerup_Animation->m_anim->animPosition.y,false);
         }
     }
 }
@@ -2829,7 +2847,7 @@ void StudioProject::Render()
 
 		RenderTileMap();
 		
-		RenderGoodies();
+		RenderPowerUp();
 		for(std::vector<CEnemy *>::iterator it = enemyContainer.begin(); it != enemyContainer.end(); ++it)
 		{
 			CEnemy *Enemy = (CEnemy *)*it;

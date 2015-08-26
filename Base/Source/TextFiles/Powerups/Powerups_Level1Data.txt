@@ -1,6 +1,7 @@
 //Position Of PowerUps in level 1
-// X Coord,Y Coord
+//Powerup Type : <1> Health, <2> Score, <3> Energy
+//X Coord,Y Coord,PowerUp type
 //-------------------------------
-300,150
-375,175
-375,200
+900,150,1
+375,175,2
+375,200,3
