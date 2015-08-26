@@ -180,6 +180,8 @@ class StudioProject : public Scene
 		MAP_TRANSITION,
 		//Powerup
 		GEO_TILE_TREASURECHEST,
+        GEO_POWERUP_ANIMATION,
+        GEO_STEALTH_BOX,
 		NUM_GEOMETRY,
 	};
 
@@ -232,7 +234,7 @@ public:
 	void UpdateMap(double dt);	//Updates the current map
 	void UpdateEnemySprites(double dt);		//Updates enemy sprite animations
 	void UpdateWeapon();	//Updates the weapons in the game
-    void UpdateTiles(); // Updates the tiles in game
+    void UpdatePowerUp(double dt); // Updates the tiles in game
 
 	void RenderWeapon();	//Render player's weapon
 	void RenderMenu(int input);	//Render Menu
@@ -287,7 +289,7 @@ private:
 	//Goodies and goodies factory
 	CGoodiesFactory theGoodiesFactory;
 	CGoodies** theArrayOfGoodies;	
-	void RenderGoodies(void);	//Render powerups
+	void RenderPowerUp(void);	//Render powerups
 
 	//Enemy
 	vector<CEnemy*> enemyContainer;	//Vector to contain enemies
@@ -321,6 +323,9 @@ private:
 	float HERO_SIZE;	//Size of hero
 	float HERO_OFFSET;	//Offset of hero for tile
 	float jump_input_delay;	//Delay input for double jump
+
+    //PowerUp' Info
+    float POWERUP_SIZE;
 
 	//Menu
 	CMenuClass GameMenu;
