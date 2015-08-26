@@ -583,6 +583,9 @@ void StudioProject::InitWeapon()
 	
 	meshList[GEO_SHURIKEN] = MeshBuilder::GenerateQuad("Shuriken",Color(1,1,1),25.f);
 	meshList[GEO_SHURIKEN]->textureID = LoadTGA("Image//Weapon//Weapon_Shuriken.tga");
+
+	meshList[GEO_BULLET] = MeshBuilder::GenerateQuad("Bullet",Color(1,1,1),25.f);
+	meshList[GEO_BULLET]->textureID = LoadTGA("Image//Weapon//Weapon_Bullet.tga");
 }
 
 void StudioProject::Init()
@@ -612,7 +615,7 @@ void StudioProject::Reset(bool hasWon)
 	*/
 	if(hasWon == false)
 	{
-		CHero::GetInstance()->HeroInit(50,500);
+		CHero::GetInstance()->HeroInit(50,400);
 		CHero::GetInstance()->Gethero_HP() = 100;
 		CHero::GetInstance()->Gethero_EP() = 0;
 		CHero::GetInstance()->setMapOffset_x(0);
@@ -634,7 +637,7 @@ void StudioProject::Reset(bool hasWon)
 	}
 	if(hasWon == true)
 	{
-		CHero::GetInstance()->HeroInit(50,500);
+		CHero::GetInstance()->HeroInit(50,400);
 		CHero::GetInstance()->Gethero_HP() = 100;
 		CHero::GetInstance()->Gethero_EP() = 0;
 		CHero::GetInstance()->setMapOffset_x(0);
@@ -1358,7 +1361,7 @@ void StudioProject::EnemyUpdate(double dt)
 			hero_x += CHero::GetInstance()->GetMapOffset_x();
 			float hero_y = CHero::GetInstance()->GetHeroPos_y();
 
-			Enemy->EnemyAttack(meshList[GEO_SHURIKEN],hero_x,hero_y);
+			Enemy->EnemyAttack(meshList[GEO_BULLET],hero_x,hero_y);
 			
 		}
 		//Ennemy Bullet updating
@@ -2406,9 +2409,9 @@ void StudioProject::RenderMenu(int input)
 		{
 			if(GameMenu.getWinState())
 			{
-				RenderTextOnScreen(meshList[GEO_TEXT], "WELCOME TO THE SHOP", Color(1, 1, 1), 2.f, 15, 42);
+				RenderTextOnScreen(meshList[GEO_TEXT], "WELCOME TO THE SHOP", Color(1, 1, 1), 5.f, 15, 42);
 				RenderTextOnScreen(meshList[GEO_TEXT], "+HEALTH($5)   ", Color(1, 1, 1), GameMenu.getHealthSize(), 15, 38);
-				RenderTextOnScreen(meshList[GEO_TEXT], "+SHIRIKEN($10)", Color(1, 1, 1), GameMenu.getWeaponSize(), 15, 34);
+				RenderTextOnScreen(meshList[GEO_TEXT], "+SHURIKEN($10)", Color(1, 1, 1), GameMenu.getWeaponSize(), 15, 34);
 				RenderTextOnScreen(meshList[GEO_TEXT], "RETURN", Color(0.3f, 0.3f, 0.3f), GameMenu.getOutSize(), 28, 10);
 			}
 		}

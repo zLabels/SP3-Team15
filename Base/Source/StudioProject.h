@@ -157,6 +157,7 @@ class StudioProject : public Scene
 		//Weapon
 		GEO_GRAPPLING_HOOK,
 		GEO_SHURIKEN,
+		GEO_BULLET,
 			//Guard 1
 		GEO_GUARD1_WALK_RIGHT,
 		GEO_GUARD1_WALK_LEFT,
