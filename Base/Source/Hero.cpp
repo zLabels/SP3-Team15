@@ -11,6 +11,7 @@ CHero::CHero(void):
 	hero_face_left(false),
 	hero_face_right(true),
 	hero_grappling(false),
+    hero_invisible(false),
 	hero_HP(100),
 	hero_EP(100),
 	hero_MS(3.f),
@@ -383,11 +384,24 @@ void CHero::Update(CMap* m_cMap,int mapWidth, int mapHeight,unsigned maplevel)
 		}
 	}
 
+    //****************************************//
+    //                                        //
+    //             TILE COLLISION             //
+    //                                        //
+    //****************************************//
     if(HeroTileCheck(m_cMap, TILE_LASER,true,true,true,true,GetHeroPos_x(),GetHeroPos_y(),GetMapOffset_x(),Getjumpspeed()) == true)
     {
         hero_HP -= 1; // Minus health for touching the lasers.
     }
 
+    if(HeroTileCheck(m_cMap, TILE_STEALTH_BOX,true,true,true,true,GetHeroPos_x(),GetHeroPos_y(),GetMapOffset_x(),Getjumpspeed()) == true)
+    {
+        hero_invisible = true;
+    }
+    else
+    {
+        hero_invisible = false;
+    }
     
     if(HeroTileCheck(m_cMap, TILE_HEALTH,true,true,true,true,GetHeroPos_x(),GetHeroPos_y(),GetMapOffset_x(),Getjumpspeed()) == true)
     {
@@ -619,3 +633,11 @@ void CHero::setHero_Health(int newHealth)
     hero_HP = newHealth;
 }
 
+void CHero::setHero_Invi(bool NewInvi)
+{
+    this->hero_invisible = NewInvi;
+}
+bool CHero::getHero_Invi()
+{
+    return hero_invisible;
+}

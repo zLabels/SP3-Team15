@@ -81,6 +81,8 @@ public:
     
     //---Tile Object Interaction---//
     void setHero_Health(int);
+    void setHero_Invi(bool NewInvi);
+    bool getHero_Invi();
     //-----------------------------//
 	static CHero* GetInstance();	//Getting hero instance
 	
@@ -112,6 +114,7 @@ private:
 	bool hero_damaged;	//Hero is damaged
 	bool kb_direction;	//Hero knockback direction (false = left, true = right)
 	bool hero_grappling;	//Hero is grappling
+    bool hero_invisible; //Hero is invisible
 	int jumpspeed;	//speed of jump
 	int jumpcount;	//Number of jumps
 	int MAX_FALLSPEED;	//Maximum speed of falling

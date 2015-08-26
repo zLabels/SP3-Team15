@@ -342,7 +342,7 @@ void StudioProject::InitHero()
 		CHero::GetInstance()->Hero_run_left->m_anim = new Animation();
 		CHero::GetInstance()->Hero_run_left->m_anim->Set(9, 17, 1, 1.f, false,Vector3(0,0,1),0,0.f,HERO_SIZE);
 	} 
-
+    
 
 	//===================================================================================//
 	//				
@@ -558,8 +558,8 @@ void StudioProject::InitTiles()
     meshList[GEO_TILE_TREASURECHEST] = MeshBuilder::Generate2DMesh("GEO_TILE_TREASURECHEST", Color(1,1,1), 0,0,25,25);
 	meshList[GEO_TILE_TREASURECHEST]->textureID = LoadTGA("Image//Tiles//tile4_treasurechest.tga");
 
-    meshList[GEO_STEALTH_BOX] = MeshBuilder::Generate2DMesh("GEO_TILE_TREASURECHEST", Color(1,1,1), 0,0,25,25);
-	meshList[GEO_STEALTH_BOX]->textureID = LoadTGA("Image//Tiles//tile4_treasurechest.tga");
+    meshList[GEO_STEALTH_BOX] = MeshBuilder::GenerateTile("Objective",7,14,3,13,26);
+	meshList[GEO_STEALTH_BOX]->textureID = LoadTGA("Image//Tiles//Tile_Floor.tga");
 
 	theArrayOfGoodies = new CGoodies*[10];
 	for(unsigned i = 0; i < 10; ++i)
@@ -1465,6 +1465,40 @@ void StudioProject::HeroUpdate(double dt)
 }
 void StudioProject::UpdateSprites(double dt)
 {
+    if(CHero::GetInstance()->getHero_Invi())
+    {
+        //----------IDLE----------//
+	    meshList[GEO_PLAYER_IDLE_LEFT]->textureArray[0] = LoadTGA("Image//Player//Invisible//Player_Idle_Invisible.tga");           //Left
+	    meshList[GEO_PLAYER_IDLE_RIGHT]->textureArray[0] = LoadTGA("Image//Player//Invisible//Player_Idle_Invisible.tga");          //Right
+        //------------------------//
+
+        //----------RUN----------//
+        meshList[GEO_PLAYER_RUN_LEFT]->textureArray[0] = LoadTGA("Image//Player//Invisible//Player_walking_invisible_sprite.tga");  //Left
+        meshList[GEO_PLAYER_RUN_RIGHT]->textureArray[0] = LoadTGA("Image//Player//Invisible//Player_walking_invisible_sprite.tga"); //Right
+        //-----------------------//
+
+        //----------JUMP----------//
+        meshList[GEO_PLAYER_JUMP_LEFT]->textureArray[0] = LoadTGA("Image//Player//Invisible//Player_Jump_Left_Invisible.tga");      //Left
+        meshList[GEO_PLAYER_JUMP_RIGHT]->textureArray[0] = LoadTGA("Image//Player//Invisible//Player_Jump_Right_Invisible.tga");    //Right
+        //-----------------------//
+    }
+    else
+    {
+        //----------IDLE----------//
+        meshList[GEO_PLAYER_IDLE_LEFT]->textureArray[0] = LoadTGA("Image//Player//Player_Idle.tga");               //Left
+        meshList[GEO_PLAYER_IDLE_RIGHT]->textureArray[0] = LoadTGA("Image//Player//Player_Idle.tga");              //Right
+        //------------------------//
+
+        //----------RUN----------//
+        meshList[GEO_PLAYER_RUN_LEFT]->textureArray[0] = LoadTGA("Image//Player//Player_walking_sprite.tga");      //Left
+        meshList[GEO_PLAYER_RUN_RIGHT]->textureArray[0] = LoadTGA("Image//Player//Player_walking_sprite.tga");     //Right
+        //-----------------------//
+
+        //----------JUMP----------//
+        meshList[GEO_PLAYER_JUMP_LEFT]->textureArray[0] = LoadTGA("Image//Player//Player_Jump_Left.tga");          //Left
+        meshList[GEO_PLAYER_JUMP_RIGHT]->textureArray[0] = LoadTGA("Image//Player//Player_Jump_Right.tga");        //Right
+        //-----------------------//
+    }
 	//==================================//
 	//	Jump 							//
 	//==================================//
@@ -1735,6 +1769,7 @@ void StudioProject::UpdateInput(double dt)
 
             }
         }
+
     }
 	//Save
 	if(Application::IsKeyPressed(VK_F11))
@@ -2582,6 +2617,10 @@ void StudioProject::RenderTileMap()
             {
                 Render2DMesh(meshList[GEO_TILE_LASER_SHOOTER_RIGHT], false, 1.f, (float)k*m_cMap->GetTileSize()-CHero::GetInstance()->GetMapFineOffset_x(), 575.f-i*m_cMap->GetTileSize());
             }
+            else if (m_cMap->theScreenMap[i][m] == TILE_STEALTH_BOX)
+            {
+                Render2DMesh(meshList[GEO_STEALTH_BOX], false, 1.f, (float)k*m_cMap->GetTileSize()-CHero::GetInstance()->GetMapFineOffset_x(), 575.f-i*m_cMap->GetTileSize());
+            }
 		}
 	}
 }
@@ -2665,6 +2704,10 @@ void StudioProject::RenderHeroSprites(void)
 	//							IDLE													//
 	//
 	//==================================================================================//
+    if(CHero::GetInstance()->getHero_Invi())
+    {
+
+    }
 	if(CHero::GetInstance()->Hero_idle_right->m_anim->animActive == true)
 	{
 		Render2DSprite(CHero::GetInstance()->Hero_idle_right,false,CHero::GetInstance()->Hero_idle_right->m_anim->animScale,CHero::GetInstance()->Hero_idle_right->m_anim->animScale,CHero::GetInstance()->Hero_idle_right->m_anim->animPosition.x + HERO_OFFSET,CHero::GetInstance()->Hero_idle_right->m_anim->animPosition.y + HERO_OFFSET,false);
