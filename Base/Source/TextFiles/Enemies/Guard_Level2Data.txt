@@ -1,0 +1,3 @@
+//Position of Guards on level 2
+//X coord , Y coord, Health , Damage, Type, patrol range, 25 = 1 tile
+//1 is for black guard

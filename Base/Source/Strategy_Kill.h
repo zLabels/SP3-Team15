@@ -19,7 +19,7 @@ public:
 		MAX_ENEMY_STATE,
 	};
 
-	void Update(bool heroInvisible);	//Update enemy
+	void Update(bool heroInvisible,int patrolRange);	//Update enemy
 	void SetDestination(const float x, const float y);	//Set Enemy Destination
 	void GetEnemyPosition(float& x, float& y);	//Get Enemy position
 	void SetEnemyPosition(const float x, const float y);	//Set Enemy position
@@ -35,7 +35,6 @@ private:
 	float AI_ATTACK_MS;	//Enemy attack speed
 	float AI_PATROL_MS;	//Enemy patrol speed
 
-	int PATROL_OFFSET;	//Patrol offset point from start
 	bool AtStart;	//Enemy back at start position
 
 	//Enemy AI State

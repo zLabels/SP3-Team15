@@ -4,7 +4,6 @@
 CStrategy_Kill::CStrategy_Kill() :
 		AI_ATTACK_MS(2.f),
 		AI_PATROL_MS(1.f),
-		PATROL_OFFSET(300),
 		AtStart(true)
 {
 }
@@ -12,14 +11,14 @@ CStrategy_Kill::~CStrategy_Kill()
 {
 }
 
-void CStrategy_Kill::Update(bool heroInvisible)
+void CStrategy_Kill::Update(bool heroInvisible,int patrolRange)
 {
 	int distanceDestinationToEnemy = CalculateDistance();
 	
-	//If distance is lesser than 8 tiles state will change to attack
-	if( distanceDestinationToEnemy < 40000.f && CurrentState != ATTACK && heroInvisible == false)
+	//If distance is lesser than 6 tiles state will change to attack
+	if( distanceDestinationToEnemy < (150*150) && CurrentState != ATTACK && heroInvisible == false)
 	{
-		if( distanceDestinationToEnemy < 2500.f)
+		if( distanceDestinationToEnemy < (25*25))
 		{
 			CurrentState = REPEL;
 		}
@@ -139,12 +138,12 @@ void CStrategy_Kill::Update(bool heroInvisible)
 	case PATROL:
 		if(AtStart == true)	//If back at start
 		{
-			if( ((theEnemyStart.x + PATROL_OFFSET) - theEnemyPosition.x) > 0 )
+			if( ((theEnemyStart.x + patrolRange) - theEnemyPosition.x) > 0 )
 			{
 				theEnemyPosition.x += AI_PATROL_MS;	//Patrol
-				if(theEnemyPosition.x > theEnemyStart.x + PATROL_OFFSET)
+				if(theEnemyPosition.x > theEnemyStart.x + patrolRange)
 				{
-					theEnemyPosition.x = (theEnemyStart.x + PATROL_OFFSET);
+					theEnemyPosition.x = (theEnemyStart.x + patrolRange);
 				}
 				if(faceRight != true)
 				{
@@ -152,7 +151,7 @@ void CStrategy_Kill::Update(bool heroInvisible)
 					faceLeft = false;
 				}
 			}
-			else if( theEnemyPosition.x == (theEnemyStart.x + PATROL_OFFSET) )
+			else if( theEnemyPosition.x == (theEnemyStart.x + patrolRange) )
 			{
 				AtStart = false;
 				CurrentState = IDLE;
@@ -162,9 +161,6 @@ void CStrategy_Kill::Update(bool heroInvisible)
 	default:
 		break;
 	}
-
-	//theEnemyPosition.x = theEnemyPosition.x + (theDestination.x - theEnemyPosition.x > 0 ? 5 : -5 );
-	//theEnemyPosition.y = theEnemyPosition.y + (theDestination.y - theEnemyPosition.y > 0 ? 5 : -5 );
 }
 void CStrategy_Kill::SetDestination(const float x, const float y)
 {

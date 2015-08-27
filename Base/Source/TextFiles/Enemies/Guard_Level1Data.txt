@@ -1,11 +1,11 @@
-//Position of Monsters on level 1
-//X coord , Y coord, Health , Damage, Type
-//1 is for Skeleton ,2 is for ghost
-//925,475,150,5,2
-//1225,450,100,5,1
-//1375,275,100,5,1
-1900,375,150,5,1
-1900,50,150,5,1
+//Position of Guards on level 1
+//X coord , Y coord, Health , Damage, Type, patrol range, 25 = 1 tile
+//1 is for black guard
+//925,475,150,5,1,150
+//1225,450,100,5,1,150
+//1375,275,100,5,1,150
+1900,375,150,5,1,150
+1900,50,150,5,1,150
 
-650,50,100,5,1
-450,225,150,5,1
+650,50,100,5,1,300
+450,225,150,5,1,75

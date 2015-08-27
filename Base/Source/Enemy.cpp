@@ -18,7 +18,8 @@ CEnemy::CEnemy(void)
 	  ATTACK_RANGE(15625),
 	  enemyAttacking(false),
 	  enemyAttackCD(0.f),
-	  MAX_ATTACK_CD(4.f)
+	  MAX_ATTACK_CD(4.f),
+	  enemyPatrolRange(25)
 {
 }
 
@@ -37,7 +38,7 @@ CEnemy::~CEnemy(void)
 	}
 }
 
-void CEnemy::Init(int pos_x,int pos_y,int hp,int dmg,bool active,ENEMY_TYPE type)
+void CEnemy::Init(int pos_x,int pos_y,int hp,int dmg,bool active,ENEMY_TYPE type,int patrolRange)
 {
 	theENEMYPosition.x = pos_x;
 	theENEMYPosition.y = pos_y;
@@ -48,6 +49,7 @@ void CEnemy::Init(int pos_x,int pos_y,int hp,int dmg,bool active,ENEMY_TYPE type
 	this->enemyType = type;
 	this->enemyHealth = hp;
 	this->enemyDamage = dmg;
+	this->enemyPatrolRange = patrolRange;
 }
 
 void CEnemy::SetPos_x(int pos_x)
@@ -386,7 +388,7 @@ void CEnemy::Update(CMap* m_cMap,int mapWidth, int mapHeight,unsigned maplevel,b
 	if(AttackAnimation_Left->m_anim->animActive == false && AttackAnimation_Right->m_anim->animActive == false)
 	{
 		theStrategy->SetDestination(theDestination.x,theDestination.y);
-		theStrategy->Update(heroInvisible);
+		theStrategy->Update(heroInvisible,enemyPatrolRange);
 		theStrategy->GetEnemyPosition( (theENEMYPosition.x),(theENEMYPosition.y) );
 		theStrategy->GetEnemyDirection( enemy_face_left,enemy_face_right );
 	}

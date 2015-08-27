@@ -29,7 +29,7 @@ public:
 		MAX_ENEMY
 	};
 
-	void Init(int pos_x,int pos_y,int hp,int dmg,bool active,ENEMY_TYPE type); // Initialise this class instance
+	void Init(int pos_x,int pos_y,int hp,int dmg,bool active,ENEMY_TYPE type,int patrolRange); // Initialise this class instance
 
 	void SetPos_x(int pos_x); // Set position x of the player
 	void SetPos_y(int pos_y); // Set position y of the player
@@ -96,6 +96,7 @@ private:
 	int KNOCKBACK_RANGE;	//Enemy knockback range
 	int ATTACK_RANGE;	//Enemy Attacking range
 
+	int enemyPatrolRange;	//Enemy range of patrol
 	int mapOffset_X, mapOffset_Y;	//Map offset X , Y	for sccrolling
 	int mapFineOffset_X, mapFineOffset_Y;	//Map fine offset X , Y for scrolling
 

@@ -212,6 +212,8 @@ void StudioProject::InitMesh()
 	meshList[GEO_GRAPPLING_HOOK] = MeshBuilder::Generate2DHook("Grapplinghook", Color(1, 1, 1), 0, 0, 25, 25);
 	meshList[GEO_GRAPPLING_HOOK]->textureID = LoadTGA("Image//Weapon//Grappling_Hook.tga");
 	
+	meshList[GEO_GUARD_DETECTION] = MeshBuilder::GenerateQuad("DetectionRange",Color(1,1,1), 225.f);
+	meshList[GEO_GUARD_DETECTION]->textureID = LoadTGA("Image//Enemies//Enemy_detection.tga");
 }
 void StudioProject::InitCamera()
 {
@@ -224,7 +226,7 @@ void StudioProject::InitCamera()
 }
 void StudioProject::InitVariables()
 {
-
+	//Enemy
 	ENEMY_SIZE = 70.f;
 	ENEMY_OFFSET = 33.f;
 
@@ -630,6 +632,7 @@ void StudioProject::Reset(bool hasWon)
 		//Level
 		m_CurrentLevel = 1;
 		Lv1Clear = false;
+		LoadMap(m_CurrentLevel);
 		LoadEnemies(m_CurrentLevel);
         LoadConsumables(m_CurrentLevel);
 		//Map
@@ -646,8 +649,6 @@ void StudioProject::Reset(bool hasWon)
 		CHero::GetInstance()->Gethero_EP() = 0;
 		CHero::GetInstance()->setMapOffset_x(0);
 		CHero::GetInstance()->setMapOffset_y(0);
-
-		m_CurrentLevel = 1;
 
 		//Level
 		m_CurrentLevel = 1;
@@ -748,6 +749,7 @@ void StudioProject::LoadMap(int level)
 	{
 	case 1:
 		{
+			m_cMap_Level1->LoadMap( "Image//MapDesigns//Map_Level1.csv");
 			m_cMap = m_cMap_Level1;
 			LoadEnemies(level);
             LoadConsumables(level);
@@ -755,6 +757,7 @@ void StudioProject::LoadMap(int level)
 		break;
 	case 2:
 		{
+			m_cMap_Level1->LoadMap( "Image//MapDesigns//Map_Level1.csv");
 			m_cMap = m_cMap_Level1;
 			LoadEnemies(level);
             LoadConsumables(level);
@@ -762,6 +765,7 @@ void StudioProject::LoadMap(int level)
 		break;
 	case 3:
 		{
+			m_cMap_Level3->LoadMap( "Image//MapDesigns//Map_Level3.csv");
 			m_cMap = m_cMap_Level3;
 			LoadEnemies(level);
             LoadConsumables(level);
@@ -769,6 +773,7 @@ void StudioProject::LoadMap(int level)
 		break;
 	case 4:
 		{
+			m_cMap_Level4->LoadMap( "Image//MapDesigns//Map_Level4.csv");
 			m_cMap = m_cMap_Level4;
 			LoadEnemies(level);
             LoadConsumables(level);
@@ -776,7 +781,8 @@ void StudioProject::LoadMap(int level)
 		break;
 	case 5:
 		{
-			m_cMap = m_cMap_Level1;
+			m_cMap_Level5->LoadMap( "Image//MapDesigns//Map_Level1.csv");
+			m_cMap = m_cMap_Level5;
 			LoadEnemies(level);
             LoadConsumables(level);
 		}
@@ -931,24 +937,17 @@ void StudioProject::LoadEnemies(unsigned Level)
 	*/
 	if(positionData.size() > 0)
 	{
-		unsigned j = 0; // used to control variables passed in
-		for(unsigned i = 0; i < (positionData.size() / 5); ++i)
+		int j = -1; // used to control variables passed in
+		for(unsigned i = 0; i < (positionData.size() / 6); ++i)
 		{	
-			if(i == 0)
-			{
-				j += 4;	//+3 for first case
-			}
-			else
-			{
-				j += 5;
-			}
+			j += 6;
 			CEnemy* enemy = new CEnemy();
 			/*
-			Skeleton MONSTER
+			Guard 1
 			*/
-			if(positionData[j] == 1)
+			if(positionData[j-1] == 1)
 			{
-				enemy->Init(positionData[j-4],positionData[j-3],positionData[j-2],positionData[j-1],true,CEnemy::GUARD1);
+				enemy->Init(positionData[j-5],positionData[j-4],positionData[j-3],positionData[j-2],true,CEnemy::GUARD1,positionData[j]);
 				enemy->ChangeStrategy(new CStrategy_Kill());
 
 				//Right walk
@@ -1003,11 +1002,11 @@ void StudioProject::LoadEnemies(unsigned Level)
 				enemyContainer.push_back(enemy);
 			}
 			/*
-			GHOST MONSTER
+			Guard 2
 			*/
-			else if(positionData[j] == 2)
+			else if(positionData[j-1] == 2)
 			{
-				enemy->Init(positionData[j-4],positionData[j-3],positionData[j-2],positionData[j-1],true,CEnemy::GHOST);
+				enemy->Init(positionData[j-5],positionData[j-4],positionData[j-3],positionData[j-2],true,CEnemy::GHOST,positionData[j]);
 				enemy->ChangeStrategy(new CStrategy_Kill());
 
 				//Right walk
@@ -1379,7 +1378,6 @@ void StudioProject::EnemyUpdate(double dt)
 			hero_x += CHero::GetInstance()->GetMapOffset_x();
 			float hero_y = CHero::GetInstance()->GetHeroPos_y();
 
-			//Needs changing
 			if(Enemy->getStrategy()->getState() == 2)
 			{
 				Enemy->EnemyAttack(meshList[GEO_BULLET],hero_x,hero_y);
@@ -2485,6 +2483,9 @@ void StudioProject::RenderHUD(void)
 	RenderMeshIn2D(meshList[GEO_HUD_HP],false,0.032f * CHero::GetInstance()->Gethero_HP(),2.f,-69.8f,53.7f,false);
 	//Energy points
 	RenderMeshIn2D(meshList[GEO_HUD_EP],false,0.032f * CHero::GetInstance()->Gethero_EP(),2.f,-69.8f,48.1f,false);
+
+	//Shuriken Count
+	//RenderMeshIn2D(meshList[GEO_SHURIKEN],false,0.5f,0.5f,0.f,53.7f,false);
 	//RenderMeshIn2D(meshList[GEO_HEALTHBAR],false,player.getHitpoints() * 0.025f,0.3f,-79.0f,-57.5f,false);
 
 	/*std::ostringstream ss3;
@@ -2735,36 +2736,32 @@ void StudioProject::RenderHeroSprites(void)
 }
 void StudioProject::RenderEnemySprites(CEnemy* enemyInput)
 {
+	int enemy_x = enemyInput->GetPos_x() - CHero::GetInstance()->GetMapOffset_x();
+	int enemy_y = enemyInput->GetPos_y();
+
+	//Detection Range
+	if(enemyInput->getHealth() > 0 )
+	{
+		Render2DMesh(meshList[GEO_GUARD_DETECTION],false,1.f,enemy_x + 25.f,enemy_y + (ENEMY_SIZE * 0.5));
+	}
 	//Walking right
 	if(enemyInput->WalkAnimation_Right->m_anim->animActive == true)
 	{
-		int enemy_x = enemyInput->GetPos_x() - CHero::GetInstance()->GetMapOffset_x();
-		int enemy_y = enemyInput->GetPos_y();
-
 		Render2DSprite(enemyInput->WalkAnimation_Right,false,enemyInput->WalkAnimation_Right->m_anim->animScale,enemyInput->WalkAnimation_Right->m_anim->animScale,
 			enemy_x + ENEMY_OFFSET,enemyInput->GetPos_y() + ENEMY_OFFSET,false);
-
 	}
 	//Walkng left
 	if(enemyInput->WalkAnimation_Left->m_anim->animActive == true)
 	{
-		int enemy_x = enemyInput->GetPos_x() - CHero::GetInstance()->GetMapOffset_x();
-		int enemy_y = enemyInput->GetPos_y();
-
 		Render2DSprite(enemyInput->WalkAnimation_Left,false,enemyInput->WalkAnimation_Left->m_anim->animScale,enemyInput->WalkAnimation_Left->m_anim->animScale,
 			enemy_x + ENEMY_OFFSET,enemyInput->GetPos_y() + ENEMY_OFFSET,false);
-
 	}
 
 	//death animation
 	if(enemyInput->DeathAnimation_Right->m_anim->animActive == true)
 	{
-		int enemy_x = enemyInput->GetPos_x() - CHero::GetInstance()->GetMapOffset_x();
-		int enemy_y = enemyInput->GetPos_y();
-
 		Render2DSprite(enemyInput->DeathAnimation_Right,false,enemyInput->DeathAnimation_Right->m_anim->animScale,enemyInput->DeathAnimation_Right->m_anim->animScale,
 			(enemyInput->DeathAnimation_Right->m_anim->animPosition.x - CHero::GetInstance()->GetMapOffset_x()) + ENEMY_OFFSET,enemyInput->DeathAnimation_Right->m_anim->animPosition.y + ENEMY_OFFSET,false);
-
 	}
 
 	//Attack Right
@@ -2781,17 +2778,12 @@ void StudioProject::RenderEnemySprites(CEnemy* enemyInput)
 			(enemyInput->AttackAnimation_Left->m_anim->animPosition.x - CHero::GetInstance()->GetMapOffset_x()) + ENEMY_OFFSET,enemyInput->AttackAnimation_Left->m_anim->animPosition.y + ENEMY_OFFSET,false);
 	}
 
-	
-
-	for(std::vector<CEnemy *>::iterator it = enemyContainer.begin(); it != enemyContainer.end(); ++it)
+	//Rendering Enemy Bullet
+	for(unsigned i = 0; i < enemyInput->getEnemyBullet().size(); ++i)
 	{
-		CEnemy *Enemy = (CEnemy *)*it;
-		for(unsigned i = 0;i < Enemy->getEnemyBullet().size(); ++i)
+		if( enemyInput->getEnemyBullet().at(i)->getActive() == true)
 		{
-			if( Enemy->getEnemyBullet().at(i)->getActive() == true)
-			{
-				Render2DMesh(Enemy->getEnemyBullet().at(i)->getMesh(),false,1.f,Enemy->getEnemyBullet().at(i)->getPos().x - CHero::GetInstance()->GetMapOffset_x(), Enemy->getEnemyBullet().at(i)->getPos().y);
-			}
+			Render2DMesh(enemyInput->getEnemyBullet().at(i)->getMesh(),false,1.f,enemyInput->getEnemyBullet().at(i)->getPos().x - CHero::GetInstance()->GetMapOffset_x(), enemyInput->getEnemyBullet().at(i)->getPos().y);
 		}
 	}
 }
