@@ -389,10 +389,15 @@ void CHero::Update(CMap* m_cMap,int mapWidth, int mapHeight,unsigned maplevel)
     //             TILE COLLISION             //
     //                                        //
     //****************************************//
-    if(HeroTileCheck(m_cMap, TILE_LASER,true,true,true,true,GetHeroPos_x(),GetHeroPos_y(),GetMapOffset_x(),Getjumpspeed()) == true)
+    if(HeroTileCheck(m_cMap, TILE_LASER_HORIZONTAL,true,true,true,true,GetHeroPos_x(),GetHeroPos_y(),GetMapOffset_x(),Getjumpspeed()) == true)
     {
-        hero_HP -= 1; // Minus health for touching the lasers.
+        hero_HP -= 7.5; // Minus health for touching the lasers.
     }
+    if(HeroTileCheck(m_cMap, TILE_LASER_VERTICAL,true,true,true,true,GetHeroPos_x(),GetHeroPos_y(),GetMapOffset_x(),Getjumpspeed()) == true)
+    {
+        hero_HP -= 7.5; // Minus health for touching the lasers.
+    }
+    
 
     if(HeroTileCheck(m_cMap, TILE_STEALTH_BOX,true,true,false,false,GetHeroPos_x(),GetHeroPos_y(),GetMapOffset_x(),Getjumpspeed()) == true)
     {
@@ -403,6 +408,8 @@ void CHero::Update(CMap* m_cMap,int mapWidth, int mapHeight,unsigned maplevel)
         hero_invisible = false;
     }
     
+   
+
     if(HeroTileCheck(m_cMap, TILE_HEALTH,true,true,true,true,GetHeroPos_x(),GetHeroPos_y(),GetMapOffset_x(),Getjumpspeed()) == true)
     {
         float tempHeroPos_x = CHero::GetInstance()->GetHeroPos_x();	//Hero current position X

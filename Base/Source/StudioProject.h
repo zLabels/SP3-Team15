@@ -117,7 +117,8 @@ class StudioProject : public Scene
 		GEO_TILE_METALFLOOR,
 		GEO_TILE_METALCORNER,
         GEO_TILE_DOOR,
-        GEO_TILE_LASER,
+        GEO_TILE_LASER_VERTICAL,
+        GEO_TILE_LASER_HORIZONTAL,
         GEO_TILE_LASER_SWITCH,
         GEO_TILE_HEALTH,
         GEO_TILE_SCORE,
@@ -127,6 +128,8 @@ class StudioProject : public Scene
         GEO_TILE_LASER_SHOOTER_DOWN,
         GEO_TILE_LASER_SHOOTER_LEFT,
         GEO_TILE_LASER_SHOOTER_RIGHT,
+        GEO_TILE_FINISH_CLOSE,
+        GEO_TILE_FINISH_OPEN,
 		GEO_WINDOW_TOP,
 		GEO_WINDOW_LEFT,
 		GEO_WINDOW_RIGHT,
@@ -183,7 +186,7 @@ class StudioProject : public Scene
 		//Powerup
 		GEO_TILE_TREASURECHEST,
         GEO_POWERUP_ANIMATION,
-        GEO_STEALTH_BOX,
+        GEO_TILE_STEALTH_BOX,
 		NUM_GEOMETRY,
 	};
 
@@ -351,11 +354,12 @@ private:
 
     //Tiles || Game related
     int Money_Score;
-
     bool GetorNot;
+    bool NoObjective;
 
     //Vector for the powerups
     vector<CTreasureChest*> Treasure;
+    vector<int> ConsumablePosition;
     float CollisionRange;
 };
 
