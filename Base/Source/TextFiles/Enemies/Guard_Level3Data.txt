@@ -1,3 +1,13 @@
 //Position of Guards on level 3
 //X coord , Y coord, Health , Damage, Type, patrol range, 25 = 1 tile
 //1 is for black guard
+
+1900,350,150,5,1,300
+1900,350,150,5,1,150
+
+2500,50,150,5,1,300
+
+2725,50,150,5,1,300
+
+650,50,100,5,1,300
+175,50,150,5,1,275

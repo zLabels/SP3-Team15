@@ -830,7 +830,7 @@ void StudioProject::LoadEnemies(unsigned Level)
 		break;
 	case 2:
 		{
-			ifstream datafiles("Source//TextFiles//Guard_Level1Data.txt");
+			ifstream datafiles("Source//TextFiles//Enemies//Guard_Level2Data.txt");
 			if(datafiles.is_open())
 			{
 				while(datafiles.good())
@@ -854,7 +854,7 @@ void StudioProject::LoadEnemies(unsigned Level)
 		break;
 	case 3:
 		{
-			ifstream datafiles("Source//TextFiles//Guard_Level1Data.txt");
+			ifstream datafiles("Source//TextFiles//Enemies//Guard_Level3Data.txt");
 			if(datafiles.is_open())
 			{
 				while(datafiles.good())
@@ -878,7 +878,7 @@ void StudioProject::LoadEnemies(unsigned Level)
 		break;
 	case 4:
 		{
-			ifstream datafiles("Source//TextFiles//Guard_Level4Data.txt");
+			ifstream datafiles("Source//TextFiles//Enemies//Guard_Level4Data.txt");
 			if(datafiles.is_open())
 			{
 				while(datafiles.good())
@@ -902,7 +902,7 @@ void StudioProject::LoadEnemies(unsigned Level)
 		break;
 	case 5:
 		{
-			ifstream datafiles("Source//TextFiles//Guard_Level1Data.txt");
+			ifstream datafiles("Source//TextFiles//Enemies//Guard_Level5Data.txt");
 			if(datafiles.is_open())
 			{
 				while(datafiles.good())
@@ -1381,6 +1381,7 @@ void StudioProject::EnemyUpdate(double dt)
 			if(Enemy->getStrategy()->getState() == 2)
 			{
 				Enemy->EnemyAttack(meshList[GEO_BULLET],hero_x,hero_y);
+				soundplayer.playSounds(soundplayer.RIFLE);
 			}
 			
 		}
@@ -1396,6 +1397,8 @@ void StudioProject::EnemyUpdate(double dt)
 					CHero::GetInstance()->HeroDamaged(Enemy->getEnemyBullet().at(i)->getDamage());
 					Enemy->getEnemyBullet().at(i)->setActive(false);
 				}
+					//soundplayer.playSounds(soundplayer.RIFLE);
+				
 			}
 		}
 		
@@ -1406,6 +1409,7 @@ void StudioProject::EnemyUpdate(double dt)
 			if(Enemy->getAttackCD() < 0)
 			{
 				Enemy->getAttackCD() = 0;
+
 			}
 		}
 
@@ -1421,7 +1425,7 @@ void StudioProject::EnemyUpdate(double dt)
 				{
 					Enemy->EnemyDamaged(100,m_cMap);
 					CHero::GetInstance()->getInventory().getShurikenList().at(i)->setActive(false);
-				}
+				}			
 			}
 		}
 	}
@@ -2008,7 +2012,7 @@ void StudioProject::Update(double dt)
 		UpdateSprites(dt);
 		UpdateEnemySprites(dt);
 
-		//soundplayer.playSounds(soundplayer.GAME_BGM);
+		soundplayer.playSounds(soundplayer.GAME_BGM);
 
 		load = false;
 		//camera.Update(dt);
@@ -2461,7 +2465,7 @@ void StudioProject::RenderMenu(int input)
 		{
 			if(GameMenu.getWinState())
 			{
-				RenderTextOnScreen(meshList[GEO_TEXT], "WELCOME TO THE SHOP", Color(1, 1, 1), 5.f, 15, 42);
+				RenderTextOnScreen(meshList[GEO_TEXT], "WELCOME TO THE SHOP", Color(1, 1, 1), 3.f, 15, 42);
 				RenderTextOnScreen(meshList[GEO_TEXT], "+HEALTH($5)   ", Color(1, 1, 1), GameMenu.getHealthSize(), 15, 38);
 				RenderTextOnScreen(meshList[GEO_TEXT], "+SHURIKEN($10)", Color(1, 1, 1), GameMenu.getWeaponSize(), 15, 34);
 				RenderTextOnScreen(meshList[GEO_TEXT], "RETURN", Color(0.3f, 0.3f, 0.3f), GameMenu.getOutSize(), 28, 10);

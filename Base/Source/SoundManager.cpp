@@ -40,19 +40,19 @@ void CSoundManager::playSounds(unsigned input)
 	switch(input)
 	{
 	case GAME_BGM:
-		if(!engine->isCurrentlyPlaying("Sound\\BGM.wav"))
+		if(!engine->isCurrentlyPlaying("Sound\\Game\\escape.mp3"))
 		{
-			Sound = engine->play2D("Sound\\BGM.wav",true);
+			Sound = engine->play2D("Sound\\Game\\escape.mp3",true);
 		}
 		break;
-	case SABER_SWING:
-		Sound = engine->play2D("Sound\\Saber\\Sword_swing.wav");
+	case SHURIKEN:
+		Sound = engine->play2D("Sound\\Game\\shuriken.mp3");
 		break;
-	case SABER_SHOCKWAVE:	
-		Sound = engine->play2D("Sound\\Saber\\Saber_shockwave.wav");
-		break;
-	case SWORD_IMPACT:
-		Sound = engine->play2D("Sound\\Saber\\Sword_impact.wav");
+	case RIFLE:
+		if(!engine->isCurrentlyPlaying("Sound\\Game\\Rifle_sound.mp3"))
+		{
+			Sound = engine->play2D("Sound\\Game\\Rifle_sound.mp3");
+		}
 		break;
 	case MENU_FEEDBACK:
 		Sound = engine->play2D("Sound\\Menu\\MenuFeedback.mp3");
