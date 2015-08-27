@@ -8,6 +8,7 @@ CEnemy::CEnemy(void)
 	  enemy_face_left(false),
 	  enemy_face_right(true),
 	  DeathAnimation_Right(NULL),
+	  DeathAnimation_Left(NULL),
 	  WalkAnimation_Right(NULL),
 	  WalkAnimation_Left(NULL),
 	  mapOffset_X(0), 
@@ -390,6 +391,11 @@ void CEnemy::Update(CMap* m_cMap,int mapWidth, int mapHeight,unsigned maplevel,b
 		DeathAnimation_Right->m_anim->animPosition.x = theENEMYPosition.x;
 		DeathAnimation_Right->m_anim->animPosition.y = theENEMYPosition.y;
 	}
+	if(DeathAnimation_Left->m_anim->animActive == false)
+	{
+		DeathAnimation_Left->m_anim->animPosition.x = theENEMYPosition.x;
+		DeathAnimation_Left->m_anim->animPosition.y = theENEMYPosition.y;
+	}
 	if(AttackAnimation_Right->m_anim->animActive == false)
 	{
 		AttackAnimation_Right->m_anim->animPosition.x = theENEMYPosition.x;
@@ -401,8 +407,8 @@ void CEnemy::Update(CMap* m_cMap,int mapWidth, int mapHeight,unsigned maplevel,b
 		AttackAnimation_Left->m_anim->animPosition.y = theENEMYPosition.y;
 	}
 
-	//Death Animation
-	if(enemyActive == true && enemyHealth <= 0)
+	//Death Animation Right
+	if(enemy_face_right == true && enemyActive == true && enemyHealth <= 0)
 	{
 		DeathAnimation_Right->m_anim->animActive = true;
 		if(DeathAnimation_Right->m_anim->animCurrentFrame == 5)
@@ -410,6 +416,17 @@ void CEnemy::Update(CMap* m_cMap,int mapWidth, int mapHeight,unsigned maplevel,b
 			enemyActive = false;
 		}
 	}
+
+	//Death Animation Left
+	if(enemy_face_left == true && enemyActive == true && enemyHealth <= 0)
+	{
+		DeathAnimation_Left->m_anim->animActive = true;
+		if(DeathAnimation_Left->m_anim->animCurrentFrame == 5)
+		{
+			enemyActive = false;
+		}
+	}
+	
 	//Walk animation for right
 	if(enemy_face_right == true && DeathAnimation_Right->m_anim->animActive == false
 		&& AttackAnimation_Right->m_anim->animActive == false
@@ -423,7 +440,7 @@ void CEnemy::Update(CMap* m_cMap,int mapWidth, int mapHeight,unsigned maplevel,b
 	}
 
 	//Walk animation for left
-	if(enemy_face_left == true && DeathAnimation_Right->m_anim->animActive == false  
+	if(enemy_face_left == true && DeathAnimation_Left->m_anim->animActive == false  
 		&& AttackAnimation_Right->m_anim->animActive == false
 		&& AttackAnimation_Left->m_anim->animActive == false)
 	{

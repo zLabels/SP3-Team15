@@ -987,15 +987,24 @@ void StudioProject::LoadEnemies(unsigned Level)
 				}
 
 				//Death animation
-				meshList[GEO_GUARD1_DEATH_RIGHT] = MeshBuilder::GenerateSpriteAnimation("skele_death_right",1,7);
-				meshList[GEO_GUARD1_DEATH_RIGHT]->textureArray[0] = LoadTGA("Image//Skeleton//SkeletonDeath_Right.tga");
+				meshList[GEO_GUARD1_DEATH_RIGHT] = MeshBuilder::GenerateSpriteAnimation("Guard1_dying_Right",3,10);
+				meshList[GEO_GUARD1_DEATH_RIGHT]->textureArray[0] = LoadTGA("Image//Enemies//Normal//Death//Guard_DyingRight.tga");
 				enemy->DeathAnimation_Right = dynamic_cast<CSpriteAnimation*>(meshList[GEO_GUARD1_DEATH_RIGHT]);
 				if(enemy->DeathAnimation_Right)
 				{
 					enemy->DeathAnimation_Right->m_anim = new Animation();
 					enemy->DeathAnimation_Right->m_anim->Set(0, 6, 0, 1.f, false,Vector3((float)enemy->GetPos_x(),(float)enemy->GetPos_y(),1),0,0.f,ENEMY_SIZE);
 				}
-
+				
+				meshList[GEO_GUARD1_DEATH_LEFT] = MeshBuilder::GenerateSpriteAnimation("Guard1_dying_Left",3,10);
+				meshList[GEO_GUARD1_DEATH_LEFT]->textureArray[0] = LoadTGA("Image//Enemies//Normal//Death//Guard_DyingLeft.tga");
+				enemy->DeathAnimation_Left = dynamic_cast<CSpriteAnimation*>(meshList[GEO_GUARD1_DEATH_LEFT]);
+				if(enemy->DeathAnimation_Left)
+				{
+					enemy->DeathAnimation_Left->m_anim = new Animation();
+					enemy->DeathAnimation_Left->m_anim->Set(0, 6, 0, 1.f, false,Vector3((float)enemy->GetPos_x(),(float)enemy->GetPos_y(),1),0,0.f,ENEMY_SIZE);
+				}
+				
 				//Attacking animation
 				meshList[GEO_GUARD1_ATTACK_RIGHT] = MeshBuilder::GenerateSpriteAnimation("Guard1_attack_right",1,2);
 				meshList[GEO_GUARD1_ATTACK_RIGHT]->textureArray[0] = LoadTGA("Image//Enemies//Normal//Guard_AttackR.tga");
@@ -1079,7 +1088,6 @@ void StudioProject::LoadEnemies(unsigned Level)
 		}
 	}
 }
-
 void StudioProject::LoadConsumables(unsigned level)
 {
     /*
@@ -1386,7 +1394,17 @@ void StudioProject::EnemyUpdate(double dt)
 				soundplayer.playSounds(soundplayer.GHOST_DEATH);
 			}
 		}
-
+		else if(Enemy->DeathAnimation_Left->m_anim->animActive == true)
+		{
+			if(Enemy->enemyType == CEnemy::GUARD1)
+			{
+				soundplayer.playSounds(soundplayer.SKELE_DEATH);
+			}
+			else if(Enemy->enemyType == CEnemy::GHOST)
+			{
+				soundplayer.playSounds(soundplayer.GHOST_DEATH);
+			}
+		}
 		//Hero getting attacked by enemy
 		if(Enemy->getHealth() > 0)	//Only if enemy is alive
 		{
@@ -1643,7 +1661,6 @@ void StudioProject::UpdateEnemySprites(double dt)
 		{
 			enemyContainer[i]->WalkAnimation_Right->Update(dt);
 		}
-
 		if(enemyContainer[i]->WalkAnimation_Left)
 		{
 			enemyContainer[i]->WalkAnimation_Left->Update(dt);
@@ -1651,6 +1668,10 @@ void StudioProject::UpdateEnemySprites(double dt)
 		if(enemyContainer[i]->DeathAnimation_Right)
 		{
 			enemyContainer[i]->DeathAnimation_Right->Update(dt);
+		}
+		if(enemyContainer[i]->DeathAnimation_Left)
+		{
+			enemyContainer[i]->DeathAnimation_Left->Update(dt);
 		}
 		if(enemyContainer[i]->AttackAnimation_Right)
 		{
@@ -2825,11 +2846,18 @@ void StudioProject::RenderEnemySprites(CEnemy* enemyInput)
 			enemy_x + ENEMY_OFFSET,enemyInput->GetPos_y() + ENEMY_OFFSET,false);
 	}
 
-	//death animation
+	//death animation Right
 	if(enemyInput->DeathAnimation_Right->m_anim->animActive == true)
 	{
 		Render2DSprite(enemyInput->DeathAnimation_Right,false,enemyInput->DeathAnimation_Right->m_anim->animScale,enemyInput->DeathAnimation_Right->m_anim->animScale,
 			(enemyInput->DeathAnimation_Right->m_anim->animPosition.x - CHero::GetInstance()->GetMapOffset_x()) + ENEMY_OFFSET,enemyInput->DeathAnimation_Right->m_anim->animPosition.y + ENEMY_OFFSET,false);
+	}
+
+	//death animation Left
+	if(enemyInput->DeathAnimation_Left->m_anim->animActive == true)
+	{
+		Render2DSprite(enemyInput->DeathAnimation_Left,false,enemyInput->DeathAnimation_Left->m_anim->animScale,enemyInput->DeathAnimation_Left->m_anim->animScale,
+			(enemyInput->DeathAnimation_Left->m_anim->animPosition.x - CHero::GetInstance()->GetMapOffset_x()) + ENEMY_OFFSET,enemyInput->DeathAnimation_Left->m_anim->animPosition.y + ENEMY_OFFSET,false);
 	}
 
 	//Attack Right

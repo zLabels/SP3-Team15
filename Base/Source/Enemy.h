@@ -59,7 +59,8 @@ public:
 
 	ENEMY_TYPE enemyType;	//Type of enemy
 
-	CSpriteAnimation* DeathAnimation_Right;	//Death Animation
+	CSpriteAnimation* DeathAnimation_Right;	//Death Animation R
+	CSpriteAnimation* DeathAnimation_Left;	//Death Animation L
 	CSpriteAnimation* WalkAnimation_Right;	//Walk Animation R
 	CSpriteAnimation* WalkAnimation_Left;	//Walk Animation L
 	CSpriteAnimation* AttackAnimation_Right;	//Attack Animation R
