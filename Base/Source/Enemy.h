@@ -5,18 +5,10 @@
 #include "SpriteAnimation.h"
 #include "EnemyBullet.h"
 #include "Mesh.h"
+#include "TileCollision.h"
 
 class CEnemy
 {
-	/*Enum for tiles in game*/
-	enum TILE_TYPE
-	{
-		TILE_GRASS = 1,
-		TILE_UNDERGROUND,
-		TILE_BORDER,
-		TILE_CAVE,
-		MAX_TILE,
-	};
 	// friend class CStrategy;
 public:
 	CEnemy(void);

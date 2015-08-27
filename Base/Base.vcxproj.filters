@@ -174,11 +174,11 @@
     <ClCompile Include="Source\EnemyBullet.cpp">
       <Filter>Source Files\Classes\Enemy</Filter>
     </ClCompile>
-    <ClCompile Include="Source\TileCollision.cpp">
-      <Filter>Source Files\Mesh</Filter>
-    </ClCompile>
     <ClCompile Include="Source\Inventory.cpp">
       <Filter>Source Files\Classes</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\TileCollision.cpp">
+      <Filter>Source Files\Collision</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
