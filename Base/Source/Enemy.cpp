@@ -15,10 +15,10 @@ CEnemy::CEnemy(void)
 	  mapFineOffset_X(0),
 	  mapFineOffset_Y(0),
 	  KNOCKBACK_RANGE(25),
-	  ATTACK_RANGE(15625),
+	  ATTACK_RANGE(62500),
 	  enemyAttacking(false),
 	  enemyAttackCD(0.f),
-	  MAX_ATTACK_CD(4.f),
+	  MAX_ATTACK_CD(2.f),
 	  enemyPatrolRange(25)
 {
 }
@@ -223,7 +223,7 @@ void CEnemy::EnemyAttack(Mesh* ptr,float target_x,float target_y)
 			if(AttackAnimation_Right->m_anim->animCurrentFrame == 1)
 			{
 				CEnemyBullet* bullet = FetchBullet();
-				bullet->setData(ptr,theENEMYPosition.x+ 25.f, theENEMYPosition.y+ 40.f,20,1,0,true);
+				bullet->setData(ptr,theENEMYPosition.x + 25.f, theENEMYPosition.y+ 40.f,20,1,0,true);
 				enemyAttacking = false;
 			}
 		}
@@ -233,7 +233,7 @@ void CEnemy::EnemyAttack(Mesh* ptr,float target_x,float target_y)
 			if(AttackAnimation_Left->m_anim->animCurrentFrame == 1)
 			{			
 				CEnemyBullet* bullet = FetchBullet();
-				bullet->setData(ptr,theENEMYPosition.x+ 25.f, theENEMYPosition.y + 40.f,20,-1,0,true);
+				bullet->setData(ptr,theENEMYPosition.x + 25.f, theENEMYPosition.y + 40.f,20,-1,0,true);
 				enemyAttacking = false;
 			}
 		}
@@ -294,39 +294,27 @@ bool CEnemy::CheckCollision (CMap* m_cMap, bool m_bCheckLeft,bool m_bCheckRight,
 
 	if(m_bCheckRight)
 	{
-		if (//Border
-			(m_cMap->theScreenMap[checkPosition_Y2][checkPosition_X2+2] == TILE_BORDER) ||
-			(m_cMap->theScreenMap[checkPosition_Y3][checkPosition_X2+2] == TILE_BORDER) ||
-			(m_cMap->theScreenMap[checkPosition_Y4][checkPosition_X2+2] == TILE_BORDER) ||
-			//Grass
-			(m_cMap->theScreenMap[checkPosition_Y2][checkPosition_X2+2] == TILE_GRASS) ||
-			(m_cMap->theScreenMap[checkPosition_Y3][checkPosition_X2+2] == TILE_GRASS) ||
-			(m_cMap->theScreenMap[checkPosition_Y4][checkPosition_X2+2] == TILE_GRASS) ||
-			//Tile underground
-			(m_cMap->theScreenMap[checkPosition_Y2][checkPosition_X2+2] == TILE_UNDERGROUND) ||
-			(m_cMap->theScreenMap[checkPosition_Y3][checkPosition_X2+2] == TILE_UNDERGROUND) ||
-			(m_cMap->theScreenMap[checkPosition_Y4][checkPosition_X2+2] == TILE_UNDERGROUND))
+		for(unsigned i = 1; i < TILE_MAX_COLLISION; ++i)
 		{
-			return true;
+			if ( (m_cMap->theScreenMap[checkPosition_Y2][checkPosition_X2+2] == i) ||
+				(m_cMap->theScreenMap[checkPosition_Y3][checkPosition_X2+2] == i) ||
+				(m_cMap->theScreenMap[checkPosition_Y4][checkPosition_X2+2] == i) )
+			{
+				return true;
+			}
 		}
 	}
 
 	if(m_bCheckLeft)
 	{
-		if( //Border
-			(m_cMap->theScreenMap[checkPosition_Y2][checkPosition_X3] == TILE_BORDER ) ||
-			(m_cMap->theScreenMap[checkPosition_Y3][checkPosition_X3] == TILE_BORDER ) ||
-			(m_cMap->theScreenMap[checkPosition_Y4][checkPosition_X3] == TILE_BORDER ) ||
-			//Grass
-			(m_cMap->theScreenMap[checkPosition_Y2][checkPosition_X3] == TILE_GRASS ) ||
-			(m_cMap->theScreenMap[checkPosition_Y3][checkPosition_X3] == TILE_GRASS ) ||
-			(m_cMap->theScreenMap[checkPosition_Y4][checkPosition_X3] == TILE_GRASS ) ||
-			//Tile underground
-			(m_cMap->theScreenMap[checkPosition_Y2][checkPosition_X3] == TILE_UNDERGROUND ) ||
-			(m_cMap->theScreenMap[checkPosition_Y3][checkPosition_X3] == TILE_UNDERGROUND ) ||
-			(m_cMap->theScreenMap[checkPosition_Y4][checkPosition_X3] == TILE_UNDERGROUND ))
+		for(unsigned i = 1; i < TILE_MAX_COLLISION; ++i)
 		{
-			return true;
+			if( (m_cMap->theScreenMap[checkPosition_Y2][checkPosition_X3] == i ) ||
+				(m_cMap->theScreenMap[checkPosition_Y3][checkPosition_X3] == i ) ||
+				(m_cMap->theScreenMap[checkPosition_Y4][checkPosition_X3] == i ) )
+			{
+				return true;
+			}
 		}
 	}
 
@@ -335,17 +323,13 @@ bool CEnemy::CheckCollision (CMap* m_cMap, bool m_bCheckLeft,bool m_bCheckRight,
 		int checkPosition_X = (int) ((mapOffset_X+theENEMYPosition.x) / m_cMap->GetTileSize());
 		int checkPosition_Y = m_cMap->GetNumOfTiles_Height() - (int) ceil( (float) (theENEMYPosition.y + m_cMap->GetTileSize() + 39.f) / m_cMap->GetTileSize());
 
-		if ( //Border
-			 (m_cMap->theScreenMap[checkPosition_Y][checkPosition_X] == TILE_BORDER) ||
-		     (m_cMap->theScreenMap[checkPosition_Y][checkPosition_X+2] == TILE_BORDER) ||
-			 //Grass
-			 (m_cMap->theScreenMap[checkPosition_Y][checkPosition_X] == TILE_GRASS) ||
-		     (m_cMap->theScreenMap[checkPosition_Y][checkPosition_X+2] == TILE_GRASS) ||
-			 //Tile underground
-			 (m_cMap->theScreenMap[checkPosition_Y][checkPosition_X] == TILE_GRASS) ||
-		     (m_cMap->theScreenMap[checkPosition_Y][checkPosition_X+2] == TILE_GRASS))
+		for(unsigned i = 1; i < TILE_MAX_COLLISION; ++i)
 		{
-			return true;
+			if ( (m_cMap->theScreenMap[checkPosition_Y][checkPosition_X] == i) ||
+				(m_cMap->theScreenMap[checkPosition_Y][checkPosition_X+2] == i) )
+			{
+				return true;
+			}
 		}
 	}
 
@@ -354,17 +338,15 @@ bool CEnemy::CheckCollision (CMap* m_cMap, bool m_bCheckLeft,bool m_bCheckRight,
 		int checkPosition_X = (int) ((mapOffset_X+theENEMYPosition.x) / m_cMap->GetTileSize());
 		int checkPosition_Y = m_cMap->GetNumOfTiles_Height() - (int) ceil( (float) (theENEMYPosition.y) / m_cMap->GetTileSize());
 
-		if ( (m_cMap->theScreenMap[checkPosition_Y][checkPosition_X] == TILE_GRASS) || 
-			(m_cMap->theScreenMap[checkPosition_Y][checkPosition_X+1] == TILE_GRASS) || 
-			(m_cMap->theScreenMap[checkPosition_Y][checkPosition_X+2] == TILE_GRASS) ||
-			//Tile underground
-			(m_cMap->theScreenMap[checkPosition_Y][checkPosition_X] == TILE_GRASS) || 
-			(m_cMap->theScreenMap[checkPosition_Y][checkPosition_X+1] == TILE_GRASS) || 
-			(m_cMap->theScreenMap[checkPosition_Y][checkPosition_X+2] == TILE_GRASS))
+		for(unsigned i = 1; i < TILE_MAX_COLLISION; ++i)
 		{
-			return true;
+			if ( (m_cMap->theScreenMap[checkPosition_Y][checkPosition_X] == i) || 
+				(m_cMap->theScreenMap[checkPosition_Y][checkPosition_X+1] == i) || 
+				(m_cMap->theScreenMap[checkPosition_Y][checkPosition_X+2] == i) )
+			{
+				return true;
+			}
 		}
-
 	}
 
 	return false;

@@ -757,8 +757,8 @@ void StudioProject::LoadMap(int level)
 		break;
 	case 2:
 		{
-			m_cMap_Level1->LoadMap( "Image//MapDesigns//Map_Level1.csv");
-			m_cMap = m_cMap_Level1;
+			m_cMap_Level2->LoadMap( "Image//MapDesigns//Map_Level2.csv");
+			m_cMap = m_cMap_Level2;
 			LoadEnemies(level);
             LoadConsumables(level);
 		}
@@ -830,7 +830,7 @@ void StudioProject::LoadEnemies(unsigned Level)
 		break;
 	case 2:
 		{
-			ifstream datafiles("Source//TextFiles//Guard_Level1Data.txt");
+			ifstream datafiles("Source//TextFiles//Enemies//Guard_Level2Data.txt");
 			if(datafiles.is_open())
 			{
 				while(datafiles.good())
@@ -987,7 +987,7 @@ void StudioProject::LoadEnemies(unsigned Level)
 				if(enemy->AttackAnimation_Right)
 				{
 					enemy->AttackAnimation_Right->m_anim = new Animation();
-					enemy->AttackAnimation_Right->m_anim->Set(0, 1, 0, 1.f, false,Vector3((float)enemy->GetPos_x(),(float)enemy->GetPos_y(),1),0,0.f,ENEMY_SIZE);
+					enemy->AttackAnimation_Right->m_anim->Set(0, 1, 0, 0.5f, false,Vector3((float)enemy->GetPos_x(),(float)enemy->GetPos_y(),1),0,0.f,ENEMY_SIZE);
 				}
 
 				meshList[GEO_GUARD1_ATTACK_LEFT] = MeshBuilder::GenerateSpriteAnimation("Guard1_attack_left",1,2);
@@ -996,7 +996,7 @@ void StudioProject::LoadEnemies(unsigned Level)
 				if(enemy->AttackAnimation_Left)
 				{
 					enemy->AttackAnimation_Left->m_anim = new Animation();
-					enemy->AttackAnimation_Left->m_anim->Set(0, 1, 0, 1.f, false,Vector3((float)enemy->GetPos_x(),(float)enemy->GetPos_y(),1),0,0.f,ENEMY_SIZE);
+					enemy->AttackAnimation_Left->m_anim->Set(0, 1, 0, 0.5f, false,Vector3((float)enemy->GetPos_x(),(float)enemy->GetPos_y(),1),0,0.f,ENEMY_SIZE);
 				}
 
 				enemyContainer.push_back(enemy);
@@ -1106,7 +1106,6 @@ void StudioProject::LoadConsumables(unsigned level)
             datafiles.close();
         }
         break;
-
     case 2:
         {
             ifstream datafiles("Source//TextFiles//Powerups//Powerups_Level2Data.txt");
@@ -1391,7 +1390,7 @@ void StudioProject::EnemyUpdate(double dt)
 			{
 				Enemy->getEnemyBullet().at(i)->Update(m_cMap);
 				if( ((CHero::GetInstance()->GetHeroPos_x() + 12.5f) - (Enemy->getEnemyBullet().at(i)->getPos().x - CHero::GetInstance()->GetMapOffset_x())) * ((CHero::GetInstance()->GetHeroPos_x() + 12.5f) - (Enemy->getEnemyBullet().at(i)->getPos().x - CHero::GetInstance()->GetMapOffset_x())) + 
-					((CHero::GetInstance()->GetHeroPos_y() + 25.f) - Enemy->getEnemyBullet().at(i)->getPos().y) * ((CHero::GetInstance()->GetHeroPos_y() + 25.f) - Enemy->getEnemyBullet().at(i)->getPos().y) < 1600 )
+					((CHero::GetInstance()->GetHeroPos_y() + 25.f) - Enemy->getEnemyBullet().at(i)->getPos().y) * ((CHero::GetInstance()->GetHeroPos_y() + 25.f) - Enemy->getEnemyBullet().at(i)->getPos().y) < 900 )
 				{
 					CHero::GetInstance()->HeroDamaged(Enemy->getEnemyBullet().at(i)->getDamage());
 					Enemy->getEnemyBullet().at(i)->setActive(false);
@@ -2864,7 +2863,7 @@ void StudioProject::Render()
 		=====================*/
 		RenderBackground();
 
-		//RenderRearTileMap();
+		RenderRearTileMap();
 
 		RenderTileMap();
 		
