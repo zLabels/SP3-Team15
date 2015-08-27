@@ -52,7 +52,15 @@ void CSoundManager::playSounds(unsigned input)
 		if(!engine->isCurrentlyPlaying("Sound\\Game\\Rifle_sound.mp3"))
 		{
 			Sound = engine->play2D("Sound\\Game\\Rifle_sound.mp3");
-		}
+		break;
+	case HEALTH:
+		Sound = engine->play2D("Sound\\Game\\Health.mp3");
+		break;
+	case POWER_UP:
+		Sound = engine->play2D("Sound\\Game\\powerup.mp3");
+		break;
+	case COIN:
+		Sound = engine->play2D("Sound\\Game\\coin.mp3");
 		break;
 	case MENU_FEEDBACK:
 		Sound = engine->play2D("Sound\\Menu\\MenuFeedback.mp3");
@@ -69,6 +77,11 @@ void CSoundManager::playSounds(unsigned input)
 			Sound = engine->play2D("Sound\\GhostDeath.wav");
 		}
 		break;
-
+	case GAMEOVER:
+		if(!engine->isCurrentlyPlaying("Sound\\Game\\GameOver.mp3"))
+		{
+			Sound = engine->play2D("Sound\\Game\\GameOver.mp3");
+			break;
+		}
 	}
 }
