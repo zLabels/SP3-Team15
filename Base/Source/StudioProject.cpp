@@ -787,6 +787,9 @@ void StudioProject::LoadMap(int level)
 		break;
 	case 4:
 		{
+			CHero::GetInstance()->SetHeroPos_x(100);
+			CHero::GetInstance()->SetHeroPos_y(500);
+
 			m_cMap_Level4->LoadMap( "Image//MapDesigns//Map_Level4.csv");
 			m_cMap = m_cMap_Level4;
 			LoadEnemies(level);
@@ -1095,6 +1098,7 @@ void StudioProject::LoadConsumables(unsigned level)
 	Example, if 1 is passed into the function, the switch case will open the Level1 text file,
 	Add more if required.
 	*/
+	ConsumablePosition.clear();
 	Treasure.clear();	//Clearing the vector of treasures
 	string data = "";	//Used to store string from text file
 	//vector<int> ConsumablePosition;	//Local vector to store the data from text file to be used later on

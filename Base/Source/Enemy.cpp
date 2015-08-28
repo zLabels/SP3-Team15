@@ -224,7 +224,7 @@ void CEnemy::EnemyAttack(Mesh* ptr,float target_x,float target_y)
 			if(AttackAnimation_Right->m_anim->animCurrentFrame == 1)
 			{
 				CEnemyBullet* bullet = FetchBullet();
-				bullet->setData(ptr,theENEMYPosition.x + 25.f, theENEMYPosition.y+ 40.f,20,1,0,true);
+				bullet->setData(ptr,theENEMYPosition.x + 25.f, theENEMYPosition.y+ 40.f,40,1,0,true);
 				enemyAttacking = false;
 			}
 		}
@@ -234,7 +234,7 @@ void CEnemy::EnemyAttack(Mesh* ptr,float target_x,float target_y)
 			if(AttackAnimation_Left->m_anim->animCurrentFrame == 1)
 			{			
 				CEnemyBullet* bullet = FetchBullet();
-				bullet->setData(ptr,theENEMYPosition.x + 25.f, theENEMYPosition.y + 40.f,20,-1,0,true);
+				bullet->setData(ptr,theENEMYPosition.x + 25.f, theENEMYPosition.y + 40.f,40,-1,0,true);
 				enemyAttacking = false;
 			}
 		}
