@@ -49,7 +49,11 @@ void CSoundManager::playSounds(unsigned input)
 		Sound = engine->play2D("Sound\\Game\\shuriken.mp3");
 		break;
 	case RIFLE:
+		if(!engine->isCurrentlyPlaying("Sound\\Game\\Rifle_sound.mp3"))
+		{
+		
 		Sound = engine->play2D("Sound\\Game\\Rifle_sound.mp3");
+		}
 		break;
 	case HEALTH:
 		Sound = engine->play2D("Sound\\Game\\Health.mp3");

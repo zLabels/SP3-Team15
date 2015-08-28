@@ -2,6 +2,3 @@
 //Powerup Type : <1> Health, <2> Score, <3> Energy
 //X Coord,Y Coord,PowerUp type
 //-------------------------------
-900,150,1
-375,175,2
-375,200,3
