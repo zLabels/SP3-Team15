@@ -1415,6 +1415,10 @@ void StudioProject::EnemyUpdate(double dt)
 			if(Enemy->getStrategy()->getState() == 2)
 			{
 				Enemy->EnemyAttack(meshList[GEO_BULLET],hero_x,hero_y);
+				
+			}
+			if(Enemy->getAttackCD()== 2.f)
+			{
 				soundplayer.playSounds(soundplayer.RIFLE);
 			}
 			
@@ -1705,8 +1709,6 @@ void StudioProject::UpdateWeapon()
 void StudioProject::UpdatePowerUp(double dt)
 {
     
-
-
     for(std::vector<CTreasureChest *>::iterator it = Treasure.begin(); it != Treasure.end(); ++it)
     {
         float hero_x = CHero::GetInstance()->GetHeroPos_x();
@@ -1726,12 +1728,15 @@ void StudioProject::UpdatePowerUp(double dt)
                     if(CHero::GetInstance()->Gethero_HP() < 100 && CHero::GetInstance()->Gethero_HP() > 75) // if Health is in between 75 to 100, set it to 100
                     {
                         CHero::GetInstance()->setHero_Health(100);
+						soundplayer.playSounds(soundplayer.HEALTH);
                     }
                     else if(CHero::GetInstance()->Gethero_HP() <= 75) // If health is lower or equals to 75, health plus 25.
                     {
                         CHero::GetInstance()->setHero_Health(CHero::GetInstance()->Gethero_HP() + 25);
+						soundplayer.playSounds(soundplayer.HEALTH);
                     }
                 }
+				
                 Chest->SetActive(false); // Despawn the power up
             }
 
@@ -2059,6 +2064,11 @@ void StudioProject::Update(double dt)
 			soundplayer.playSounds(soundplayer.MENU_FEEDBACK);
 		}
 	}
+	if(GameMenu.getLostState() == true )
+	{
+		soundplayer.playSounds(soundplayer.GAMEOVER);
+	}
+
 	else if(GameMenu.getMenuState() == false && GameMenu.getLostState() == false && GameMenu.getWinState() == false)
 	{
 		if(GameMenu.getLoadingLevels() == true)

@@ -40,25 +40,25 @@ void CSoundManager::playSounds(unsigned input)
 	switch(input)
 	{
 	case GAME_BGM:
-		if(!engine->isCurrentlyPlaying("Sound\\Game\\escape.mp3"))
+		if(!engine->isCurrentlyPlaying("Sound\\Game\\escape.wav"))
 		{
-			Sound = engine->play2D("Sound\\Game\\escape.mp3",true);
+			Sound = engine->play2D("Sound\\Game\\escape.wav",true);
 		}
 		break;
 	case SHURIKEN:
-		Sound = engine->play2D("Sound\\Game\\shuriken.mp3");
+		Sound = engine->play2D("Sound\\Game\\shuriken.wav");
 		break;
 	case RIFLE:
-		Sound = engine->play2D("Sound\\Game\\Rifle_sound.mp3");
+		Sound = engine->play2D("Sound\\Game\\Rifle_sound.wav");
 		break;
 	case HEALTH:
-		Sound = engine->play2D("Sound\\Game\\Health.mp3");
+		Sound = engine->play2D("Sound\\Game\\Health.wav");
 		break;
 	case POWER_UP:
-		Sound = engine->play2D("Sound\\Game\\powerup.mp3");
+		Sound = engine->play2D("Sound\\Game\\powerup.wav");
 		break;
 	case COIN:
-		Sound = engine->play2D("Sound\\Game\\coin.mp3");
+		Sound = engine->play2D("Sound\\Game\\coin.wav");
 		break;
 	case MENU_FEEDBACK:
 		Sound = engine->play2D("Sound\\Menu\\MenuFeedback.mp3");
@@ -76,9 +76,9 @@ void CSoundManager::playSounds(unsigned input)
 		}
 		break;
 	case GAMEOVER:
-		if(!engine->isCurrentlyPlaying("Sound\\Game\\GameOver.mp3"))
+		if(!engine->isCurrentlyPlaying("Sound\\Game\\GameOver.wav"))
 		{
-			Sound = engine->play2D("Sound\\Game\\GameOver.mp3");
+			Sound = engine->play2D("Sound\\Game\\GameOver.wav");
 			break;
 		}
 	}
