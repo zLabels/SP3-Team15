@@ -1293,6 +1293,18 @@ void StudioProject::LoadConsumables(unsigned level)
                     Chest->Powerup_Animation->m_anim->Set(20, 29, 1, 1.f, true,Vector3((float)ConsumablePosition[j-2],(float)ConsumablePosition[j-1],1),0,0.f,25.f);
                 }
             }
+            if(ConsumablePosition[j] == 4)
+            {
+                meshList[GEO_POWERUP_ANIMATION] = MeshBuilder::GenerateSpriteAnimation("Shuriken",1,5);
+                meshList[GEO_POWERUP_ANIMATION]->textureArray[0] = LoadTGA("Image//PowerUp//Shuriken.tga");
+                Chest->Powerup_Animation = dynamic_cast<CSpriteAnimation*>(meshList[GEO_POWERUP_ANIMATION]);
+                if(Chest->Powerup_Animation)
+                {
+                    Chest->Powerup_Animation->m_anim = new Animation();
+                    Chest->Powerup_Animation->m_anim->Set(0,4,1,1.f,true,Vector3((float)ConsumablePosition[j-2],(float)ConsumablePosition[j-1],1),0,0.f,25.f);
+                }
+            }
+
             Treasure.push_back(Chest);
         }
     }
@@ -1727,27 +1739,29 @@ void StudioProject::UpdatePowerUp(double dt)
             Chest->Powerup_Animation->Update(dt);
             if(((Chest->getPositionX() - hero_x) * (Chest->getPositionX() - hero_x)) + (Chest->getPositionY() - hero_y) * (Chest->getPositionY() - hero_y) <= CollisionRange) // Collision check
             {
-                if(CHero::GetInstance()->Gethero_HP() != 100) // If not 100 goes in here
+                if(Chest->getType() == Chest->POWERUP_HEALTH)
                 {
-                    if(CHero::GetInstance()->Gethero_HP() < 100 && CHero::GetInstance()->Gethero_HP() > 75) // if Health is in between 75 to 100, set it to 100
+                    if(CHero::GetInstance()->Gethero_HP() != 100) // If not 100 goes in here
                     {
-                        CHero::GetInstance()->setHero_Health(100);
-						soundplayer.playSounds(soundplayer.HEALTH);
-                    }
-                    else if(CHero::GetInstance()->Gethero_HP() <= 75) // If health is lower or equals to 75, health plus 25.
-                    {
-                        CHero::GetInstance()->setHero_Health(CHero::GetInstance()->Gethero_HP() + 25);
-						soundplayer.playSounds(soundplayer.HEALTH);
+                        if(CHero::GetInstance()->Gethero_HP() < 100 && CHero::GetInstance()->Gethero_HP() > 75) // if Health is in between 75 to 100, set it to 100
+                        {
+                            CHero::GetInstance()->setHero_Health(100);
+                        }
+                        else if(CHero::GetInstance()->Gethero_HP() <= 75) // If health is lower or equals to 75, health plus 25.
+                        {
+                            CHero::GetInstance()->setHero_Health(CHero::GetInstance()->Gethero_HP() + 25);
+                        }
                     }
                 }
-				
-                Chest->SetActive(false); // Despawn the power up
+                if(Chest->getType() == Chest->POWERUP_SHURIKEN)
+                {
+                    CHero::GetInstance()->getInventory().IncrementShuriken();   //Adds a shuriken
+                }
+                    Chest->SetActive(false); // Despawn the power up
+
             }
-
         }
-
     }
-    
 }
 void StudioProject::UpdateInput(double dt)
 {

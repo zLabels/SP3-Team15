@@ -4,18 +4,21 @@
 #include "SpriteAnimation.h"
 class CTreasureChest : public CGoodies
 {
-    enum POWERUP_TYPE
-    {
-        POWERUP_HEALTH = 1,
-        POWERUP_SCORE,
-        POWERUP_SHURIKEN,
-        MAX_POWERUP
-    };
+    
 
 public:
 	CTreasureChest(void);
 	~CTreasureChest(void);
     
+    enum POWERUP_TYPE
+    {
+        POWERUP_HEALTH = 1,
+        POWERUP_SCORE,
+        POWERUP_ENERGY,
+        POWERUP_SHURIKEN,
+        MAX_POWERUP
+    };
+
     void ChestInit(float posX, float posY,int type,bool active);
 
     void setPositionX(float);
@@ -27,6 +30,7 @@ public:
     void SetActive(bool);
     bool getActive();
 
+    int getType();
 
     CSpriteAnimation* Powerup_Animation;
 private:

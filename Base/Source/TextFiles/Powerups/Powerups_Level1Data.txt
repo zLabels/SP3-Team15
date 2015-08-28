@@ -1,10 +1,12 @@
 //Position Of PowerUps in level 1
-//Powerup Type : <1> Health, <2> Score, <3> Energy
+//Powerup Type : <1> Health, <2> Score, <3> Energy, <4> Shuriken
 //X Coord,Y Coord,PowerUp type
 //-------------------------------
 175,400,2
 175,375,2
 175,350,2
+125,425,1
+150,400,4
 
 2500,425,1
 2450,425,3

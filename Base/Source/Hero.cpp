@@ -433,7 +433,6 @@ void CHero::Update(CMap* m_cMap,int mapWidth, int mapHeight,unsigned maplevel)
             }
         }
 
-        cout << " TOUCH RED" << endl;
          m_cMap->theScreenMap[checkPosition_Y][checkPosition_X] = 0;
         m_cMap->theScreenMap[checkPosition_Y][checkPosition_X + 1] = 0;
         m_cMap->theScreenMap[checkPosition_Y][checkPosition_X + 2] = 0;
@@ -466,7 +465,6 @@ void CHero::Update(CMap* m_cMap,int mapWidth, int mapHeight,unsigned maplevel)
         m_cMap->theScreenMap[checkPosition_Y4][checkPosition_X + 1] = 0;
         m_cMap->theScreenMap[checkPosition_Y4][checkPosition_X + 2] = 0;
         
-        cout << "TOUCH GREEN -> " << hero_SCORE << endl;
     }
 
 	HeroKnockBack(m_cMap);
