@@ -25,6 +25,7 @@ CMenuClass::CMenuClass(void)
 	DELAY_RATE = 0.2f;
 	DELAY_RATE2 = 0.2f;
 	DELAY_RATE3 = 0.2f;
+	DELAY_RATE4 = 0.2f;
 
 	//Level1Size = 3.f;	//Text size
 	//Level2Size = 3.f;
@@ -35,14 +36,26 @@ CMenuClass::CMenuClass(void)
 	showControls = false;
 	Loading = false;
 	LevelSelect = false;
+	Pause = false;
+
+	BuyHealth = false;
+	BuyWeapon = false;
+	Health = false;
+	Weapon = false;
 
 	Win = false;
 	Lost = false;
+	LosingSound = false;
 	Reset = false;
+		
+	save = false;
+	save_n_quit = false;
+	quit = false;
 
 	SELECTED_SIZE = 4.f;
 	NORMAL_SIZE = 3.f;
 }
+
 CMenuClass::~CMenuClass(void)
 {
 }
@@ -108,6 +121,27 @@ float CMenuClass::getOutSize()
 	return this->OutSize;
 }
 
+float CMenuClass::getSaveSize()
+{
+	return this->SaveSize;
+}
+float CMenuClass::getQuitSize()
+{
+	return this->QuitSize;
+}
+float CMenuClass::getSQSize()
+{
+	return this->SQ_Size;
+}
+float CMenuClass::getReturnSize()
+{
+	return this->R_Size;
+}
+float CMenuClass::getReturnMainSize()
+{
+	return this->RMain_Size;
+}
+
 float CMenuClass::getCurrentSelectPos_X()
 {
 	return this->currentSelectionPos.x;
@@ -125,6 +159,15 @@ void CMenuClass::setLostState(bool input)
 {
 	Lost = input;
 }
+bool CMenuClass::getLostSound()
+{
+	return LosingSound; 
+}
+void CMenuClass::setLostSound(bool input)
+{
+	LosingSound = input;
+}
+
 bool CMenuClass::getWinState()
 {
 	return this->Win;
@@ -134,6 +177,41 @@ void CMenuClass::setWinState(bool input)
 	this->Win = input;
 }
 
+void CMenuClass::setPauseState(bool input)
+{
+	this->Pause = input;
+}
+bool CMenuClass::getPauseState()
+{
+	return this->Pause;
+}
+
+
+bool CMenuClass::getSave()
+{	
+	return this->save;
+}
+void CMenuClass::setSave(bool input)
+{
+	this->save = input;
+}
+bool CMenuClass::getSavenQuit()
+{
+	return this->save_n_quit;
+}
+void CMenuClass::setSavenQuit(bool input)
+{
+	this->save_n_quit = input;
+}
+bool CMenuClass::getQuit()
+{
+	return this->quit;
+}
+void CMenuClass::setQuit(bool input)
+{
+	this->quit = input;
+}
+
 bool CMenuClass::getReset()
 {
 	return Reset;
@@ -141,6 +219,47 @@ bool CMenuClass::getReset()
 void CMenuClass::setReset(bool input)
 {
 	Reset = input;
+}
+
+bool CMenuClass::getHealthBought()
+{
+	//AddHealth();
+	return this->BuyHealth;
+}
+
+void CMenuClass::setHealthBought(bool input)
+{
+	this->BuyHealth = input;
+}
+
+bool CMenuClass::getWeaponBought()
+{
+	//AddWeapon();
+	return this->BuyWeapon;
+}
+
+void CMenuClass::setWeaponBought(bool input)
+{
+	this->BuyWeapon = input;
+}
+
+bool CMenuClass::AddHealth(int money)
+{
+	Money.SetCash(money); 
+	if(Money.GetCash() >= 5)
+	{
+		return true;
+	}
+	return false;
+}
+bool CMenuClass::AddWeapon(int money)
+{
+	Money.SetCash(money); 
+	if(Money.GetCash() >= 10)
+	{
+		return true;
+	}
+	return false;
 }
 
 void CMenuClass::menuFeedback()
@@ -169,7 +288,6 @@ void CMenuClass::menuFeedback()
 		currentSelectionPos.y = levelPos.y;
 	}
 }
-
 void CMenuClass::menuFeedback2()
 {
 	//==================================//
@@ -464,12 +582,14 @@ void CMenuClass::WinScreen()
 	}
 	if(Application::IsKeyPressed(VK_RETURN) && ItemOption == B_HEALTH  && inputDelay > DELAY_RATE3)
 	{
-		cout<<"HEALTH ++"<<endl;
+		//cout<<"HEALTH ++"<<endl;
+		BuyHealth = true;
 		inputDelay = 0.f;
 	}
 	else if(Application::IsKeyPressed(VK_RETURN) && ItemOption == B_WEAPON  && inputDelay > DELAY_RATE3)
 	{
-		cout<<"WEAPON ++"<<endl;
+		//cout<<"WEAPON ++"<<endl;
+		BuyWeapon = true;
 		inputDelay = 0.f;
 	}
 	else if(Application::IsKeyPressed(VK_RETURN) && ItemOption == B_OUT  && inputDelay > DELAY_RATE3)
@@ -498,6 +618,128 @@ void CMenuClass::WinScreen()
 		OutSize = SELECTED_SIZE;
 	}
 }
+
+void CMenuClass::PauseMenu()
+{
+	if(Application::IsKeyPressed(VK_DOWN) && inputDelay > DELAY_RATE4)
+	{
+		if(ItemOption == SAVE)
+		{
+			ItemOption = SAVE_N_QUIT;
+		}
+		else if(ItemOption == SAVE_N_QUIT)
+		{
+			ItemOption = QUIT;
+		}
+		else if(ItemOption == QUIT)
+		{
+			ItemOption = RETURN;
+		}
+		else if(ItemOption == RETURN)
+		{
+			ItemOption = RETURN_MAIN;
+		}
+		else if(ItemOption == RETURN_MAIN)
+		{
+			ItemOption = SAVE;
+		}
+		inputDelay = 0.f;
+	}
+
+	if(Application::IsKeyPressed(VK_UP) && inputDelay > DELAY_RATE4)
+	{
+		if(ItemOption == SAVE)
+		{
+			ItemOption = RETURN_MAIN;
+		}
+		else if(ItemOption == SAVE_N_QUIT)
+		{
+			ItemOption = SAVE;
+		}
+		else if(ItemOption == QUIT)
+		{
+			ItemOption = SAVE_N_QUIT;
+		}
+		else if(ItemOption == RETURN)
+		{
+			ItemOption = QUIT;
+		}
+		else if(ItemOption == RETURN_MAIN)
+		{
+			ItemOption = RETURN;
+		}
+		inputDelay = 0.f;
+	}
+	if(Application::IsKeyPressed(VK_RETURN) && ItemOption == SAVE  && inputDelay > DELAY_RATE4)
+	{
+		save = true;
+		inputDelay = 0.f;
+	}
+	else if(Application::IsKeyPressed(VK_RETURN) && ItemOption == SAVE_N_QUIT  && inputDelay > DELAY_RATE4)
+	{
+		save_n_quit = true;
+		inputDelay = 0.f;
+	}
+	else if(Application::IsKeyPressed(VK_RETURN) && ItemOption == QUIT  && inputDelay > DELAY_RATE4)
+	{
+		quit = true;
+		inputDelay = 0.f;
+	}
+	else if(Application::IsKeyPressed(VK_RETURN) && ItemOption == RETURN  && inputDelay > DELAY_RATE4)
+	{
+		Pause = false;
+		inputDelay = 0.f;
+	}
+	else if(Application::IsKeyPressed(VK_RETURN) && ItemOption == RETURN_MAIN  && inputDelay > DELAY_RATE4)
+	{
+		showMenu = true;
+		Pause = false;
+		Reset = true;
+		inputDelay = 0.f;
+	}
+
+	if(ItemOption == SAVE)
+	{
+		SaveSize = SELECTED_SIZE;
+		SQ_Size = NORMAL_SIZE;
+		QuitSize = NORMAL_SIZE;
+		R_Size = NORMAL_SIZE;
+		RMain_Size = NORMAL_SIZE;
+	}
+	else if(ItemOption == SAVE_N_QUIT)
+	{
+		SaveSize = NORMAL_SIZE;
+		SQ_Size = SELECTED_SIZE;
+		QuitSize = NORMAL_SIZE;
+		R_Size = NORMAL_SIZE;
+		RMain_Size = NORMAL_SIZE;
+	}
+	else if(ItemOption == QUIT)
+	{
+		SaveSize = NORMAL_SIZE;
+		SQ_Size = NORMAL_SIZE;
+		QuitSize = SELECTED_SIZE;
+		R_Size = NORMAL_SIZE;
+		RMain_Size = NORMAL_SIZE;
+	}
+	else if(ItemOption == RETURN)
+	{
+		SaveSize = NORMAL_SIZE;
+		SQ_Size = NORMAL_SIZE;
+		QuitSize = NORMAL_SIZE;
+		R_Size = SELECTED_SIZE;
+		RMain_Size = NORMAL_SIZE;
+	}
+	else if(ItemOption == RETURN_MAIN)
+	{
+		SaveSize = NORMAL_SIZE;
+		SQ_Size = NORMAL_SIZE;
+		QuitSize = NORMAL_SIZE;
+		R_Size = NORMAL_SIZE;
+		RMain_Size = SELECTED_SIZE;
+	}
+}
+
 
 int CMenuClass::Update(double dt)
 {
@@ -532,6 +774,10 @@ int CMenuClass::Update(double dt)
 	else if(Win == true)
 	{
 		WinScreen();
+	}
+	else if(Pause == true)
+	{
+		PauseMenu();
 	}
 
 	return 0;

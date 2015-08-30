@@ -1746,13 +1746,27 @@ void StudioProject::UpdatePowerUp(double dt)
                         if(CHero::GetInstance()->Gethero_HP() < 100 && CHero::GetInstance()->Gethero_HP() > 75) // if Health is in between 75 to 100, set it to 100
                         {
                             CHero::GetInstance()->setHero_Health(100);
+							soundplayer.playSounds(soundplayer.HEALTH);
                         }
                         else if(CHero::GetInstance()->Gethero_HP() <= 75) // If health is lower or equals to 75, health plus 25.
                         {
                             CHero::GetInstance()->setHero_Health(CHero::GetInstance()->Gethero_HP() + 25);
+							soundplayer.playSounds(soundplayer.HEALTH);
                         }
                     }
                 }
+				if(Chest->getType() == Chest->POWERUP_SCORE)
+				{
+					soundplayer.playSounds(soundplayer.COIN);
+				}
+				if(Chest->getType() == Chest->POWERUP_ENERGY)
+				{
+					soundplayer.playSounds(soundplayer.POWER_UP);
+				}
+				if(Chest->getType() == Chest->POWERUP_SHURIKEN)
+				{
+					soundplayer.playSounds(soundplayer.POWER_UP);
+				}
                 if(Chest->getType() == Chest->POWERUP_SHURIKEN)
                 {
                     CHero::GetInstance()->getInventory().IncrementShuriken();   //Adds a shuriken
@@ -1865,8 +1879,7 @@ void StudioProject::UpdateInput(double dt)
 	if(Application::IsKeyPressed(VK_F11))
 	{
 		//CHero::GetInstance()->HeroMoveUpDown(false , 1.0f);
-		Save = true; 
-		SaveGame();
+		GameMenu.setPauseState(true);
 	}
 	if(Application::IsKeyPressed(VK_F10))
 	{
@@ -2060,11 +2073,12 @@ void StudioProject::UpdateMap(double dt)
 
 void StudioProject::Update(double dt)
 {
+	//Money.SetCash(Score);
 	if(GameMenu.getReset() == true)
 	{ 
 		Reset(false);
 	}
-	if(GameMenu.getMenuState() == true || GameMenu.getLostState() == true || GameMenu.getWinState() == true)
+	if(GameMenu.getMenuState() == true || GameMenu.getLostState() == true )
 	{	
 		int lvl = GameMenu.Update(dt);
 		if(lvl != 0)
@@ -2076,16 +2090,92 @@ void StudioProject::Update(double dt)
 		//{
 		//	//cout<<"NO LEVEL SELECTED"<<endl;
 		//}
+		//soundplayer.playSounds(soundplayer.GAME_BGM);
 
 		if( (Application::IsKeyPressed(VK_DOWN) || Application::IsKeyPressed(VK_UP) || Application::IsKeyPressed(VK_RETURN)) && GameMenu.inputDelay == 0.f)
 		{
 			soundplayer.playSounds(soundplayer.MENU_FEEDBACK);
 		}
 	}
+	if(GameMenu.getWinState() == true)
+	{
+		int lvl = GameMenu.Update(dt);
+		if(lvl != 0)
+		{
+			m_CurrentLevel = lvl;
+			LoadMap(m_CurrentLevel);
+		}
+		if(GameMenu.getHealthBought() == true)
+		{
+			//if(GameMenu.AddHealth())//The score
+			//{
+				if(CHero::GetInstance()->Gethero_HP() < 100 && CHero::GetInstance()->Gethero_HP() > 75) // if Health is in between 75 to 100, set it to 100
+				{
+					cout<<"HEALTH++";
+					CHero::GetInstance()->setHero_Health(100);
+					soundplayer.playSounds(soundplayer.HEALTH);
+				}
+				else if(CHero::GetInstance()->Gethero_HP() <= 75) // If health is lower or equals to 75, health plus 25.
+				{
+					cout<<"HEALTH++";
+					CHero::GetInstance()->setHero_Health(CHero::GetInstance()->Gethero_HP() + 25);
+					soundplayer.playSounds(soundplayer.HEALTH);
+				}
+			//}
+			GameMenu.setHealthBought(false);
+		}
+		else if(GameMenu.getWeaponBought() == true)
+		{
+			//if(GameMenu.AddWeapon())//The score
+			//{
+				cout<<"WEAPON++";
+				CHero::GetInstance()->getInventory().IncrementShuriken();  
+				soundplayer.playSounds(soundplayer.POWER_UP);
+			//}
+			GameMenu.setWeaponBought(false);
+
+		}
+	}
+	if(GameMenu.getPauseState() == true)
+	{
+		int lvl = GameMenu.Update(dt);
+		if(lvl != 0)
+		{
+			m_CurrentLevel = lvl;
+			LoadMap(m_CurrentLevel);
+		}
+		if(GameMenu.getSave() == true)
+		{
+			Save = true; 
+			SaveGame();
+			GameMenu.setSave(false);
+		}
+		if(GameMenu.getSavenQuit() == true)
+		{
+			Save = true; 
+			SaveGame();
+			GameMenu.setSavenQuit(false);
+			exit(0);
+			
+		}
+		if(GameMenu.getQuit() == true)
+		{
+			GameMenu.setQuit(false);
+			exit(0);
+		}
+	}
+
 	if(GameMenu.getLostState() == true )
 	{
 		soundplayer.playSounds(soundplayer.GAMEOVER);
+		GameMenu.setLostSound(true);
+		
 	}
+	//if(GameMenu.getLostSound() == true)
+	//{
+	//	soundplayer.stopSound();
+	//	GameMenu.setLostSound(false);
+	//}
 
 	else if(GameMenu.getMenuState() == false && GameMenu.getLostState() == false && GameMenu.getWinState() == false)
 	{
@@ -2573,6 +2663,18 @@ void StudioProject::RenderMenu(int input)
 				RenderTextOnScreen(meshList[GEO_TEXT], "RETURN", Color(0.3f, 0.3f, 0.3f), GameMenu.getOutSize(), 28, 10);
 			}
 		}
+	case CMenuClass::PAUSE:
+		{
+			if(GameMenu.getPauseState())
+			{
+				RenderTextOnScreen(meshList[GEO_TEXT], "PAUSE SCREEN", Color(0.3f, 0.3f, 0.3f), 3.f, 28, 42);
+				RenderTextOnScreen(meshList[GEO_TEXT], "SAVE   ", Color(1, 1, 1), GameMenu.getSaveSize(), 28, 38);
+				RenderTextOnScreen(meshList[GEO_TEXT], "SAVE AND QUIT", Color(1, 1, 1), GameMenu.getSQSize(), 28, 34);
+				RenderTextOnScreen(meshList[GEO_TEXT], "QUIT", Color(1, 1, 1), GameMenu.getQuitSize(), 28, 30);
+				RenderTextOnScreen(meshList[GEO_TEXT], "RETURN TO GAME", Color(1, 1, 1), GameMenu.getReturnSize(), 28, 26);
+				RenderTextOnScreen(meshList[GEO_TEXT], "RETURN TO MAIN MENU", Color(1, 1, 1), GameMenu.getReturnMainSize(), 28, 24);
+			}
+		}
 		break;
 
 		
@@ -2981,7 +3083,7 @@ void StudioProject::Render()
 	{
 		RenderMenu(CMenuClass::LEVEL_SELECTION);
 	}
-	else if(GameMenu.getMenuState() == false && GameMenu.getLostState() == false && GameMenu.getWinState() == false)
+	else if(GameMenu.getMenuState() == false && GameMenu.getLostState() == false && GameMenu.getWinState() == false && GameMenu.getPauseState() == false)
 	{
 		/*===================
 			GAME START
@@ -3021,6 +3123,10 @@ void StudioProject::Render()
 	else if(GameMenu.getWinState() == true)
 	{
 		RenderMenu(CMenuClass::WIN_SCREEN);
+	}
+	else if(GameMenu.getPauseState() == true)
+	{
+		RenderMenu(CMenuClass::PAUSE);
 	}
 }
 

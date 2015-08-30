@@ -1,5 +1,6 @@
 #pragma once
 #include "Vector2.h"
+#include "Shop.h"
 
 class CMenuClass
 {
@@ -16,6 +17,7 @@ public:
 		LOAD,
 		LOSE_SCREEN,
 		WIN_SCREEN,
+		PAUSE,
 		MAX_STATE,
 	};
 	enum LEVELS
@@ -34,6 +36,15 @@ public:
 		B_OUT,
 		MAX_THINGS,
 	};
+	enum PAUSE_MENU
+	{
+		SAVE,
+		SAVE_N_QUIT,
+		QUIT,
+		RETURN,
+		RETURN_MAIN,
+		MAX_PAUSE_MENU,
+	};
 
 	CMenuClass(void);
 	~CMenuClass(void);
@@ -46,6 +57,7 @@ public:
 	int  LevelSelectMenu();
 	void LostScreen();
 	void WinScreen();
+	void PauseMenu();
 
 	//Get and Set functions
 	float getCurrentSelectPos_X();
@@ -64,6 +76,26 @@ public:
 	void setWinState(bool input);
 	bool getMenuState();
 
+	void setPauseState(bool input);
+	bool getPauseState();
+
+	bool getSave();
+	void setSave(bool input);
+	bool getSavenQuit();
+	void setSavenQuit(bool input);
+	bool getQuit();
+	void setQuit(bool input);
+
+	bool getHealthBought();
+	void setHealthBought(bool input);
+	bool getWeaponBought();
+	void setWeaponBought(bool input);
+	
+	bool AddHealth(int);
+	bool AddWeapon(int);
+
+	bool getLostSound();
+	void setLostSound(bool input);
 
 	float getLevel1Size();
 	float getLevel2Size();
@@ -74,6 +106,12 @@ public:
 	float getHealthSize();
 	float getWeaponSize();
 	float getOutSize();
+
+	float getSaveSize();
+	float getQuitSize();
+	float getSQSize();
+	float getReturnSize();
+	float getReturnMainSize();
 
 	int MenuStates();
 	bool getReset();
@@ -86,8 +124,11 @@ public:
 	float DELAY_RATE;	//Input delay rate
 	float DELAY_RATE2;
 	float DELAY_RATE3;
+	float DELAY_RATE4;
 
 private:
+	CShop Money;
+
 	int menuOption;	//Player's option
 	int GameLevels;	//Game Level
 	int LevelOption;
@@ -98,7 +139,16 @@ private:
 	Vector2 loadPos;
 	Vector2 levelPos;
 	Vector2 currentSelectionPos;	//feedBackpos
-		
+	
+	bool save;
+	bool save_n_quit;
+	bool quit;
+
+	bool BuyHealth;
+	bool BuyWeapon;
+	bool Health;
+	bool Weapon;
+
 	bool showMenu;	//Menu loop control
 	bool showControls;	//Control menu
 	bool Loading; //Loading menu
@@ -106,6 +156,9 @@ private:
 
 	bool Win;	//Win state of player
 	bool Lost;	//lose state of player
+	bool Pause;
+
+	bool LosingSound;
 	bool Reset;	//Reset game
 
 	float SELECTED_SIZE;
@@ -118,5 +171,10 @@ private:
 	float HealthSize;
 	float WeaponSize;
 	float OutSize;
+	float SaveSize;
+	float QuitSize;
+	float SQ_Size;
+	float R_Size;
+	float RMain_Size;
 };
 

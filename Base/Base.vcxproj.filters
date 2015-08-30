@@ -180,6 +180,9 @@
     <ClCompile Include="Source\TileCollision.cpp">
       <Filter>Source Files\Collision</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Shop.cpp">
+      <Filter>Source Files\Classes</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Camera.h">
@@ -297,6 +300,9 @@
       <Filter>Header Files\Classes\Enemy</Filter>
     </ClInclude>
     <ClInclude Include="Source\Inventory.h">
+      <Filter>Header Files\Classes</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Shop.h">
       <Filter>Header Files\Classes</Filter>
     </ClInclude>
   </ItemGroup>
