@@ -46,7 +46,10 @@ void CSoundManager::playSounds(unsigned input)
 		}
 		break;
 	case SHURIKEN:
-		Sound = engine->play2D("Sound\\Game\\shuriken.wav");
+		Sound = engine->play2D("Sound\\Game\\shuriken2.wav");
+		break;
+	case SHURIKENSOUND:
+		Sound = engine->play2D("Sound\\Game\\CollectShuriken.wav");
 		break;
 	case RIFLE:
 		Sound = engine->play2D("Sound\\Game\\Rifle_sound.wav");
@@ -81,5 +84,21 @@ void CSoundManager::playSounds(unsigned input)
 			Sound = engine->play2D("Sound\\Game\\GameOver.wav");
 			break;
 		}
+	case LASER_OFF:
+		//Sound = engine->play2D("Sound\\Game\\MenuFeedback.mp3");
+		break;
+	case MENU_BGM:
+		if(!engine->isCurrentlyPlaying("Sound\\Game\\EPIC.wav"))
+		{
+			Sound = engine->play2D("Sound\\Game\\EPIC.wav");
+			break;
+		}
+	case ENEMY_BGM:
+		//Sound = engine->play2D("Sound\\Game\\MenuFeedback.mp3");
+		break;	
+	case HURT_BGM:
+		//Sound = engine->play2D("Sound\\Game\\MenuFeedback.mp3");
+		break;
+
 	}
 }

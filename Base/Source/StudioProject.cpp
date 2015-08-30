@@ -1746,14 +1746,15 @@ void StudioProject::UpdatePowerUp(double dt)
                         if(CHero::GetInstance()->Gethero_HP() < 100 && CHero::GetInstance()->Gethero_HP() > 75) // if Health is in between 75 to 100, set it to 100
                         {
                             CHero::GetInstance()->setHero_Health(100);
-							soundplayer.playSounds(soundplayer.HEALTH);
+							//soundplayer.playSounds(soundplayer.HEALTH);
                         }
                         else if(CHero::GetInstance()->Gethero_HP() <= 75) // If health is lower or equals to 75, health plus 25.
                         {
                             CHero::GetInstance()->setHero_Health(CHero::GetInstance()->Gethero_HP() + 25);
-							soundplayer.playSounds(soundplayer.HEALTH);
+							//soundplayer.playSounds(soundplayer.HEALTH);
                         }
                     }
+					soundplayer.playSounds(soundplayer.HEALTH);
                 }
 				if(Chest->getType() == Chest->POWERUP_SCORE)
 				{
@@ -1979,6 +1980,7 @@ void StudioProject::UpdateInput(double dt)
 	{
 		bLButtonState = true;
 		std::cout << "LBUTTON DOWN" << std::endl;
+		soundplayer.playSounds(soundplayer.SHURIKENSOUND);
 		CHero::GetInstance()->HeroThrowShuriken(meshList[GEO_SHURIKEN],posX,posY);
 	}
 	else if( bLButtonState && !Application::IsMousePressed(0) )
@@ -2090,7 +2092,7 @@ void StudioProject::Update(double dt)
 		//{
 		//	//cout<<"NO LEVEL SELECTED"<<endl;
 		//}
-		//soundplayer.playSounds(soundplayer.GAME_BGM);
+		soundplayer.playSounds(soundplayer.MENU_BGM);
 
 		if( (Application::IsKeyPressed(VK_DOWN) || Application::IsKeyPressed(VK_UP) || Application::IsKeyPressed(VK_RETURN)) && GameMenu.inputDelay == 0.f)
 		{
@@ -2113,15 +2115,17 @@ void StudioProject::Update(double dt)
 				{
 					cout<<"HEALTH++";
 					CHero::GetInstance()->setHero_Health(100);
-					soundplayer.playSounds(soundplayer.HEALTH);
+					//soundplayer.playSounds(soundplayer.HEALTH);
 				}
 				else if(CHero::GetInstance()->Gethero_HP() <= 75) // If health is lower or equals to 75, health plus 25.
 				{
 					cout<<"HEALTH++";
 					CHero::GetInstance()->setHero_Health(CHero::GetInstance()->Gethero_HP() + 25);
-					soundplayer.playSounds(soundplayer.HEALTH);
+					//soundplayer.playSounds(soundplayer.HEALTH);
 				}
+				soundplayer.playSounds(soundplayer.HEALTH);
 			//}
+			
 			GameMenu.setHealthBought(false);
 		}
 		else if(GameMenu.getWeaponBought() == true)

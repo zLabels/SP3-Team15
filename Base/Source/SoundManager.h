@@ -16,6 +16,7 @@ public:
 	{
 		GAME_BGM,
 		SHURIKEN,
+		SHURIKENSOUND,
 		RIFLE,
 		HEALTH,
 		POWER_UP,
@@ -24,6 +25,10 @@ public:
 		SKELE_DEATH,
 		GHOST_DEATH,
 		GAMEOVER,
+		LASER_OFF,
+		MENU_BGM,
+		ENEMY_BGM,
+		HURT_BGM,
 		MAX_SOUNDS,
 	};
 	CSoundManager(void);
