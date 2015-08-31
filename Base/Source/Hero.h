@@ -84,6 +84,9 @@ public:
     void setHero_Health(int);
     void setHero_Invi(bool NewInvi);
     bool getHero_Invi();
+    int getHero_Score();
+    void setHero_Score(int);
+    void setHero_EP(int);
     //-----------------------------//
 	static CHero* GetInstance();	//Getting hero instance
 	

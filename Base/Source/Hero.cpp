@@ -404,11 +404,13 @@ void CHero::Update(CMap* m_cMap,int mapWidth, int mapHeight,unsigned maplevel)
     //****************************************//
     if(HeroTileCheck(m_cMap, TILE_LASER_HORIZONTAL,true,true,true,true,HeroPos.x - HERO_OFFSET,HeroPos.y,mapOffset_X,jumpspeed) == true)
     {
-        hero_HP -= 7.5; // Minus health for touching the lasers.
+        //hero_HP -= 7.5; // Minus health for touching the lasers.
+        hero_HP -= 1; // Minus health for touching the lasers.
     }
     if(HeroTileCheck(m_cMap, TILE_LASER_VERTICAL,true,true,true,true,HeroPos.x - HERO_OFFSET,HeroPos.y,mapOffset_X,jumpspeed) == true)
     {
-        hero_HP -= 7.5; // Minus health for touching the lasers.
+        //hero_HP -= 7.5; // Minus health for touching the lasers.
+        hero_HP -= 1; // Minus health for touching the lasers.
     }
     
 
@@ -656,4 +658,18 @@ void CHero::setHero_Invi(bool NewInvi)
 bool CHero::getHero_Invi()
 {
     return hero_invisible;
+}
+
+int CHero::getHero_Score()
+{
+    return hero_SCORE;
+}
+void CHero::setHero_Score(int NewScore)
+{
+    hero_SCORE = NewScore;
+}
+
+void CHero::setHero_EP(int NewEnergy)
+{
+    hero_EP = NewEnergy;
 }

@@ -756,7 +756,8 @@ void StudioProject::LoadMap(int level)
 	{
 	case 1:
 		{
-
+            CHero::GetInstance()->SetHeroPos_x(50);
+			CHero::GetInstance()->SetHeroPos_y(500);
 			m_cMap_Level1->LoadMap( "Image//MapDesigns//Map_Level1.csv");
 			m_cMap = m_cMap_Level1;
 			LoadEnemies(level);
@@ -767,7 +768,9 @@ void StudioProject::LoadMap(int level)
 		break;
 	case 2:
 		{
-			m_cMap_Level1->LoadMap( "Image//MapDesigns//Map_Level1.csv");
+            CHero::GetInstance()->SetHeroPos_x(50);
+			CHero::GetInstance()->SetHeroPos_y(500);
+			m_cMap_Level1->LoadMap( "Image//MapDesigns//Map_Level2.csv");
 			m_cMap = m_cMap_Level1;
 			LoadEnemies(level);
             LoadConsumables(level);
@@ -777,6 +780,8 @@ void StudioProject::LoadMap(int level)
 		break;
 	case 3:
 		{
+            CHero::GetInstance()->SetHeroPos_x(50);
+			CHero::GetInstance()->SetHeroPos_y(500);
 			m_cMap_Level3->LoadMap( "Image//MapDesigns//Map_Level3.csv");
 			m_cMap = m_cMap_Level3;
 			LoadEnemies(level);
@@ -1760,10 +1765,23 @@ void StudioProject::UpdatePowerUp(double dt)
 				if(Chest->getType() == Chest->POWERUP_SCORE)
 				{
 					soundplayer.playSounds(soundplayer.COIN);
+                    CHero::GetInstance()->setHero_Score(CHero::GetInstance()->getHero_Score() + 100);
 				}
 				if(Chest->getType() == Chest->POWERUP_ENERGY)
 				{
 					soundplayer.playSounds(soundplayer.POWER_UP);
+                    if(CHero::GetInstance()->Gethero_EP() != 100) // If not 100 goes in here
+                    {
+                        if(CHero::GetInstance()->Gethero_EP() < 100 && CHero::GetInstance()->Gethero_EP() > 75) // if energy is in between 75 to 100, set it to 100
+                        {
+                            //CHero::GetInstance()->set
+                            CHero::GetInstance()->setHero_EP(100);
+                        }
+                        else if(CHero::GetInstance()->Gethero_EP() <= 75) // If energy is lower or equals to 75, energy plus 25.
+                        {
+                            CHero::GetInstance()->setHero_EP(CHero::GetInstance()->Gethero_EP() + 25);
+                        }
+                    }
 				}
 				if(Chest->getType() == Chest->POWERUP_SHURIKEN)
 				{
@@ -1771,6 +1789,8 @@ void StudioProject::UpdatePowerUp(double dt)
 				}
                 if(Chest->getType() == Chest->POWERUP_SHURIKEN)
                 {
+                    CHero::GetInstance()->getInventory().IncrementShuriken();  
+                    CHero::GetInstance()->getInventory().IncrementShuriken();
                     CHero::GetInstance()->getInventory().IncrementShuriken();   //Adds a shuriken
                 }
 
@@ -1792,15 +1812,10 @@ void StudioProject::UpdateInput(double dt)
     {
         if(GetorNot == false)
         {
-            std::ostringstream ss1;
-            //ss1.precision(5);
-            ss1 << "You have yet to collect the objective of the level!";
-            RenderTextOnScreen(meshList[GEO_TEXT], ss1.str(), Color(0, 1, 0), 10, 2, 6);
         }
         else
         {
             //Changing levels after completing one
-            //Still need to set that if last level stop ++ current level
             m_CurrentLevel++;
             LoadMap(m_CurrentLevel);
             LoadEnemies(m_CurrentLevel);
@@ -1811,6 +1826,11 @@ void StudioProject::UpdateInput(double dt)
             CHero::GetInstance()->setMapOffset_x(0);
             CHero::GetInstance()->setMapOffset_y(0);
         }
+    }
+
+     if(Application::IsKeyPressed('Q'))
+    {
+        CHero::GetInstance()->setHero_Health(100); //FOR presentation purpose
     }
 
     //Movement
@@ -1844,6 +1864,8 @@ void StudioProject::UpdateInput(double dt)
             GetorNot = true;
         }
         //=======================//
+
+        //======DOOR INPUT=======//
         if( 
             m_cMap->theScreenMap[checkPosition_Y][checkPosition_X + 2]  == TILE_DOOR ||
             m_cMap->theScreenMap[checkPosition_Y3][checkPosition_X + 2] == TILE_DOOR ||
@@ -1886,6 +1908,9 @@ void StudioProject::UpdateInput(double dt)
             m_cMap->theScreenMap[checkPosition_Y3][checkPosition_X -2] = 0;
             m_cMap->theScreenMap[checkPosition_Y4][checkPosition_X -2] = 0;
         }
+
+        //======================//
+
         //LASER SWITCH
         if(m_cMap->theScreenMap[checkPosition_Y3][checkPosition_X + 2] == TILE_LASER_SWITCH || 
 			m_cMap->theScreenMap[checkPosition_Y3][checkPosition_X + 1] == TILE_LASER_SWITCH || 
@@ -2935,7 +2960,15 @@ void StudioProject::RenderDebug(void)
 	ssss << "heropos.y: "<<CHero::GetInstance()->GetHeroPos_y();
 	RenderTextOnScreen(meshList[GEO_TEXT], ssss.str(), Color(0, 1, 0), 3, 2, 4);
     
+    std::ostringstream sssss;
+	sssss.precision(5);
+    sssss << "Score: "<<CHero::GetInstance()->getHero_Score();
+	RenderTextOnScreen(meshList[GEO_TEXT], sssss.str(), Color(0, 1, 0), 3, 2, 10);
 
+    std::ostringstream ssssss;
+	ssssss.precision(5);
+    ssssss << "Shurikens: "<<CHero::GetInstance()->getInventory().getShurikenCount();
+	RenderTextOnScreen(meshList[GEO_TEXT], ssssss.str(), Color(0, 1, 0), 3, 2, 13);
 }
 void StudioProject::RenderHeroSprites(void)
 {
