@@ -327,7 +327,6 @@ private:
 
 	//Hero's Info
 	float HERO_SIZE;	//Size of hero
-	float HERO_OFFSET;	//Offset of hero for tile
 	float jump_input_delay;	//Delay input for double jump
 
     //PowerUp' Info
@@ -346,8 +345,6 @@ private:
 	int rearWallTileOffset_x, rearWallTileOffset_y;
 	int rearWallFineOffset_x, rearWallFineOffset_y;
 	int choice;
-
-	float f_grappleRotation;
 
 	//Convert into class CLayer
 	//Store into array of layers

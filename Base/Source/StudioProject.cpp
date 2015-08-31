@@ -232,7 +232,6 @@ void StudioProject::InitVariables()
 
 	//Hero
 	HERO_SIZE = 70.f;
-	HERO_OFFSET = 33.f;
 	jump_input_delay = 0.f;
 
 	//Sound
@@ -253,7 +252,6 @@ void StudioProject::InitVariables()
 
 	choice = 0;
 
-	f_grappleRotation = 0.f;
     //Deceleration Physics
     f_deceleration = 20;
 
@@ -290,7 +288,7 @@ void StudioProject::InitBackground()
 }
 void StudioProject::InitHero()
 {
-	CHero::GetInstance()->HeroInit(25,500);
+	CHero::GetInstance()->HeroInit(50,500);
 	//Load function for the hero 
 
 	//Sprite Animation
@@ -758,6 +756,7 @@ void StudioProject::LoadMap(int level)
 	{
 	case 1:
 		{
+
 			m_cMap_Level1->LoadMap( "Image//MapDesigns//Map_Level1.csv");
 			m_cMap = m_cMap_Level1;
 			LoadEnemies(level);
@@ -1488,6 +1487,8 @@ void StudioProject::HeroUpdate(double dt)
 {
 	CHero::GetInstance()->Update(m_cMap,m_cMap->getNumOfTiles_MapWidth() * m_cMap->GetTileSize() - ScreenWidth,ScreenHeight,m_CurrentLevel);	//Update hero
 
+	CHero::GetInstance()->HeroRegen(dt);
+
 	if(CHero::GetInstance()->Gethero_invulframe() != 0)
 	{
 		CHero::GetInstance()->Gethero_invulframe() -= (float)dt;
@@ -1724,12 +1725,12 @@ void StudioProject::UpdateWeapon()
 
 void StudioProject::UpdatePowerUp(double dt)
 {
-    
     for(std::vector<CTreasureChest *>::iterator it = Treasure.begin(); it != Treasure.end(); ++it)
     {
         float hero_x = CHero::GetInstance()->GetHeroPos_x();
         hero_x += 25;
         hero_x += CHero::GetInstance()->GetMapOffset_x(); // Translate the power up according to map offset
+		hero_x -= HERO_OFFSET;
         float hero_y = CHero::GetInstance()->GetHeroPos_y();
         hero_y += 25;
 
@@ -1772,8 +1773,8 @@ void StudioProject::UpdatePowerUp(double dt)
                 {
                     CHero::GetInstance()->getInventory().IncrementShuriken();   //Adds a shuriken
                 }
-                    Chest->SetActive(false); // Despawn the power up
 
+                Chest->SetActive(false); // Despawn the power up
             }
         }
     }
@@ -1822,14 +1823,24 @@ void StudioProject::UpdateInput(double dt)
         }
         
         //====OBJECTIVE INPUT=====//
-        if(m_cMap->theScreenMap[checkPosition_Y3][checkPosition_X + 3] == TILE_OBJECTIVE)
+        if(m_cMap->theScreenMap[checkPosition_Y3][checkPosition_X + 2] == TILE_OBJECTIVE)
         {
-            m_cMap->theScreenMap[checkPosition_Y3][checkPosition_X + 3] = 0;
+            m_cMap->theScreenMap[checkPosition_Y3][checkPosition_X + 2] = 0;
+            GetorNot = true;
+        }
+		if(m_cMap->theScreenMap[checkPosition_Y3][checkPosition_X + 1] == TILE_OBJECTIVE)
+        {
+            m_cMap->theScreenMap[checkPosition_Y3][checkPosition_X + 1] = 0;
             GetorNot = true;
         }
         if(m_cMap->theScreenMap[checkPosition_Y3][checkPosition_X - 1] == TILE_OBJECTIVE)
         {
             m_cMap->theScreenMap[checkPosition_Y3][checkPosition_X - 1] = 0;
+            GetorNot = true;
+        }
+		if(m_cMap->theScreenMap[checkPosition_Y3][checkPosition_X - 2] == TILE_OBJECTIVE)
+        {
+            m_cMap->theScreenMap[checkPosition_Y3][checkPosition_X - 2] = 0;
             GetorNot = true;
         }
         //=======================//
@@ -1844,6 +1855,17 @@ void StudioProject::UpdateInput(double dt)
             m_cMap->theScreenMap[checkPosition_Y4][checkPosition_X + 2] = 0;
         }
 
+		 if( 
+            m_cMap->theScreenMap[checkPosition_Y][checkPosition_X + 1]  == TILE_DOOR ||
+            m_cMap->theScreenMap[checkPosition_Y3][checkPosition_X + 1] == TILE_DOOR ||
+            m_cMap->theScreenMap[checkPosition_Y4][checkPosition_X + 1] == TILE_DOOR 
+           )
+        {
+            m_cMap->theScreenMap[checkPosition_Y][checkPosition_X + 1]  = 0;
+            m_cMap->theScreenMap[checkPosition_Y3][checkPosition_X + 1] = 0;
+            m_cMap->theScreenMap[checkPosition_Y4][checkPosition_X + 1] = 0;
+        }
+
         if(
             m_cMap->theScreenMap[checkPosition_Y][checkPosition_X - 1]  == TILE_DOOR ||
             m_cMap->theScreenMap[checkPosition_Y3][checkPosition_X - 1] == TILE_DOOR ||
@@ -1854,8 +1876,21 @@ void StudioProject::UpdateInput(double dt)
             m_cMap->theScreenMap[checkPosition_Y3][checkPosition_X -1] = 0;
             m_cMap->theScreenMap[checkPosition_Y4][checkPosition_X -1] = 0;
         }
+		if(
+            m_cMap->theScreenMap[checkPosition_Y][checkPosition_X - 2]  == TILE_DOOR ||
+            m_cMap->theScreenMap[checkPosition_Y3][checkPosition_X - 2] == TILE_DOOR ||
+            m_cMap->theScreenMap[checkPosition_Y4][checkPosition_X - 2] == TILE_DOOR 
+           )
+        {
+            m_cMap->theScreenMap[checkPosition_Y][checkPosition_X -2]  = 0;
+            m_cMap->theScreenMap[checkPosition_Y3][checkPosition_X -2] = 0;
+            m_cMap->theScreenMap[checkPosition_Y4][checkPosition_X -2] = 0;
+        }
         //LASER SWITCH
-        if(m_cMap->theScreenMap[checkPosition_Y3][checkPosition_X + 3] == TILE_LASER_SWITCH || m_cMap->theScreenMap[checkPosition_Y3][checkPosition_X - 1] == TILE_LASER_SWITCH )
+        if(m_cMap->theScreenMap[checkPosition_Y3][checkPosition_X + 2] == TILE_LASER_SWITCH || 
+			m_cMap->theScreenMap[checkPosition_Y3][checkPosition_X + 1] == TILE_LASER_SWITCH || 
+			m_cMap->theScreenMap[checkPosition_Y3][checkPosition_X - 1] == TILE_LASER_SWITCH ||
+			m_cMap->theScreenMap[checkPosition_Y3][checkPosition_X-2] == TILE_LASER_SWITCH )
         {
             int m = 0;
             for(int i = 0; i < m_cMap->GetNumOfTiles_Height(); ++i)
@@ -1992,27 +2027,19 @@ void StudioProject::UpdateInput(double dt)
 	static bool bRButtonState = false;
 	if(!bRButtonState && Application::IsMousePressed(1) 
 		&& CHero::GetInstance()->getInventory().getGrapple().getActive() == false 
-		&& CHero::GetInstance()->getInventory().getGrapple().getHooked() == false)
+		&& CHero::GetInstance()->getInventory().getGrapple().getHooked() == false
+		&& CHero::GetInstance()->Gethero_EP() >= 30)
 	{
 		bRButtonState = true;
 		std::cout << "RBUTTON DOWN" << std::endl;
 		CHero::GetInstance()->HeroUseGrapple(meshList[GEO_GRAPPLING_HOOK],posX,posY);
+		CHero::GetInstance()->Gethero_EP() -= 30;
 	}
 	else if(bRButtonState && !Application::IsMousePressed(0))
 	{
 		bRButtonState = false;
 	}
 
-	//Used for calculating grappling hook rotation for visual purposes
-	float hero_x = CHero::GetInstance()->GetHeroPos_x();
-	hero_x += CHero::GetInstance()->GetMapOffset_x();
-	hero_x += 25.f;
-	float hero_y = CHero::GetInstance()->GetHeroPos_y();
-	hero_y += 50.f;
-
-	//Calculating grappling hook rotation for visual purposes
-	f_grappleRotation = Math::RadianToDegree( -atan2(  (posX - (hero_x - CHero::GetInstance()->GetMapOffset_x())),(posY - hero_y) ));
-	
 	//If grappling hook has collided with something
 	if(CHero::GetInstance()->getInventory().getGrapple().getHooked())
 	{
@@ -2198,7 +2225,6 @@ void StudioProject::Update(double dt)
 		{
 			UpdateInput(dt);
 		}
-
 
 		UpdateMap(dt);
 		HeroUpdate(dt);
@@ -2920,12 +2946,14 @@ void StudioProject::RenderHeroSprites(void)
 	//==================================================================================//
 	if(CHero::GetInstance()->Hero_idle_right->m_anim->animActive == true)
 	{
-		Render2DSprite(CHero::GetInstance()->Hero_idle_right,false,CHero::GetInstance()->Hero_idle_right->m_anim->animScale,CHero::GetInstance()->Hero_idle_right->m_anim->animScale,CHero::GetInstance()->Hero_idle_right->m_anim->animPosition.x + HERO_OFFSET,CHero::GetInstance()->Hero_idle_right->m_anim->animPosition.y + HERO_OFFSET,false);
+		Render2DSprite(CHero::GetInstance()->Hero_idle_right,false,CHero::GetInstance()->Hero_idle_right->m_anim->animScale,CHero::GetInstance()->Hero_idle_right->m_anim->animScale,
+			CHero::GetInstance()->Hero_idle_right->m_anim->animPosition.x,CHero::GetInstance()->Hero_idle_right->m_anim->animPosition.y + HERO_OFFSET,false);
 	}
 
 	if(CHero::GetInstance()->Hero_idle_left->m_anim->animActive == true)
 	{
-		Render2DSprite(CHero::GetInstance()->Hero_idle_left,false,CHero::GetInstance()->Hero_idle_left->m_anim->animScale,CHero::GetInstance()->Hero_idle_left->m_anim->animScale,CHero::GetInstance()->Hero_idle_left->m_anim->animPosition.x + HERO_OFFSET,CHero::GetInstance()->Hero_idle_left->m_anim->animPosition.y + HERO_OFFSET,false);
+		Render2DSprite(CHero::GetInstance()->Hero_idle_left,false,CHero::GetInstance()->Hero_idle_left->m_anim->animScale,CHero::GetInstance()->Hero_idle_left->m_anim->animScale,
+			CHero::GetInstance()->Hero_idle_left->m_anim->animPosition.x,CHero::GetInstance()->Hero_idle_left->m_anim->animPosition.y + HERO_OFFSET,false);
 	}
 	//===================================================================================//
 	//				
@@ -2934,12 +2962,14 @@ void StudioProject::RenderHeroSprites(void)
 	//==================================================================================//
 	if(CHero::GetInstance()->Hero_run_right->m_anim->animActive == true)
 	{
-		Render2DSprite(CHero::GetInstance()->Hero_run_right,false,CHero::GetInstance()->Hero_run_right->m_anim->animScale,CHero::GetInstance()->Hero_run_right->m_anim->animScale,CHero::GetInstance()->Hero_run_right->m_anim->animPosition.x + HERO_OFFSET,CHero::GetInstance()->Hero_run_right->m_anim->animPosition.y + HERO_OFFSET,false);
+		Render2DSprite(CHero::GetInstance()->Hero_run_right,false,CHero::GetInstance()->Hero_run_right->m_anim->animScale,CHero::GetInstance()->Hero_run_right->m_anim->animScale,
+			CHero::GetInstance()->Hero_run_right->m_anim->animPosition.x,CHero::GetInstance()->Hero_run_right->m_anim->animPosition.y + HERO_OFFSET,false);
 	}
 
 	if(CHero::GetInstance()->Hero_run_left->m_anim->animActive == true)
 	{
-		Render2DSprite(CHero::GetInstance()->Hero_run_left,false,CHero::GetInstance()->Hero_run_left->m_anim->animScale,CHero::GetInstance()->Hero_run_left->m_anim->animScale,CHero::GetInstance()->Hero_run_left->m_anim->animPosition.x + HERO_OFFSET,CHero::GetInstance()->Hero_run_left->m_anim->animPosition.y + HERO_OFFSET,false);
+		Render2DSprite(CHero::GetInstance()->Hero_run_left,false,CHero::GetInstance()->Hero_run_left->m_anim->animScale,CHero::GetInstance()->Hero_run_left->m_anim->animScale,
+			CHero::GetInstance()->Hero_run_left->m_anim->animPosition.x,CHero::GetInstance()->Hero_run_left->m_anim->animPosition.y + HERO_OFFSET,false);
 	}
 
 	//===================================================================================//
@@ -2949,11 +2979,13 @@ void StudioProject::RenderHeroSprites(void)
 	//==================================================================================//
 	if(CHero::GetInstance()->Hero_jump_right->m_anim->animActive == true)
 	{
-		Render2DSprite(CHero::GetInstance()->Hero_jump_right,false,CHero::GetInstance()->Hero_jump_right->m_anim->animScale,CHero::GetInstance()->Hero_jump_right->m_anim->animScale,CHero::GetInstance()->Hero_jump_right->m_anim->animPosition.x + HERO_OFFSET,CHero::GetInstance()->Hero_jump_right->m_anim->animPosition.y + HERO_OFFSET,false);
+		Render2DSprite(CHero::GetInstance()->Hero_jump_right,false,CHero::GetInstance()->Hero_jump_right->m_anim->animScale,CHero::GetInstance()->Hero_jump_right->m_anim->animScale,
+			CHero::GetInstance()->Hero_jump_right->m_anim->animPosition.x,CHero::GetInstance()->Hero_jump_right->m_anim->animPosition.y + HERO_OFFSET,false);
 	}
 	if(CHero::GetInstance()->Hero_jump_left->m_anim->animActive == true)
 	{
-		Render2DSprite(CHero::GetInstance()->Hero_jump_left,false,CHero::GetInstance()->Hero_jump_left->m_anim->animScale,CHero::GetInstance()->Hero_jump_left->m_anim->animScale,CHero::GetInstance()->Hero_jump_left->m_anim->animPosition.x + HERO_OFFSET,CHero::GetInstance()->Hero_jump_left->m_anim->animPosition.y + HERO_OFFSET,false);
+		Render2DSprite(CHero::GetInstance()->Hero_jump_left,false,CHero::GetInstance()->Hero_jump_left->m_anim->animScale,CHero::GetInstance()->Hero_jump_left->m_anim->animScale,
+			CHero::GetInstance()->Hero_jump_left->m_anim->animPosition.x,CHero::GetInstance()->Hero_jump_left->m_anim->animPosition.y + HERO_OFFSET,false);
 	}
 	
 }

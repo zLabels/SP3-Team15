@@ -30,6 +30,8 @@ CHero::CHero(void):
     hero_velocity(0),
     hero_maxspeed(3),
     f_force(1),
+	MAX_EP(100),
+	Regen_speed(5.f),
     hero_SCORE(0)
 {
 }
@@ -123,6 +125,17 @@ bool CHero::HeroGrapple(CMap* m_cMap,Vector3 direction,Vector3 hookPosition)
 	return false;
 }
 
+void CHero::HeroRegen(double dt)
+{
+	if(hero_EP != MAX_EP)
+	{
+		hero_EP += Regen_speed * dt;
+		if(hero_EP >= MAX_EP)
+		{
+			hero_EP = MAX_EP;
+		}
+	}
+}
 void CHero::HeroUseGrapple(Mesh* ptr,float target_x,float target_y)
 {
 	hero_invent.getGrapple().setData(ptr,HeroPos.x + 25.f,HeroPos.y + 40.f,
@@ -304,7 +317,7 @@ void CHero::Update(CMap* m_cMap,int mapWidth, int mapHeight,unsigned maplevel)
 	if ( HeroCollisionCheck(m_cMap,false,true,false,false,HeroPos.x,HeroPos.y,mapOffset_X,jumpspeed) == true)
 	{
 		// Since the new position does not allow the hero to move into, then go back to the old position
-		HeroPos.x = ((int) (HeroPos.x / m_cMap->GetTileSize())) * m_cMap->GetTileSize();	
+		HeroPos.x = tempHeroPos.x;
 	}
 	//Left
 	else if( HeroCollisionCheck(m_cMap,true,false,false,false,HeroPos.x,HeroPos.y,mapOffset_X,jumpspeed) == true)
@@ -389,17 +402,17 @@ void CHero::Update(CMap* m_cMap,int mapWidth, int mapHeight,unsigned maplevel)
     //             TILE COLLISION             //
     //                                        //
     //****************************************//
-    if(HeroTileCheck(m_cMap, TILE_LASER_HORIZONTAL,true,true,true,true,GetHeroPos_x(),GetHeroPos_y(),GetMapOffset_x(),Getjumpspeed()) == true)
+    if(HeroTileCheck(m_cMap, TILE_LASER_HORIZONTAL,true,true,true,true,HeroPos.x - HERO_OFFSET,HeroPos.y,mapOffset_X,jumpspeed) == true)
     {
         hero_HP -= 7.5; // Minus health for touching the lasers.
     }
-    if(HeroTileCheck(m_cMap, TILE_LASER_VERTICAL,true,true,true,true,GetHeroPos_x(),GetHeroPos_y(),GetMapOffset_x(),Getjumpspeed()) == true)
+    if(HeroTileCheck(m_cMap, TILE_LASER_VERTICAL,true,true,true,true,HeroPos.x - HERO_OFFSET,HeroPos.y,mapOffset_X,jumpspeed) == true)
     {
         hero_HP -= 7.5; // Minus health for touching the lasers.
     }
     
 
-    if(HeroTileCheck(m_cMap, TILE_STEALTH_BOX,true,true,false,false,GetHeroPos_x(),GetHeroPos_y(),GetMapOffset_x(),Getjumpspeed()) == true)
+	if(HeroTileCheck(m_cMap, TILE_STEALTH_BOX,true,true,false,false,HeroPos.x - HERO_OFFSET,HeroPos.y,mapOffset_X,jumpspeed) == true)
     {
         hero_invisible = true;
     }
@@ -408,8 +421,6 @@ void CHero::Update(CMap* m_cMap,int mapWidth, int mapHeight,unsigned maplevel)
         hero_invisible = false;
     }
     
-   
-
     if(HeroTileCheck(m_cMap, TILE_HEALTH,true,true,true,true,GetHeroPos_x(),GetHeroPos_y(),GetMapOffset_x(),Getjumpspeed()) == true)
     {
         float tempHeroPos_x = CHero::GetInstance()->GetHeroPos_x();	//Hero current position X
@@ -517,7 +528,7 @@ int& CHero::Gethero_HP(void)
 {
 	return this->hero_HP;
 }
-int& CHero::Gethero_EP(void)
+float& CHero::Gethero_EP(void)
 {
 	return this->hero_EP;
 }

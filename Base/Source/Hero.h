@@ -34,6 +34,7 @@ public:
 	void HeroDamaged(int enemy_x, int enemy_y);	//Hero Damaged by colliding with enemy
 	void HeroDamaged(int Damage);	//Hero Damaged by enemy
 	void HeroKnockBack(CMap* m_cMap);	//Hero knocked back
+	void HeroRegen(double dt);	//Regenerates hero EP
 
 	// Constrain the position of the Hero to within the border
 	int ConstrainHeroX(const int leftBorder, const int rightBorder, const int topBorder, const int bottomBorder, 
@@ -60,7 +61,7 @@ public:
 	int& Getjumpcount(void);	//Getting jumpcounter
 
 	int& Gethero_HP(void);	//Getting hero hp
-	int& Gethero_EP(void);	//Getting hero EP
+	float& Gethero_EP(void);	//Getting hero EP
 
 	float& Gethero_MS(void);	//Getting hero Move speed
 	float& Gethero_invulframe(void);	//Getting hero invulnerable frame
@@ -120,7 +121,9 @@ private:
 	int MAX_FALLSPEED;	//Maximum speed of falling
 
 	int hero_HP;	//Health points
-	int hero_EP;	//Energy points
+	float hero_EP;	//Energy points
+	int MAX_EP;	//Maximum energy points
+	float Regen_speed;	//Hero ep regen speed
     int hero_SCORE; //Score Points
 
 	float invul_frame;	//Invulnerable to damage for a set amount of time
