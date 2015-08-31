@@ -42,6 +42,11 @@ vector<CShuriken*>& CInventory::getShurikenList(void)
 	return this->shurikenList;
 }
 
+void CInventory::setShurikenCount(int NewCount)
+{
+    ShurikenCount = NewCount;
+}
+
 int CInventory::getShurikenCount(void)
 {
 	return this->ShurikenCount;

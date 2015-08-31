@@ -87,9 +87,6 @@
     <ClCompile Include="Source\LoadTGA.cpp">
       <Filter>Source Files\Misc</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Minimap.cpp">
-      <Filter>Source Files\Classes</Filter>
-    </ClCompile>
     <ClCompile Include="Source\Mesh.cpp">
       <Filter>Source Files\Mesh</Filter>
     </ClCompile>
@@ -107,18 +104,6 @@
     </ClCompile>
     <ClCompile Include="Source\main.cpp">
       <Filter>Source Files\Scene</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\C3dOBB.cpp">
-      <Filter>Source Files\Collision</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\C3dAABB.cpp">
-      <Filter>Source Files\Collision</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\C3DObject.cpp">
-      <Filter>Source Files\Collision</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\LoadHmap.cpp">
-      <Filter>Source Files\Misc</Filter>
     </ClCompile>
     <ClCompile Include="Source\Map.cpp">
       <Filter>Source Files\Classes</Filter>
@@ -147,14 +132,8 @@
     <ClCompile Include="Source\MenuClass.cpp">
       <Filter>Source Files\Classes</Filter>
     </ClCompile>
-    <ClCompile Include="Source\C2DBoundBox.cpp">
-      <Filter>Source Files\Collision</Filter>
-    </ClCompile>
     <ClCompile Include="Source\Weapon.cpp">
       <Filter>Source Files\Classes\Weapons</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Monster.cpp">
-      <Filter>Source Files\Classes\Enemy</Filter>
     </ClCompile>
     <ClCompile Include="Source\Enemy.cpp">
       <Filter>Source Files\Classes\Enemy</Filter>
@@ -212,9 +191,6 @@
     <ClInclude Include="Source\Mesh.h">
       <Filter>Header Files\Mesh</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Minimap.h">
-      <Filter>Header Files\Classes</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Application.h">
       <Filter>Header Files\Scene</Filter>
     </ClInclude>
@@ -228,18 +204,6 @@
       <Filter>Header Files\Misc</Filter>
     </ClInclude>
     <ClInclude Include="Source\Material.h">
-      <Filter>Header Files\Misc</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\C3dOBB.h">
-      <Filter>Header Files\Collision</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\C3DObject.h">
-      <Filter>Header Files\Collision</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\C3dAABB.h">
-      <Filter>Header Files\Collision</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\LoadHmap.h">
       <Filter>Header Files\Misc</Filter>
     </ClInclude>
     <ClInclude Include="Source\Map.h">
@@ -269,16 +233,10 @@
     <ClInclude Include="Source\MenuClass.h">
       <Filter>Header Files\Classes</Filter>
     </ClInclude>
-    <ClInclude Include="Source\C2DBoundBox.h">
-      <Filter>Header Files\Collision</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Weapon.h">
       <Filter>Header Files\Classes\Weapons</Filter>
     </ClInclude>
     <ClInclude Include="Source\Enemy.h">
-      <Filter>Header Files\Classes\Enemy</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Monster.h">
       <Filter>Header Files\Classes\Enemy</Filter>
     </ClInclude>
     <ClInclude Include="Source\Shuriken.h">

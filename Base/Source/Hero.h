@@ -1,3 +1,12 @@
+/******************************************************************************/
+/*!
+\file	CHero.h
+\author Princeton Chew, Tan Jun Yan
+\par	email: 141991A@mymail.nyp.edu.sg
+\brief
+Player Class
+*/
+/******************************************************************************/
 #pragma once
 #include "Vector2.h"
 #include "Vector3.h"
@@ -7,6 +16,14 @@
 #include "Mesh.h"
 #include <cmath>
 
+/******************************************************************************/
+/*!
+		Class CHero
+\brief
+Defines the variables and functions required for the player.
+
+*/
+/******************************************************************************/
 class CHero
 {
 public:
@@ -18,7 +35,7 @@ public:
 		SHOCKWAVE,
 		MAX_ATTACKS,
 	};
-	//Hero related functions
+
 	void HeroInit(float posX,float posY);	//Initialize hero positions
 
 	void Update(CMap* m_cMap,int mapWidth, int mapHeight,unsigned maplevel);	//Update hero
@@ -38,9 +55,9 @@ public:
 
 	// Constrain the position of the Hero to within the border
 	int ConstrainHeroX(const int leftBorder, const int rightBorder, const int topBorder, const int bottomBorder, 
-						float timeDiff,int mapWidth, int mapHeight,unsigned maplevel);	//Constraining hero's X position
+		float timeDiff,int mapWidth, int mapHeight,unsigned maplevel);	//Constraining hero's X position
 	int ConstrainHeroY(const int leftBorder, const int rightBorder, const int topBorder, const int bottomBorder,
-						float timeDiff, int screenWidth, int screenHeight,unsigned maplevel);	//Constraining Hero's Y position
+		float timeDiff, int screenWidth, int screenHeight,unsigned maplevel);	//Constraining Hero's Y position
 
 	void CollisionResponse(bool m_bCheckLeft,bool m_bCheckRight, bool m_bCheckUp, bool m_bCheckDown);	//Collision	Response function
 
@@ -50,7 +67,7 @@ public:
 	float& GetHeroPos_y(void);	//Getting hero Y
 	void SetHeroPos_x(float input);	//Setting hero X
 	void SetHeroPos_y(float input);	//Setting hero Y
-	
+
 	bool& Gethero_inMidAir_Up(void);	//Getting hero in mid air up bool
 	bool& Gethero_inMidAir_Down(void);	//Getting hero in mid air down bool
 
@@ -73,21 +90,23 @@ public:
 	int GetMapFineOffset_x(void);	//Get map fine offset X
 	int GetMapFineOffset_y(void);	//Get map find offset Y
 
-    //---Physics Function---//
-    void Hero_Acceleration(bool LeftOrRight,const float timeDiff);
-    void setHero_Velocity(float);
-    float getHero_Velocity(void);
-    void setHero_Deceleration(bool,float);
-    //---------------------//
-    
-    //---Tile Object Interaction---//
-    void setHero_Health(int);
-    void setHero_Invi(bool NewInvi);
-    bool getHero_Invi();
-    //-----------------------------//
+	//---Physics Related---//
+	void Hero_Acceleration(bool LeftOrRight,const float timeDiff);	//Function for accelerating hero
+	void setHero_Velocity(float);	//Setting hero velocity
+	float getHero_Velocity(void);	//Getting hero velocity
+	void setHero_Deceleration(bool,float);	//Setting hero deceleration
+
+	//---Tile Object Interaction---//
+	void setHero_Health(int);	//Setting hero health
+	void setHero_Invi(bool NewInvi);	//Setting hero invis status
+	bool getHero_Invi();	//Getting hero invis status
+	int getHero_Score();	//Getting hero score
+	void setHero_Score(int);	//Setting hero score
+	void setHero_EP(int);	//Setting hero energy points
+
 	static CHero* GetInstance();	//Getting hero instance
-	
-		//Animations
+
+	//Animations
 	CSpriteAnimation* Hero_idle_right;
 	CSpriteAnimation* Hero_idle_left;
 	CSpriteAnimation* Hero_run_right;
@@ -101,9 +120,9 @@ public:
 	CSpriteAnimation* Hero_jump_right;
 	CSpriteAnimation* Hero_jump_left;
 private:
-	CHero(void);
-	~CHero(void);
-	//Hero's Info
+	CHero(void);	//Default constructor
+	~CHero(void);	//Default destructor
+
 	Vector2 HeroPos;	//Hero's current position
 	Vector2 tempHeroPos;	//Hero's previous frame position
 	Vector2 knockbackPos;	//Hero's knockback offset
@@ -115,7 +134,7 @@ private:
 	bool hero_damaged;	//Hero is damaged
 	bool kb_direction;	//Hero knockback direction (false = left, true = right)
 	bool hero_grappling;	//Hero is grappling
-    bool hero_invisible; //Hero is invisible
+	bool hero_invisible; //Hero is invisible
 	int jumpspeed;	//speed of jump
 	int jumpcount;	//Number of jumps
 	int MAX_FALLSPEED;	//Maximum speed of falling
@@ -124,7 +143,7 @@ private:
 	float hero_EP;	//Energy points
 	int MAX_EP;	//Maximum energy points
 	float Regen_speed;	//Hero ep regen speed
-    int hero_SCORE; //Score Points
+	int hero_SCORE; //Score Points
 
 	float invul_frame;	//Invulnerable to damage for a set amount of time
 	float MAX_INVUL;	//Maximum invulnerable time
@@ -135,13 +154,14 @@ private:
 
 	int mapOffset_X, mapOffset_Y;	//Map offset X , Y	for sccrolling
 	int mapFineOffset_X, mapFineOffset_Y;	//Map fine offset X , Y for scrolling
-	
-	CInventory hero_invent;
-    //Physics Code Declaration
-    float f_Current_Acceleration; // Acceleration of the character
-    float hero_mass;              // Player's mass
-    float hero_maxspeed;          // Player's Max speed that it can achieve
-    float hero_velocity;          // Player's Current Velocity
-    float f_force;                // Force
+
+	CInventory hero_invent;	//Inventory class for hero inventory
+
+	//---Physics---//
+	float f_Current_Acceleration; // Acceleration of the character
+	float hero_mass;              // Player's mass
+	float hero_maxspeed;          // Player's Max speed that it can achieve
+	float hero_velocity;          // Player's Current Velocity
+	float f_force;                // Force
 };
 

@@ -186,7 +186,6 @@ bool CMenuClass::getPauseState()
 	return this->Pause;
 }
 
-
 bool CMenuClass::getSave()
 {	
 	return this->save;

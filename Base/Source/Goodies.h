@@ -3,8 +3,8 @@
 class CGoodies
 {
 public:
-	CGoodies(void);
-	~CGoodies(void);
+	CGoodies(void);	//Default constructor
+	~CGoodies(void);	//Default destructor
 protected:
 	// Position x of this goodies
 	int pos_x;

@@ -1,3 +1,12 @@
+/******************************************************************************/
+/*!
+\file	CWeapon.h
+\author Princeton Chew
+\par	email: 141991A@mymail.nyp.edu.sg
+\brief
+Weapon Class
+*/
+/******************************************************************************/
 #pragma once
 #include "Mesh.h"
 #include "Vector3.h"
@@ -5,11 +14,20 @@
 
 using std::vector;
 
+/******************************************************************************/
+/*!
+	Class CWeapon
+\brief
+Base class for all the weapons used.
+Defines the base functions and variables all weapons should have.
+
+*/
+/******************************************************************************/
 class CWeapon
 {
 public:
-	CWeapon(void);
-	~CWeapon(void);
+	CWeapon(void);	//Default constructor
+	~CWeapon(void);	//Default destructor
 
 	void setData(Mesh* ptr,float pos_x,float pos_y,int damage,float dir_x,float dir_y,bool active);	//Sets all data
 

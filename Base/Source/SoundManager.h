@@ -1,3 +1,12 @@
+/******************************************************************************/
+/*!
+\file	CSoundManager.h
+\author Princeton Chew
+\par	email: 141991A@mymail.nyp.edu.sg
+\brief
+Sound manager class
+*/
+/******************************************************************************/
 #pragma once
 #include "irrKlang.h"
 #include <iostream>
@@ -6,11 +15,20 @@ using std::cout;
 
 using namespace irrklang;
 
+/******************************************************************************/
+/*!
+		Class CSoundManager
+\brief
+Plays and controls the type of sound being played.
+Defines the functions and variables required.
+
+*/
+/******************************************************************************/
 class CSoundManager
 {
 public:
 	/*
-		Types of sounds used in game
+	Types of sounds used in game
 	*/
 	enum SOUND_TYPE	
 	{
@@ -31,8 +49,9 @@ public:
 		HURT_BGM,
 		MAX_SOUNDS,
 	};
-	CSoundManager(void);
-	~CSoundManager(void);
+
+	CSoundManager(void);	//Default constructor
+	~CSoundManager(void);	//Default destructor
 
 	void Init();	//Creates sound engine
 
@@ -40,7 +59,7 @@ public:
 	void playSounds(unsigned input);	//Plays sound based on input
 
 private:
-	ISoundEngine* engine;
-	ISound* Sound;
+	ISoundEngine* engine;	//Sound engine
+	ISound* Sound;	//Sound pointer to be played
 };
 

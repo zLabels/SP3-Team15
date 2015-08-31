@@ -1,3 +1,12 @@
+/******************************************************************************/
+/*!
+\file	TileCollision.h
+\author Princeton Chew
+\par	email: 141991A@mymail.nyp.edu.sg
+\brief
+Tile collision functions 
+*/
+/******************************************************************************/
 #ifndef TILE_COLLISION
 #define TILE_COLLISION
 #include "Map.h"
@@ -22,12 +31,12 @@ enum TILE_TYPE
 	TILE_MAX_COLLISION,
 	//---STUFF THAT DOESN'T NEED COLLISION---
 	TILE_LASER_VERTICAL = 24,
-    TILE_LASER_HORIZONTAL,
+	TILE_LASER_HORIZONTAL,
 	TILE_HEALTH,
 	TILE_SCORE,
 	TILE_SHURIKEN,
-    TILE_STEALTH_BOX,
-    TILE_FINISH,
+	TILE_STEALTH_BOX,
+	TILE_FINISH,
 	MAX_TILE,
 };
 
