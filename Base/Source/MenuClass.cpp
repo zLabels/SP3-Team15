@@ -249,6 +249,7 @@ bool CMenuClass::AddHealth(int money)
 	if(Money.GetCash() >= 5)
 	{
 		return true;
+		//Money.SetCash(money-5);
 	}
 	return false;
 }
@@ -258,6 +259,7 @@ bool CMenuClass::AddWeapon(int money)
 	if(Money.GetCash() >= 10)
 	{
 		return true;
+		//Money.SetCash(money-10);
 	}
 	return false;
 }
