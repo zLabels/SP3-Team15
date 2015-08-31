@@ -188,6 +188,7 @@ class StudioProject : public Scene
 		GEO_TILE_TREASURECHEST,
         GEO_POWERUP_ANIMATION,
         GEO_TILE_STEALTH_BOX,
+        GEO_HUD_SHURIKEN,
 		NUM_GEOMETRY,
 	};
 

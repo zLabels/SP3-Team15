@@ -125,13 +125,6 @@ void StudioProject::InitShaders()
 	lights[1].position.Set(1, 1, 0);
 	lights[1].color.Set(1, 1, 0.5f);
 	lights[1].power = 0.4f;
-	//lights[1].kC = 1.f;
-	//lights[1].kL = 0.01f;
-	//lights[1].kQ = 0.001f;
-	//lights[1].cosCutoff = cos(Math::DegreeToRadian(45));
-	//lights[1].cosInner = cos(Math::DegreeToRadian(30));
-	//lights[1].exponent = 3.f;
-	//lights[1].spotDirection.Set(0.f, 1.f, 0.f);
 	
 	glUniform1i(m_parameters[U_NUMLIGHTS], 1);
 	glUniform1i(m_parameters[U_TEXT_ENABLED], 0);
@@ -271,6 +264,9 @@ void StudioProject::InitHUD()
 
 	meshList[GEO_HUD_EP] = MeshBuilder::GenerateQuad("HUD_energypoints",Color(1, 1, 1), 20.f);
 	meshList[GEO_HUD_EP]->textureID = LoadTGA("Image//HUD//HUD_energypoints.tga");
+
+    meshList[GEO_HUD_SHURIKEN] = MeshBuilder::GenerateQuad("HUD_SHURIKEN",Color(1, 1, 1), 3.f);
+    meshList[GEO_HUD_SHURIKEN]->textureID = LoadTGA("Image//Weapon//Weapon_Shuriken.tga");
 }
 void StudioProject::InitBackground()
 {
@@ -579,15 +575,6 @@ void StudioProject::InitTiles()
 		theArrayOfGoodies[i]->SetTextureID(LoadTGA("Image//Tiles//tile4_treasurechest.tga"));
 	}
     
-    //---TREASURE CHEST---
-    /*for(int i = 0; i < 1; i++)
-    {
-        CTreasureChest* Chest = new CTreasureChest();
-        Chest->SetActive(true);
-        Chest->setPositionX(300);
-        Chest->setPositionY(50);
-        Treasure.push_back(Chest);
-    }*/
 }
 void StudioProject::InitWeapon()
 {
@@ -630,9 +617,11 @@ void StudioProject::Reset(bool hasWon)
 	{
 		CHero::GetInstance()->HeroInit(50,400);
 		CHero::GetInstance()->Gethero_HP() = 100;
-		CHero::GetInstance()->Gethero_EP() = 0;
+		CHero::GetInstance()->Gethero_EP() = 50;
 		CHero::GetInstance()->setMapOffset_x(0);
 		CHero::GetInstance()->setMapOffset_y(0);
+        CHero::GetInstance()->getInventory().setShurikenCount(20);
+        CHero::GetInstance()->setHero_Score(0);
 
 		m_CurrentLevel = 1;
 
@@ -651,7 +640,7 @@ void StudioProject::Reset(bool hasWon)
 	}
 	if(hasWon == true)
 	{
-		CHero::GetInstance()->HeroInit(50,400);
+		CHero::GetInstance()->HeroInit(150,400);
 		CHero::GetInstance()->Gethero_HP() = 100;
 		CHero::GetInstance()->Gethero_EP() = 0;
 		CHero::GetInstance()->setMapOffset_x(0);
@@ -677,7 +666,7 @@ void StudioProject::SaveGame()
 	if(Save)
 	{
 		cout<<"SAVE";
-		ofstream saveFile/*("Source//TextFiles//Player//Player_Data.txt")*/;
+		ofstream saveFile;
 		saveFile.open("Source//TextFiles//Player//Player_Data.txt");
 		if(saveFile.is_open())
 		{
@@ -725,13 +714,6 @@ void StudioProject::LoadHero()
 						Hero_position.push_back((atoi(value.c_str())));
 					}
 				}			
-				//herodata.seekg(0,std::ios::end);
-				//unsigned int size = herodata.tellg();
-				//if(size == 0)
-				//{
-				//	cout<<"NOTHING"<<endl;
-				//	RenderTextOnScreen(meshList[GEO_TEXT], "NO SAVED FILE", Color(1, 1, 1), 2.f, 15, 42);
-				//}
 			}
 			load = false;
 			herodata.close();
@@ -756,8 +738,7 @@ void StudioProject::LoadMap(int level)
 	{
 	case 1:
 		{
-            CHero::GetInstance()->SetHeroPos_x(50);
-			CHero::GetInstance()->SetHeroPos_y(500);
+
 			m_cMap_Level1->LoadMap( "Image//MapDesigns//Map_Level1.csv");
 			m_cMap = m_cMap_Level1;
 			LoadEnemies(level);
@@ -768,8 +749,6 @@ void StudioProject::LoadMap(int level)
 		break;
 	case 2:
 		{
-            CHero::GetInstance()->SetHeroPos_x(50);
-			CHero::GetInstance()->SetHeroPos_y(500);
 			m_cMap_Level1->LoadMap( "Image//MapDesigns//Map_Level2.csv");
 			m_cMap = m_cMap_Level1;
 			LoadEnemies(level);
@@ -780,8 +759,6 @@ void StudioProject::LoadMap(int level)
 		break;
 	case 3:
 		{
-            CHero::GetInstance()->SetHeroPos_x(50);
-			CHero::GetInstance()->SetHeroPos_y(500);
 			m_cMap_Level3->LoadMap( "Image//MapDesigns//Map_Level3.csv");
 			m_cMap = m_cMap_Level3;
 			LoadEnemies(level);
@@ -791,7 +768,7 @@ void StudioProject::LoadMap(int level)
 		break;
 	case 4:
 		{
-			CHero::GetInstance()->SetHeroPos_x(100);
+			CHero::GetInstance()->SetHeroPos_x(125);
 			CHero::GetInstance()->SetHeroPos_y(500);
 
 			m_cMap_Level4->LoadMap( "Image//MapDesigns//Map_Level4.csv");
@@ -1398,9 +1375,7 @@ void StudioProject::EnemyUpdate(double dt)
 			Enemy->SetDestination((int)tempHeroPos_x + CHero::GetInstance()->GetMapOffset_x(),(int)tempHeroPos_y +CHero::GetInstance()->GetMapOffset_y());
 			Enemy->Update(m_cMap,ScreenWidth,ScreenHeight,m_CurrentLevel,CHero::GetInstance()->getHero_Invi());
 
-			/*int enemy_x = Enemy->GetPos_x() + CHero::GetInstance()->GetMapOffset_x();
-			int enemy_y = Enemy->GetPos_y();
-			Enemy->SetPos_x(enemy_x);*/
+			
 		}
 			//Plays sound if enemy is dead
 		else if(Enemy->DeathAnimation_Right->m_anim->animActive == true)
@@ -1672,12 +1647,6 @@ void StudioProject::UpdateSprites(double dt)
 	{
 		CHero::GetInstance()->Hero_idle_right->Update(dt);
 	}
-	
-	/*CSpriteAnimation *s_run = dynamic_cast<CSpriteAnimation*>(meshList[GEO_SABER_RUN_RIGHT]);
-	if(s_run)
-	{
-		s_run->Update(dt);
-	}*/
 }
 void StudioProject::UpdateEnemySprites(double dt)
 {
@@ -1752,12 +1721,10 @@ void StudioProject::UpdatePowerUp(double dt)
                         if(CHero::GetInstance()->Gethero_HP() < 100 && CHero::GetInstance()->Gethero_HP() > 75) // if Health is in between 75 to 100, set it to 100
                         {
                             CHero::GetInstance()->setHero_Health(100);
-							//soundplayer.playSounds(soundplayer.HEALTH);
                         }
                         else if(CHero::GetInstance()->Gethero_HP() <= 75) // If health is lower or equals to 75, health plus 25.
                         {
                             CHero::GetInstance()->setHero_Health(CHero::GetInstance()->Gethero_HP() + 25);
-							//soundplayer.playSounds(soundplayer.HEALTH);
                         }
                     }
 					soundplayer.playSounds(soundplayer.HEALTH);
@@ -1774,7 +1741,6 @@ void StudioProject::UpdatePowerUp(double dt)
                     {
                         if(CHero::GetInstance()->Gethero_EP() < 100 && CHero::GetInstance()->Gethero_EP() > 75) // if energy is in between 75 to 100, set it to 100
                         {
-                            //CHero::GetInstance()->set
                             CHero::GetInstance()->setHero_EP(100);
                         }
                         else if(CHero::GetInstance()->Gethero_EP() <= 75) // If energy is lower or equals to 75, energy plus 25.
@@ -1789,8 +1755,6 @@ void StudioProject::UpdatePowerUp(double dt)
 				}
                 if(Chest->getType() == Chest->POWERUP_SHURIKEN)
                 {
-                    CHero::GetInstance()->getInventory().IncrementShuriken();  
-                    CHero::GetInstance()->getInventory().IncrementShuriken();
                     CHero::GetInstance()->getInventory().IncrementShuriken();   //Adds a shuriken
                 }
 
@@ -1820,9 +1784,9 @@ void StudioProject::UpdateInput(double dt)
             LoadMap(m_CurrentLevel);
             LoadEnemies(m_CurrentLevel);
             LoadConsumables(m_CurrentLevel);
-            CHero::GetInstance()->HeroInit(25,500);
+            CHero::GetInstance()->HeroInit(50,500);
             CHero::GetInstance()->Gethero_HP() = 100;
-            CHero::GetInstance()->Gethero_EP() = 0;
+            CHero::GetInstance()->Gethero_EP() = 50;
             CHero::GetInstance()->setMapOffset_x(0);
             CHero::GetInstance()->setMapOffset_y(0);
         }
@@ -1939,7 +1903,6 @@ void StudioProject::UpdateInput(double dt)
 	//Save
 	if(Application::IsKeyPressed(VK_F11))
 	{
-		//CHero::GetInstance()->HeroMoveUpDown(false , 1.0f);
 		GameMenu.setPauseState(true);
 	}
 	if(Application::IsKeyPressed(VK_F10))
@@ -2140,10 +2103,6 @@ void StudioProject::Update(double dt)
 			m_CurrentLevel = lvl;
 			LoadMap(m_CurrentLevel);
 		}
-		//else if(lvl == 0)
-		//{
-		//	//cout<<"NO LEVEL SELECTED"<<endl;
-		//}
 		soundplayer.playSounds(soundplayer.MENU_BGM);
 
 		if( (Application::IsKeyPressed(VK_DOWN) || Application::IsKeyPressed(VK_UP) || Application::IsKeyPressed(VK_RETURN)) && GameMenu.inputDelay == 0.f)
@@ -2161,8 +2120,6 @@ void StudioProject::Update(double dt)
 		}
 		if(GameMenu.getHealthBought() == true)
 		{
-			//if(GameMenu.AddHealth())//The score
-			//{
 				if(CHero::GetInstance()->Gethero_HP() < 100 && CHero::GetInstance()->Gethero_HP() > 75) // if Health is in between 75 to 100, set it to 100
 				{
 					cout<<"HEALTH++";
@@ -2176,18 +2133,14 @@ void StudioProject::Update(double dt)
 					//soundplayer.playSounds(soundplayer.HEALTH);
 				}
 				soundplayer.playSounds(soundplayer.HEALTH);
-			//}
 			
 			GameMenu.setHealthBought(false);
 		}
 		else if(GameMenu.getWeaponBought() == true)
 		{
-			//if(GameMenu.AddWeapon())//The score
-			//{
 				cout<<"WEAPON++";
 				CHero::GetInstance()->getInventory().IncrementShuriken();  
 				soundplayer.playSounds(soundplayer.POWER_UP);
-			//}
 			GameMenu.setWeaponBought(false);
 
 		}
@@ -2227,11 +2180,6 @@ void StudioProject::Update(double dt)
 		GameMenu.setLostSound(true);
 		
 	}
-	//if(GameMenu.getLostSound() == true)
-	//{
-	//	soundplayer.stopSound();
-	//	GameMenu.setLostSound(false);
-	//}
 
 	else if(GameMenu.getMenuState() == false && GameMenu.getLostState() == false && GameMenu.getWinState() == false)
 	{
@@ -2263,24 +2211,9 @@ void StudioProject::Update(double dt)
 		soundplayer.playSounds(soundplayer.GAME_BGM);
 
 		load = false;
-		//camera.Update(dt);
 
 		fps = (float)(1.f / dt);
-
-        //cout << Shuriken_Number << endl;
 	}
-    
-/*
-    theArrayOfGoodies = new CGoodies*[10];
-	for(unsigned i = 0; i < 10; ++i)
-	{
-		theArrayOfGoodies[i] = theGoodiesFactory.Create(CGoodiesFactory::TREASURE_CHEST);
-		theArrayOfGoodies[i]->SetPos(150 + i*25, 150);
-		theArrayOfGoodies[i]->SetMesh(MeshBuilder::Generate2DMesh("GEO_TILE_TREASURECHEST", Color(1,1,1), 0,0,25,25));
-		theArrayOfGoodies[i]->SetTextureID(LoadTGA("Image//Tiles//tile4_treasurechest.tga"));
-	}
-    CHero::GetInstance()->GetHeroPos_x() ;
-    */
 }
 
 void StudioProject::RenderText(Mesh* mesh, std::string text, Color color)
@@ -2539,10 +2472,6 @@ void StudioProject::Render2DMesh(Mesh *mesh, bool enableLight, float size, float
 					glUniform1i(m_parameters[U_COLOR_TEXTURE], 0);
 				}
 
-				/*else
-				{
-				glUniform1i(m_parameters[U_COLOR_TEXTURE_ENABLED], 0);
-				}*/
 				mesh->Render();
 				//if(mesh->textureID > 0)
 				{
@@ -2596,10 +2525,6 @@ void StudioProject::Render2DSprite(Mesh *mesh, bool enableLight, float sizex, fl
 					glUniform1i(m_parameters[U_COLOR_TEXTURE], 0);
 				}
 
-				/*else
-				{
-				glUniform1i(m_parameters[U_COLOR_TEXTURE_ENABLED], 0);
-				}*/
 				mesh->Render();
 				//if(mesh->textureID > 0)
 				{
@@ -2747,20 +2672,10 @@ void StudioProject::RenderHUD(void)
 	//Energy points
 	RenderMeshIn2D(meshList[GEO_HUD_EP],false,0.032f * CHero::GetInstance()->Gethero_EP(),2.f,-69.8f,48.1f,false);
 
-	//Shuriken Count
-	//RenderMeshIn2D(meshList[GEO_SHURIKEN],false,0.5f,0.5f,0.f,53.7f,false);
-	//RenderMeshIn2D(meshList[GEO_HEALTHBAR],false,player.getHitpoints() * 0.025f,0.3f,-79.0f,-57.5f,false);
-
-	/*std::ostringstream ss3;
-	ss3.precision(5);
-	ss3 << player.getHitpoints();
-	RenderTextOnScreen(meshList[GEO_TEXT], ss3.str(), Color(1, 0, 0), 3, 8, 3.7f);*/
-
-	////Score
-	//std::ostringstream ss6;
-	//ss6.precision(5);
-	//ss6 << "Score: " << score;
-	//RenderTextOnScreen(meshList[GEO_TEXT], ss6.str(), Color(0, 0, 1), 3, 30, 2.5f);
+    for(int i = 0; i < CHero::GetInstance()->getInventory().getShurikenCount(); i++)
+    {
+	    RenderMeshIn2D(meshList[GEO_HUD_SHURIKEN],false,2.f,2.f,-55.f + (i * 3.5f),-52.5f,false);
+    }
 
 	//===================================================//
 	//Debug print
@@ -2777,14 +2692,9 @@ void StudioProject::RenderBackground(void)
 	rearWallOffset_x = (int) (CHero::GetInstance()->GetMapOffset_x() * 0.5);
 	rearWallFineOffset_x = rearWallOffset_x % m_cRearMap->GetTileSize();
 
-	//Render2DMesh(meshList[GEO_LAYER_2], false, 1.0f,(float)(100 - rearWallOffset_x));
-	//Render2DMesh(meshList[GEO_LAYER_2], false, 1.0f,(float)(1000 - rearWallOffset_x));
-
 	rearWallOffset_x = (int) (CHero::GetInstance()->GetMapOffset_x() * 0.25);
 	rearWallFineOffset_x = rearWallOffset_x % m_cRearMap->GetTileSize();
 
-	//Render2DMesh(meshList[GEO_LAYER_3], false, 1.0f,(float)(100 - rearWallOffset_x));
-	//Render2DMesh(meshList[GEO_LAYER_3], false, 1.0f,(float)(1000 - rearWallOffset_x));
 }
 void StudioProject::RenderPowerUp(void)
 {
@@ -2940,16 +2850,7 @@ void StudioProject::RenderRearTileMap()
 }
 void StudioProject::RenderDebug(void)
 {
-	//RenderMesh(meshList[GEO_AXES], false);
-	//std::ostringstream ss;
-	//ss.precision(5);
-	//ss << "tileOffset_x: " << tileOffset_x;
-	//RenderTextOnScreen(meshList[GEO_TEXT], ss.str(), Color(0, 1, 0), 3, 2, 4);
-	//std::ostringstream sss;
-	//sss.precision(5);
-	//sss << "mapOffset_x: "<<CHero::GetInstance()->GetMapOffset_x();
-	//RenderTextOnScreen(meshList[GEO_TEXT], sss.str(), Color(0, 1, 0), 3, 2, 7);
-    
+    /*
 	std::ostringstream sss;
 	sss.precision(5);
 	sss << "heropos.x: "<< CHero::GetInstance()->GetMapOffset_x() + CHero::GetInstance()->GetHeroPos_x();
@@ -2959,16 +2860,16 @@ void StudioProject::RenderDebug(void)
 	ssss.precision(5);
 	ssss << "heropos.y: "<<CHero::GetInstance()->GetHeroPos_y();
 	RenderTextOnScreen(meshList[GEO_TEXT], ssss.str(), Color(0, 1, 0), 3, 2, 4);
-    
+    */
     std::ostringstream sssss;
 	sssss.precision(5);
     sssss << "Score: "<<CHero::GetInstance()->getHero_Score();
-	RenderTextOnScreen(meshList[GEO_TEXT], sssss.str(), Color(0, 1, 0), 3, 2, 10);
+	RenderTextOnScreen(meshList[GEO_TEXT], sssss.str(), Color(0, 1, 0), 3, 70, 59);
 
     std::ostringstream ssssss;
 	ssssss.precision(5);
-    ssssss << "Shurikens: "<<CHero::GetInstance()->getInventory().getShurikenCount();
-	RenderTextOnScreen(meshList[GEO_TEXT], ssssss.str(), Color(0, 1, 0), 3, 2, 13);
+    ssssss << "Shurikens: ";
+	RenderTextOnScreen(meshList[GEO_TEXT], ssssss.str(), Color(0, 1, 0), 3, 2, 4);
 }
 void StudioProject::RenderHeroSprites(void)
 {

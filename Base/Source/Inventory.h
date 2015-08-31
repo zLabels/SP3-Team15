@@ -12,10 +12,11 @@ public:
 
 	CGrapplingHook& getGrapple(void);	//Gets grappling hook
 	vector<CShuriken*>& getShurikenList(void);	//Gets vector of shuriken
-
+    
+    void setShurikenCount(int); // Set shuriken
 	int getShurikenCount(void);	//Get shuriken count
 	void IncrementShuriken(void);	//Increase shuriken count by 1
-
+    
 private:
 	int ShurikenCount;
 	vector<CShuriken*> shurikenList;
