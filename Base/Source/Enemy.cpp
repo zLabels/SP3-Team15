@@ -297,9 +297,9 @@ bool CEnemy::CheckCollision (CMap* m_cMap, bool m_bCheckLeft,bool m_bCheckRight,
 	{
 		for(unsigned i = 1; i < TILE_MAX_COLLISION; ++i)
 		{
-			if ( (m_cMap->theScreenMap[checkPosition_Y2][checkPosition_X2+2] == i) ||
-				(m_cMap->theScreenMap[checkPosition_Y3][checkPosition_X2+2] == i) ||
-				(m_cMap->theScreenMap[checkPosition_Y4][checkPosition_X2+2] == i) )
+			if ( (m_cMap->theScreenMap[checkPosition_Y2][checkPosition_X2+1] == i) ||
+				(m_cMap->theScreenMap[checkPosition_Y3][checkPosition_X2+1] == i) ||
+				(m_cMap->theScreenMap[checkPosition_Y4][checkPosition_X2+1] == i) )
 			{
 				return true;
 			}
@@ -370,15 +370,24 @@ void CEnemy::Update(CMap* m_cMap,int mapWidth, int mapHeight,unsigned maplevel,b
 	
 	if(AttackAnimation_Left->m_anim->animActive == false && AttackAnimation_Right->m_anim->animActive == false)
 	{
-		theStrategy->SetDestination(theDestination.x,theDestination.y);
+		theStrategy->SetDestination(theDestination.x - HERO_OFFSET,theDestination.y);
 		theStrategy->Update(heroInvisible,enemyPatrolRange);
 		theStrategy->GetEnemyPosition( (theENEMYPosition.x),(theENEMYPosition.y) );
 		theStrategy->GetEnemyDirection( enemy_face_left,enemy_face_right );
 	}
 
+	//Check if there is a tile available infront of enemy
 	if( CheckCollision(m_cMap,false,false,false,true) == false)
 	{
 		theENEMYPosition.x = tempENEMYPosition.x;
+		theStrategy->SetEnemyPosition(theENEMYPosition.x,theENEMYPosition.y);
+	}
+
+	//Check left right collision for enemy
+	if( CheckCollision(m_cMap,true,true,false,false))
+	{
+		theENEMYPosition.x = tempENEMYPosition.x;
+		theStrategy->SetEnemyPosition(theENEMYPosition.x,theENEMYPosition.y);
 	}
 
 	//Setting animation positions

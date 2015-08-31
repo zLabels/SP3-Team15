@@ -1,6 +1,7 @@
 #ifndef TILE_COLLISION
 #define TILE_COLLISION
 #include "Map.h"
+#define HERO_OFFSET 33
 
 /*Enum for tiles in game*/
 enum TILE_TYPE
