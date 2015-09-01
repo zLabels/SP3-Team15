@@ -357,11 +357,51 @@ void CMenuClass::LoadingMenu()
 
 int CMenuClass::LevelSelectMenu()
 {
+	if(Application::IsKeyPressed(VK_LEFT) && inputDelay > DELAY_RATE2)
+	{
+		if(LevelOption == LEVEL1)
+		{
+			LevelOption = LEVEL3;
+		}
+		else if(LevelOption == LEVEL3)
+		{
+			LevelOption = LEVEL1;
+		}
+		else if(LevelOption == LEVEL2)
+		{
+			LevelOption = LEVEL4;
+		}
+		else if(LevelOption == LEVEL4)
+		{
+			LevelOption = LEVEL2;
+		}
+		inputDelay = 0.f;
+	}
+	if(Application::IsKeyPressed(VK_RIGHT) && inputDelay > DELAY_RATE2)
+	{
+		if(LevelOption == LEVEL1)
+		{
+			LevelOption = LEVEL3;
+		}
+		else if(LevelOption == LEVEL3)
+		{
+			LevelOption = LEVEL1;
+		}
+		else if(LevelOption == LEVEL2)
+		{
+			LevelOption = LEVEL4;
+		}
+		else if(LevelOption == LEVEL4)
+		{
+			LevelOption = LEVEL2;
+		}
+		inputDelay = 0.f;
+	}
 	if(Application::IsKeyPressed(VK_UP) && inputDelay > DELAY_RATE2)
 	{
 		if(LevelOption == LEVEL1)
 		{
-			LevelOption = LEVEL5;
+			LevelOption = LEVEL4;
 		}
 		else if(LevelOption == LEVEL2)
 		{
