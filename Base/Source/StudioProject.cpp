@@ -701,20 +701,21 @@ void StudioProject::SaveGame()
 
 			saveFile << (CHero::GetInstance()->getHero_Score());
 
-			std::cout << (CHero::GetInstance()->GetHeroPos_x()) << std::endl;
-			std::cout << (CHero::GetInstance()->GetHeroPos_y()) << std::endl;
-			std::cout << (CHero::GetInstance()->Gethero_HP()) << std::endl;
-			std::cout << (CHero::GetInstance()->Gethero_EP()) << std::endl;
+			//std::cout << (CHero::GetInstance()->GetHeroPos_x()) << std::endl;
+			//std::cout << (CHero::GetInstance()->GetHeroPos_y()) << std::endl;
+			//std::cout << (CHero::GetInstance()->Gethero_HP()) << std::endl;
+			//std::cout << (CHero::GetInstance()->Gethero_EP()) << std::endl;
 
-			std::cout << (CHero::GetInstance()->GetMapOffset_x()) << std::endl;
-			std::cout << (CHero::GetInstance()->GetMapOffset_y()) << std::endl;
+			//std::cout << (CHero::GetInstance()->GetMapOffset_x()) << std::endl;
+			//std::cout << (CHero::GetInstance()->GetMapOffset_y()) << std::endl;
 
-			std::cout << (m_CurrentLevel) << std::endl;
-			std::cout << (CHero::GetInstance()->getHero_Score()) << std::endl;
+			//std::cout << (m_CurrentLevel) << std::endl;
+			//std::cout << (CHero::GetInstance()->getHero_Score()) << std::endl;
 
 			Save = false;
+			saveFile.close();
 		}
-		saveFile.close();
+		
 	}
 }
 void StudioProject::LoadHero()
@@ -743,7 +744,8 @@ void StudioProject::LoadHero()
 					{
 						Hero_position.push_back((atoi(value.c_str())));
 					}
-				}			
+				}		
+
 			}
 			load = false;
 			herodata.close();
@@ -751,8 +753,7 @@ void StudioProject::LoadHero()
 	}
 	if(Hero_position.size() > 0)
 	{
-		unsigned j = 0; // used to control variables passed in
-		j+=7;	
+		unsigned j = 7; // used to control variables passed in	
 		CHero::GetInstance()->HeroInit((float)Hero_position[j-7],(float)Hero_position[j-6]);
 		CHero::GetInstance()->Gethero_HP() = Hero_position[j-5];
 		CHero::GetInstance()->Gethero_EP() = (float)Hero_position[j-4];
@@ -2064,7 +2065,7 @@ void StudioProject::Update(double dt)
 			m_CurrentLevel = lvl;
 			LoadMap(m_CurrentLevel);
 		}
-		soundplayer.playSounds(soundplayer.MENU_BGM);
+		//soundplayer.playSounds(soundplayer.MENU_BGM);
 
 		if( (Application::IsKeyPressed(VK_DOWN) || Application::IsKeyPressed(VK_UP) || Application::IsKeyPressed(VK_RETURN)) && GameMenu.inputDelay == 0.f)
 		{
@@ -2153,7 +2154,7 @@ void StudioProject::Update(double dt)
 
 	else if(GameMenu.getMenuState() == false && GameMenu.getLostState() == false && GameMenu.getWinState() == false) 
 	{
-		//soundplayer.playSounds(soundplayer.GAME_BGM);
+		
 		if(GameMenu.getLoadingLevels() == true)
 		{
 			load = true;
@@ -2171,6 +2172,7 @@ void StudioProject::Update(double dt)
 		{
 			UpdateInput(dt);
 		}
+		soundplayer.playSounds(soundplayer.GAME_BGM);
 
 		UpdateMap(dt);
 		HeroUpdate(dt);
