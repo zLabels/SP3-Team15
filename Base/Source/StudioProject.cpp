@@ -191,16 +191,34 @@ void StudioProject::InitMesh()
 	meshList[GEO_MENU_FEEDBACK]->textureID = LoadTGA("Image//Menu//SelectionFeedback.tga");
 
 	meshList[GEO_PLAY_TEXT] = MeshBuilder::Generate2DMesh("GameMenuPlayText", Color(1, 1, 1), 0, 0, 100, 30);
-	meshList[GEO_PLAY_TEXT]->textureID = LoadTGA("Image//Menu//PlayText.tga");
+	meshList[GEO_PLAY_TEXT]->textureID = LoadTGA("Image//Menu//play.tga");
 
-	meshList[GEO_CONTROLS_TEXT] = MeshBuilder::Generate2DMesh("GameMenuControlsText", Color(1, 1, 1), 0, 0, 200, 30);
-	meshList[GEO_CONTROLS_TEXT]->textureID = LoadTGA("Image//Menu//ControlsText.tga");
-
+	meshList[GEO_CONTROLS_TEXT] = MeshBuilder::Generate2DMesh("GameMenuControlsText", Color(1, 1, 1), 0, 0, 200, 40);
+	meshList[GEO_CONTROLS_TEXT]->textureID = LoadTGA("Image//Menu//controls.tga");
+	
 	meshList[GEO_LOAD_TEXT] = MeshBuilder::Generate2DMesh("GameMenuLoadText", Color(1, 1, 1), 0, 0, 100, 30);
-	meshList[GEO_LOAD_TEXT]->textureID = LoadTGA("Image//Menu//Menu_Loadtext.tga");
+	meshList[GEO_LOAD_TEXT]->textureID = LoadTGA("Image//Menu//load.tga");
+	
+	meshList[GEO_LEVEL_TEXT] = MeshBuilder::Generate2DMesh("GameMenuLevelText", Color(1, 1, 1), 0, 0, 100, 30);
+	meshList[GEO_LEVEL_TEXT]->textureID = LoadTGA("Image//Menu//levels.tga");
 
-	meshList[GEO_LEVEL_TEXT] = MeshBuilder::Generate2DMesh("GameMenuLevelText", Color(1, 1, 1), 0, 0, 250, 30);
-	meshList[GEO_LEVEL_TEXT]->textureID = LoadTGA("Image//Menu//Menu_Levelstext.tga");
+	meshList[GEO_CONTROLS_TAB_TEXT] = MeshBuilder::Generate2DMesh("GameMenuLevelText", Color(1, 1, 1), 0, 0, 200, 30);
+	meshList[GEO_CONTROLS_TAB_TEXT]->textureID = LoadTGA("Image//Menu//controls_tab.tga");
+
+	meshList[GEO_LEVEL1] = MeshBuilder::Generate2DMesh("GameMenuPlayText", Color(1, 1, 1), 0, 0, 50, 35);
+	meshList[GEO_LEVEL1]->textureID = LoadTGA("Image//Levels//Level.tga");
+
+	meshList[GEO_LEVEL2] = MeshBuilder::Generate2DMesh("GameMenuPlayText", Color(1, 1, 1), 0, 0, 50, 35);
+	meshList[GEO_LEVEL2]->textureID = LoadTGA("Image//Levels//Level2.tga");
+	
+	meshList[GEO_LEVEL3] = MeshBuilder::Generate2DMesh("GameMenuPlayText", Color(1, 1, 1), 0, 0, 50, 35);
+	meshList[GEO_LEVEL3]->textureID = LoadTGA("Image//Levels//Level3.tga");
+	
+	meshList[GEO_LEVEL4] = MeshBuilder::Generate2DMesh("GameMenuPlayText", Color(1, 1, 1), 0, 0, 50, 35);
+	meshList[GEO_LEVEL4]->textureID = LoadTGA("Image//Levels//Level4.tga");
+
+	meshList[GEO_LEVEL5] = MeshBuilder::Generate2DMesh("GameMenuPlayText", Color(1, 1, 1), 0, 0, 50, 35);
+	meshList[GEO_LEVEL5]->textureID = LoadTGA("Image//Levels//Level.tga");
 
 	meshList[GEO_GRAPPLING_HOOK] = MeshBuilder::Generate2DHook("Grapplinghook", Color(1, 1, 1), 0, 0, 25, 25);
 	meshList[GEO_GRAPPLING_HOOK]->textureID = LoadTGA("Image//Weapon//Grappling_Hook.tga");
@@ -679,7 +697,20 @@ void StudioProject::SaveGame()
 			saveFile << (CHero::GetInstance()->GetMapOffset_x()) <<",";
 			saveFile << (CHero::GetInstance()->GetMapOffset_y()) <<",";
 
-			saveFile << (m_CurrentLevel);
+			saveFile << (m_CurrentLevel)<<",";
+
+			saveFile << (CHero::GetInstance()->getHero_Score());
+
+			std::cout << (CHero::GetInstance()->GetHeroPos_x()) << std::endl;
+			std::cout << (CHero::GetInstance()->GetHeroPos_y()) << std::endl;
+			std::cout << (CHero::GetInstance()->Gethero_HP()) << std::endl;
+			std::cout << (CHero::GetInstance()->Gethero_EP()) << std::endl;
+
+			std::cout << (CHero::GetInstance()->GetMapOffset_x()) << std::endl;
+			std::cout << (CHero::GetInstance()->GetMapOffset_y()) << std::endl;
+
+			std::cout << (m_CurrentLevel) << std::endl;
+			std::cout << (CHero::GetInstance()->getHero_Score()) << std::endl;
 
 			Save = false;
 		}
@@ -740,6 +771,7 @@ void StudioProject::LoadMap(int level)
 
 			m_cMap_Level1->LoadMap( "Image//MapDesigns//Map_Level1.csv");
 			m_cMap = m_cMap_Level1;
+			m_CurrentLevel = 1;
 			LoadEnemies(level);
 			LoadConsumables(level);
 			GetorNot = false;
@@ -750,6 +782,7 @@ void StudioProject::LoadMap(int level)
 		{
 			m_cMap_Level1->LoadMap( "Image//MapDesigns//Map_Level2.csv");
 			m_cMap = m_cMap_Level1;
+			m_CurrentLevel = 2;
 			LoadEnemies(level);
 			LoadConsumables(level);
 			GetorNot = false;
@@ -760,6 +793,7 @@ void StudioProject::LoadMap(int level)
 		{
 			m_cMap_Level3->LoadMap( "Image//MapDesigns//Map_Level3.csv");
 			m_cMap = m_cMap_Level3;
+			m_CurrentLevel = 3;
 			LoadEnemies(level);
 			LoadConsumables(level);
 			GetorNot = false;
@@ -772,6 +806,7 @@ void StudioProject::LoadMap(int level)
 
 			m_cMap_Level4->LoadMap( "Image//MapDesigns//Map_Level4.csv");
 			m_cMap = m_cMap_Level4;
+			m_CurrentLevel = 4;
 			LoadEnemies(level);
 			LoadConsumables(level);
 			GetorNot = false;
@@ -781,6 +816,7 @@ void StudioProject::LoadMap(int level)
 		{
 			m_cMap_Level5->LoadMap( "Image//MapDesigns//Map_Level1.csv");
 			m_cMap = m_cMap_Level5;
+			m_CurrentLevel = 5;
 			LoadEnemies(level);
 			LoadConsumables(level);
 			GetorNot = false;
@@ -2013,7 +2049,7 @@ void StudioProject::UpdateMap(double dt)
 
 void StudioProject::Update(double dt)
 {
-	//Money.SetCash(Score);
+	//soundplayer.stopSound();
 	if(GameMenu.getReset() == true)
 	{ 
 		Reset(false);
@@ -2043,27 +2079,35 @@ void StudioProject::Update(double dt)
 		}
 		if(GameMenu.getHealthBought() == true)
 		{
-			if(CHero::GetInstance()->Gethero_HP() < 100 && CHero::GetInstance()->Gethero_HP() > 75) // if Health is in between 75 to 100, set it to 100
+			if(CHero::GetInstance()->getHero_Score() >= 5)//The score
 			{
-				cout<<"HEALTH++";
-				CHero::GetInstance()->setHero_Health(100);
-				//soundplayer.playSounds(soundplayer.HEALTH);
+				if(CHero::GetInstance()->Gethero_HP() < 100 && CHero::GetInstance()->Gethero_HP() > 75) // if Health is in between 75 to 100, set it to 100
+				{
+					//cout<<"HEALTH++";
+					CHero::GetInstance()->setHero_Score(CHero::GetInstance()->getHero_Score() - 5);
+					CHero::GetInstance()->setHero_Health(100);
+					//soundplayer.playSounds(soundplayer.HEALTH);
+				}
+				else if(CHero::GetInstance()->Gethero_HP() <= 75) // If health is lower or equals to 75, health plus 25.
+				{
+					//cout<<"HEALTH++";
+					CHero::GetInstance()->setHero_Score(CHero::GetInstance()->getHero_Score() - 5);
+					CHero::GetInstance()->setHero_Health(CHero::GetInstance()->Gethero_HP() + 25);
+					//soundplayer.playSounds(soundplayer.HEALTH);
+				}
+				soundplayer.playSounds(soundplayer.HEALTH);
 			}
-			else if(CHero::GetInstance()->Gethero_HP() <= 75) // If health is lower or equals to 75, health plus 25.
-			{
-				cout<<"HEALTH++";
-				CHero::GetInstance()->setHero_Health(CHero::GetInstance()->Gethero_HP() + 25);
-				//soundplayer.playSounds(soundplayer.HEALTH);
-			}
-			soundplayer.playSounds(soundplayer.HEALTH);
-
+			
 			GameMenu.setHealthBought(false);
 		}
 		else if(GameMenu.getWeaponBought() == true)
 		{
-			cout<<"WEAPON++";
-			CHero::GetInstance()->getInventory().IncrementShuriken();  
-			soundplayer.playSounds(soundplayer.POWER_UP);
+			if(CHero::GetInstance()->getHero_Score() >= 10)//The score
+			{
+				CHero::GetInstance()->setHero_Score(CHero::GetInstance()->getHero_Score() - 10);
+				CHero::GetInstance()->getInventory().IncrementShuriken();  
+				soundplayer.playSounds(soundplayer.POWER_UP);
+			}
 			GameMenu.setWeaponBought(false);
 
 		}
@@ -2104,15 +2148,19 @@ void StudioProject::Update(double dt)
 
 	}
 
-	else if(GameMenu.getMenuState() == false && GameMenu.getLostState() == false && GameMenu.getWinState() == false)
+
+	else if(GameMenu.getMenuState() == false && GameMenu.getLostState() == false && GameMenu.getWinState() == false) 
 	{
+		//soundplayer.playSounds(soundplayer.GAME_BGM);
 		if(GameMenu.getLoadingLevels() == true)
 		{
 			load = true;
 			GameMenu.setLoadingLevels(false);
 		}
-
 		LoadHero();
+	
+		if(GameMenu.getPauseState() == false)
+		{
 		/*=================
 		GAME START
 		===================*/
@@ -2130,8 +2178,8 @@ void StudioProject::Update(double dt)
 		UpdateWeapon();
 		UpdateSprites(dt);
 		UpdateEnemySprites(dt);
-
-		soundplayer.playSounds(soundplayer.GAME_BGM);
+		
+		}
 
 		load = false;
 
@@ -2494,9 +2542,9 @@ void StudioProject::RenderMenu(int input)
 			if(GameMenu.getMenuState())
 			{
 				Render2DMesh(meshList[GEO_PLAY_TEXT],false,0.8f,350,350);
-				Render2DMesh(meshList[GEO_CONTROLS_TEXT],false,0.8f,265,295);
+				Render2DMesh(meshList[GEO_CONTROLS_TAB_TEXT],false,0.8f,265,295);
 				Render2DMesh(meshList[GEO_LOAD_TEXT],false,0.8f,350,240);
-				Render2DMesh(meshList[GEO_LEVEL_TEXT],false,1.f,200,185);
+				Render2DMesh(meshList[GEO_LEVEL_TEXT],false,1.f,330,185);
 
 				Render2DMesh(meshList[GEO_MENU_FEEDBACK],false,1.f,GameMenu.getCurrentSelectPos_X(),GameMenu.getCurrentSelectPos_Y());
 				RenderTextOnScreen(meshList[GEO_TEXT], "Press Escape To Exit", Color(0.3f, 0.3f, 0.3f), 2.f, 32, 10);
@@ -2507,13 +2555,13 @@ void StudioProject::RenderMenu(int input)
 		{
 			if(GameMenu.getMenuState())
 			{
-				RenderTextOnScreen(meshList[GEO_TEXT], "W - Go in portals", Color(1, 1, 1), 2.f, 15, 42);
+				Render2DMesh(meshList[GEO_CONTROLS_TEXT],false,0.8f,150,285);
+				RenderTextOnScreen(meshList[GEO_TEXT], "W - INTERACTS WITH THE ITEMS", Color(1, 1, 1), 2.f, 15, 42);
 				RenderTextOnScreen(meshList[GEO_TEXT], "A - Move Left", Color(1, 1, 1), 2.f, 15, 38);
 				RenderTextOnScreen(meshList[GEO_TEXT], "D - Move Right", Color(1, 1, 1), 2.f, 15, 34);
-				RenderTextOnScreen(meshList[GEO_TEXT], "Z - Heavy Attack", Color(1, 1, 1), 2.f, 15, 26);
-				RenderTextOnScreen(meshList[GEO_TEXT], "X - Light Attack", Color(1, 1, 1), 2.f, 15, 23);
-				RenderTextOnScreen(meshList[GEO_TEXT], "C - Shockwave Attack", Color(1, 1, 1), 2.f, 15, 20);
-
+				RenderTextOnScreen(meshList[GEO_TEXT], "LEFT CLICK - SHOOT SHURIKEN", Color(1, 1, 1), 2.f, 15, 26);
+				RenderTextOnScreen(meshList[GEO_TEXT], "RIGHT CLICK - GRAPPLING HOOK", Color(1, 1, 1), 2.f, 15, 23);
+		
 				RenderTextOnScreen(meshList[GEO_TEXT], "Press 'Enter' to return to main menu", Color(0.3f, 0.3f, 0.3f), 1.5f, 28, 10);
 			}
 		}
@@ -2536,13 +2584,18 @@ void StudioProject::RenderMenu(int input)
 			if(GameMenu.getMenuState())
 			{
 				RenderTextOnScreen(meshList[GEO_TEXT], "CHOOSE LEVEL", Color(1, 1, 1), 2.f, 15, 42);
-				RenderTextOnScreen(meshList[GEO_TEXT], "LEVEL 1", Color(1, 1, 1), GameMenu.getLevel1Size(), 15, 38);
-				RenderTextOnScreen(meshList[GEO_TEXT], "LEVEL 2", Color(1, 1, 1), GameMenu.getLevel2Size(), 15, 34);
-				RenderTextOnScreen(meshList[GEO_TEXT], "LEVEL 3", Color(1, 1, 1), GameMenu.getLevel3Size(), 15, 30);
-				RenderTextOnScreen(meshList[GEO_TEXT], "LEVEL 4", Color(1, 1, 1), GameMenu.getLevel4Size(), 15, 26);
-				RenderTextOnScreen(meshList[GEO_TEXT], "LEVEL 5", Color(1, 1, 1), GameMenu.getLevel5Size(), 15, 22);
+				Render2DMesh(meshList[GEO_LEVEL1],false, GameMenu.getLevel1Size(),175,250);
+				Render2DMesh(meshList[GEO_LEVEL2],false, GameMenu.getLevel2Size(),175,100);
+				Render2DMesh(meshList[GEO_LEVEL3],false, GameMenu.getLevel3Size(),450,250);
+				Render2DMesh(meshList[GEO_LEVEL4],false, GameMenu.getLevel4Size(),450,100);
+				//Render2DMesh(meshList[GEO_LEVEL5],false, GameMenu.getLevel5Size(),15,150);
+				
+				RenderTextOnScreen(meshList[GEO_TEXT], "LEVEL 1", Color(1, 1, 1), 2.f, 13, 35);
+				RenderTextOnScreen(meshList[GEO_TEXT], "LEVEL 2", Color(1, 1, 1), 2.f, 13, 20);
+				RenderTextOnScreen(meshList[GEO_TEXT], "LEVEL 3", Color(1, 1, 1), 2.f, 40, 35);
+				RenderTextOnScreen(meshList[GEO_TEXT], "LEVEL 4", Color(1, 1, 1), 2.f, 40, 20);
 
-				RenderTextOnScreen(meshList[GEO_TEXT], "Press 'Enter' to choose level", Color(0.3f, 0.3f, 0.3f), 1.5f, 28, 10);
+				RenderTextOnScreen(meshList[GEO_TEXT], "Press 'Enter' to choose level", Color(0.3f, 0.3f, 0.3f), 1.5f, 30, 7);
 			}
 		}
 		break;
@@ -3003,7 +3056,7 @@ void StudioProject::Render()
 	{
 		RenderMenu(CMenuClass::WIN_SCREEN);
 	}
-	else if(GameMenu.getPauseState() == true)
+	else if(GameMenu.getPauseState() == true && GameMenu.getWinState() == false)
 	{
 		RenderMenu(CMenuClass::PAUSE);
 	}

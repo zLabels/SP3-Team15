@@ -375,10 +375,10 @@ int CMenuClass::LevelSelectMenu()
 		{
 			LevelOption--;
 		}
-		else if(LevelOption == LEVEL5)
-		{
-			LevelOption--;
-		}
+		//else if(LevelOption == LEVEL5)
+		//{
+		//	LevelOption--;
+		//}
 
 		inputDelay = 0.f;
 	}
@@ -399,12 +399,12 @@ int CMenuClass::LevelSelectMenu()
 		}
 		else if(LevelOption == LEVEL4)
 		{
-			LevelOption++;
-		}
-		else if(LevelOption == LEVEL5)
-		{
 			LevelOption = LEVEL1;
 		}
+		//else if(LevelOption == LEVEL5)
+		//{
+		//	LevelOption = LEVEL1;
+		//}
 
 		inputDelay = 0.f;
 	}
@@ -446,14 +446,14 @@ int CMenuClass::LevelSelectMenu()
 		showMenu = false;
 		return GameLevels;
 	}
-	else if(Application::IsKeyPressed(VK_RETURN) && LevelOption == LEVEL5 && inputDelay > DELAY_RATE2)
-	{
-		LevelSelect = false;
-		GameLevels = LEVEL5;
-		inputDelay = 0.f;
-		showMenu = false;
-		return GameLevels;
-	}
+	//else if(Application::IsKeyPressed(VK_RETURN) && LevelOption == LEVEL5 && inputDelay > DELAY_RATE2)
+	//{
+	//	LevelSelect = false;
+	//	GameLevels = LEVEL5;
+	//	inputDelay = 0.f;
+	//	showMenu = false;
+	//	return GameLevels;
+	//}
 	menuFeedback2();
 
 	return 0;
@@ -771,14 +771,18 @@ int CMenuClass::Update(double dt)
 	else if(Lost == true)
 	{
 		LostScreen();
+		Pause = false;
+		Win = false;
 	}
-	else if(Win == true)
+	else if(showMenu == false && Win == true && Pause == false)
 	{
 		WinScreen();
+		Pause = false;
 	}
-	else if(Pause == true)
+	else if(showMenu == false && Pause == true && Win == false)
 	{
 		PauseMenu();
+		Win = false;
 	}
 
 	return 0;

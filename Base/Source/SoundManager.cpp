@@ -88,9 +88,9 @@ void CSoundManager::playSounds(unsigned input)
 		//Sound = engine->play2D("Sound\\Game\\MenuFeedback.mp3");
 		break;
 	case MENU_BGM:
-		if(!engine->isCurrentlyPlaying("Sound\\Game\\EPIC.wav"))
+		if(!engine->isCurrentlyPlaying("Sound\\Game\\EP.wav"))
 		{
-			Sound = engine->play2D("Sound\\Game\\EPIC.wav");
+			Sound = engine->play2D("Sound\\Game\\EP.wav");
 			break;
 		}
 	case ENEMY_BGM:

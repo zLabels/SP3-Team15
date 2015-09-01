@@ -187,6 +187,7 @@ private:
 
 	float SELECTED_SIZE;
 	float NORMAL_SIZE;
+	//float 
 	float Level1Size;	//Text size
 	float Level2Size;
 	float Level3Size;

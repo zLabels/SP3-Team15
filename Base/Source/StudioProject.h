@@ -177,8 +177,15 @@ class StudioProject : public Scene
 		GEO_MENU_FEEDBACK,
 		GEO_PLAY_TEXT,
 		GEO_CONTROLS_TEXT,
+		GEO_CONTROLS_TAB_TEXT,
 		GEO_LOAD_TEXT,
 		GEO_LEVEL_TEXT,
+		//the level maps
+		GEO_LEVEL1,
+		GEO_LEVEL2,
+		GEO_LEVEL3,
+		GEO_LEVEL4,
+		GEO_LEVEL5,
 		//Map transition
 		MAP_TRANSITION,
 		//Powerup
