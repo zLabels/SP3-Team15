@@ -762,7 +762,6 @@ void StudioProject::LoadHero()
 		CHero::GetInstance()->setMapOffset_y(Hero_position[j-2]);
 		CHero::GetInstance()->setHero_Score(Hero_position[j]);
 	}
-
 }
 
 void StudioProject::LoadMap(int level)
@@ -771,7 +770,6 @@ void StudioProject::LoadMap(int level)
 	{
 	case 1:
 		{
-
 			m_cMap_Level1->LoadMap( "Image//MapDesigns//Map_Level1.csv");
 			m_cMap = m_cMap_Level1;
 			m_CurrentLevel = 1;
@@ -783,8 +781,8 @@ void StudioProject::LoadMap(int level)
 		break;
 	case 2:
 		{
-			m_cMap_Level1->LoadMap( "Image//MapDesigns//Map_Level2.csv");
-			m_cMap = m_cMap_Level1;
+			m_cMap_Level2->LoadMap( "Image//MapDesigns//Map_Level2.csv");
+			m_cMap = m_cMap_Level2;
 			m_CurrentLevel = 2;
 			LoadEnemies(level);
 			LoadConsumables(level);

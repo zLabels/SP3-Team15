@@ -31,12 +31,6 @@ CEnemy::~CEnemy(void)
 		delete theStrategy;
 		theStrategy = NULL;
 	}
-	while(enemyBulletList.size() > 0)
-	{
-		CEnemyBullet *bullet = enemyBulletList.back();
-		delete bullet;
-		enemyBulletList.pop_back();
-	}
 }
 
 void CEnemy::Init(int pos_x,int pos_y,int hp,int dmg,bool active,ENEMY_TYPE type,int patrolRange)
