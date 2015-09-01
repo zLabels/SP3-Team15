@@ -177,6 +177,7 @@ void StudioProject::InitMesh()
 	meshList[GEO_TEXT] = MeshBuilder::GenerateText("text", 16, 16);
 	meshList[GEO_TEXT]->textureID = LoadTGA("Image//HoboStdFont.tga");
 	meshList[GEO_TEXT]->material.kAmbient.Set(1, 0, 0);
+
 	meshList[GEO_RING] = MeshBuilder::GenerateRing("ring", Color(1, 0, 1), 36, 1, 0.5f);
 	meshList[GEO_LIGHTBALL] = MeshBuilder::GenerateSphere("lightball", Color(1, 1, 1), 18, 36, 1.f);
 	meshList[GEO_CONE] = MeshBuilder::GenerateCone("cone", Color(0.5f, 1, 0.3f), 36, 10.f, 10.f);
@@ -187,8 +188,8 @@ void StudioProject::InitMesh()
 	meshList[GEO_MENU_BACKGROUND] = MeshBuilder::Generate2DMesh("GameMenu_background", Color(1, 1, 1), 50, 50, 800,600);
 	meshList[GEO_MENU_BACKGROUND]->textureID = LoadTGA("Image//Menu//Menu_Background.tga");
 
-	meshList[GEO_MENU_FEEDBACK] = MeshBuilder::Generate2DMesh("GameMenu_feedback", Color(1, 1, 1), 0, 0, 210, 80);
-	meshList[GEO_MENU_FEEDBACK]->textureID = LoadTGA("Image//Menu//SelectionFeedback.tga");
+	meshList[GEO_MENU_FEEDBACK] = MeshBuilder::Generate2DMesh("GameMenu_feedback", Color(1, 1, 1), 0, 0, 90, 50);
+	meshList[GEO_MENU_FEEDBACK]->textureID = LoadTGA("Image//Menu//MenuShuriken.tga");
 
 	meshList[GEO_PLAY_TEXT] = MeshBuilder::Generate2DMesh("GameMenuPlayText", Color(1, 1, 1), 0, 0, 100, 30);
 	meshList[GEO_PLAY_TEXT]->textureID = LoadTGA("Image//Menu//play.tga");
@@ -285,6 +286,7 @@ void StudioProject::InitHUD()
 
 	meshList[GEO_HUD_SHURIKEN] = MeshBuilder::GenerateQuad("HUD_SHURIKEN",Color(1, 1, 1), 3.f);
 	meshList[GEO_HUD_SHURIKEN]->textureID = LoadTGA("Image//Weapon//Weapon_Shuriken.tga");
+
 }
 void StudioProject::InitBackground()
 {
@@ -2652,6 +2654,7 @@ void StudioProject::RenderMenu(int input)
 }
 void StudioProject::RenderHUD(void)
 { 
+	RenderMeshIn2D(meshList[GEO_HUD_SHURIKEN],false,2.f,2.f,-30.8f,53.7f,false);
 	//HUD template
 	RenderMeshIn2D(meshList[GEO_HUD_TEMPLATE],false,2.f,2.f,-57.f,51.f,false);
 	//Health points
@@ -2659,10 +2662,10 @@ void StudioProject::RenderHUD(void)
 	//Energy points
 	RenderMeshIn2D(meshList[GEO_HUD_EP],false,0.032f * CHero::GetInstance()->Gethero_EP(),2.f,-69.8f,48.1f,false);
 
-	for(int i = 0; i < CHero::GetInstance()->getInventory().getShurikenCount(); i++)
-	{
-		RenderMeshIn2D(meshList[GEO_HUD_SHURIKEN],false,2.f,2.f,-55.f + (i * 3.5f),-52.5f,false);
-	}
+	std::ostringstream ssssss;
+	ssssss.precision(5);
+	ssssss << " x "<<CHero::GetInstance()->getInventory().getShurikenCount();
+	RenderTextOnScreen(meshList[GEO_TEXT], ssssss.str(), Color(1, 1, 1), 3, 28, 56.7f);
 
 	//===================================================//
 	//Debug print
@@ -2840,12 +2843,7 @@ void StudioProject::RenderDebug(void)
 	std::ostringstream sssss;
 	sssss.precision(5);
 	sssss << "Score: "<<CHero::GetInstance()->getHero_Score();
-	RenderTextOnScreen(meshList[GEO_TEXT], sssss.str(), Color(0, 1, 0), 3, 70, 59);
-
-	std::ostringstream ssssss;
-	ssssss.precision(5);
-	ssssss << "Shurikens: ";
-	RenderTextOnScreen(meshList[GEO_TEXT], ssssss.str(), Color(0, 1, 0), 3, 2, 4);
+	RenderTextOnScreen(meshList[GEO_TEXT], sssss.str(), Color(1, 1, 1), 3, 25, 54);
 
 }
 void StudioProject::RenderHeroSprites(void)

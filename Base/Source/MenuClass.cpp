@@ -16,10 +16,10 @@ CMenuClass::CMenuClass(void)
 	loadPos.x = 450.f;
 	levelPos.x = 450.f;
 
-	playPos.y = 325.f;	//Feedback position
-	controlPos.y = 270.f;
-	loadPos.y = 215.f;
-	levelPos.y = 160.f;
+	playPos.y = 335.f;	//Feedback position
+	controlPos.y = 280.f;
+	loadPos.y = 225.f;
+	levelPos.y = 175.f;
 
 	inputDelay = 0.f;
 	DELAY_RATE = 0.2f;

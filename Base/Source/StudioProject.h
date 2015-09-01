@@ -95,6 +95,7 @@ class StudioProject : public Scene
 		GEO_CONE,
 		GEO_OBJECT,
 		GEO_TEXT,
+		GEO_TEXT1,
 		GEO_FLOOR,
 		//HUD
 		GEO_CROSSHAIR,
