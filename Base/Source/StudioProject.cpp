@@ -1694,7 +1694,7 @@ void StudioProject::UpdatePowerUp(double dt)
 				if(Chest->getType() == Chest->POWERUP_SCORE)
 				{
 					soundplayer.playSounds(soundplayer.COIN);
-					CHero::GetInstance()->setHero_Score(CHero::GetInstance()->getHero_Score() + 100);
+					CHero::GetInstance()->setHero_Score(CHero::GetInstance()->getHero_Score() + 25);
 				}
 				if(Chest->getType() == Chest->POWERUP_ENERGY)
 				{
@@ -2836,6 +2836,7 @@ void StudioProject::RenderDebug(void)
 	ssssss.precision(5);
 	ssssss << "Shurikens: ";
 	RenderTextOnScreen(meshList[GEO_TEXT], ssssss.str(), Color(0, 1, 0), 3, 2, 4);
+
 }
 void StudioProject::RenderHeroSprites(void)
 {
