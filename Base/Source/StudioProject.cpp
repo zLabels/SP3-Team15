@@ -753,13 +753,13 @@ void StudioProject::LoadHero()
 	}
 	if(Hero_position.size() > 0)
 	{
-		unsigned j = 7; // used to control variables passed in	
+		unsigned j = 7; // used to control variables passed in
+		LoadMap(Hero_position[j-1]);
 		CHero::GetInstance()->HeroInit((float)Hero_position[j-7],(float)Hero_position[j-6]);
 		CHero::GetInstance()->Gethero_HP() = Hero_position[j-5];
 		CHero::GetInstance()->Gethero_EP() = (float)Hero_position[j-4];
 		CHero::GetInstance()->setMapOffset_x(Hero_position[j-3]);
 		CHero::GetInstance()->setMapOffset_y(Hero_position[j-2]);
-		LoadMap(Hero_position[j-1]);
 		CHero::GetInstance()->setHero_Score(Hero_position[j]);
 	}
 
