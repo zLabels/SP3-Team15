@@ -2057,7 +2057,7 @@ void StudioProject::Update(double dt)
 	{ 
 		Reset(false);
 	}
-	if(GameMenu.getMenuState() == true || GameMenu.getLostState() == true )
+	if(GameMenu.getMenuState() == true)
 	{	
 		int lvl = GameMenu.Update(dt);
 		if(lvl != 0)
@@ -2065,7 +2065,7 @@ void StudioProject::Update(double dt)
 			m_CurrentLevel = lvl;
 			LoadMap(m_CurrentLevel);
 		}
-		//soundplayer.playSounds(soundplayer.MENU_BGM);
+		soundplayer.playSounds(soundplayer.MENU_BGM);
 
 		if( (Application::IsKeyPressed(VK_DOWN) || Application::IsKeyPressed(VK_UP) || Application::IsKeyPressed(VK_RETURN)) && GameMenu.inputDelay == 0.f)
 		{
@@ -2146,8 +2146,20 @@ void StudioProject::Update(double dt)
 
 	if(GameMenu.getLostState() == true )
 	{
+		int lvl = GameMenu.Update(dt);
+		if(lvl != 0)
+		{
+			m_CurrentLevel = lvl;
+			LoadMap(m_CurrentLevel);
+		}
 		soundplayer.playSounds(soundplayer.GAMEOVER);
 		GameMenu.setLostSound(true);
+
+		if( (Application::IsKeyPressed(VK_DOWN) || Application::IsKeyPressed(VK_UP) || Application::IsKeyPressed(VK_RETURN)) && GameMenu.inputDelay == 0.f)
+		{
+			soundplayer.playSounds(soundplayer.MENU_FEEDBACK);
+		}
+
 
 	}
 
@@ -2559,12 +2571,13 @@ void StudioProject::RenderMenu(int input)
 		{
 			if(GameMenu.getMenuState())
 			{
-				Render2DMesh(meshList[GEO_CONTROLS_TEXT],false,0.8f,150,285);
-				RenderTextOnScreen(meshList[GEO_TEXT], "W - INTERACTS WITH THE ITEMS", Color(1, 1, 1), 2.f, 15, 42);
-				RenderTextOnScreen(meshList[GEO_TEXT], "A - Move Left", Color(1, 1, 1), 2.f, 15, 38);
-				RenderTextOnScreen(meshList[GEO_TEXT], "D - Move Right", Color(1, 1, 1), 2.f, 15, 34);
-				RenderTextOnScreen(meshList[GEO_TEXT], "LEFT CLICK - SHOOT SHURIKEN", Color(1, 1, 1), 2.f, 15, 26);
-				RenderTextOnScreen(meshList[GEO_TEXT], "RIGHT CLICK - GRAPPLING HOOK", Color(1, 1, 1), 2.f, 15, 23);
+				Render2DMesh(meshList[GEO_CONTROLS_TEXT],false,0.8f,150,420);
+				RenderTextOnScreen(meshList[GEO_TEXT], "W - INTERACTS WITH THE ITEMS", Color(1, 1, 1), 2.f, 15, 40);
+				RenderTextOnScreen(meshList[GEO_TEXT], "A - Move Left", Color(1, 1, 1), 2.f, 15, 36);
+				RenderTextOnScreen(meshList[GEO_TEXT], "D - Move Right", Color(1, 1, 1), 2.f, 15, 32);
+				RenderTextOnScreen(meshList[GEO_TEXT], "SPACEBAR- Jump", Color(1, 1, 1), 2.f, 15, 28);
+				RenderTextOnScreen(meshList[GEO_TEXT], "LEFT CLICK - SHOOT SHURIKEN", Color(1, 1, 1), 2.f, 15, 23);
+				RenderTextOnScreen(meshList[GEO_TEXT], "RIGHT CLICK - GRAPPLING HOOK", Color(1, 1, 1), 2.f, 15, 20);
 		
 				RenderTextOnScreen(meshList[GEO_TEXT], "Press 'Enter' to return to main menu", Color(0.3f, 0.3f, 0.3f), 1.5f, 28, 10);
 			}
@@ -2576,7 +2589,6 @@ void StudioProject::RenderMenu(int input)
 			{
 				RenderTextOnScreen(meshList[GEO_TEXT], "LOAD PREVIOUS GAME STATE", Color(1, 1, 1), 2.f, 15, 42);
 				RenderTextOnScreen(meshList[GEO_TEXT], "", Color(1, 1, 1), 2.f, 15, 38);
-				RenderTextOnScreen(meshList[GEO_TEXT], "D - Move Right", Color(1, 1, 1), 2.f, 15, 34);
 
 
 				RenderTextOnScreen(meshList[GEO_TEXT], "Press 'Enter' to return to main menu", Color(0.3f, 0.3f, 0.3f), 1.5f, 28, 10);
