@@ -4,14 +4,14 @@
 CHero* CHero::heroInstance = 0;
 
 CHero::CHero(void):
-	hero_inMidAir_Up(false),
+hero_inMidAir_Up(false),
 	hero_inMidAir_Down(false),
 	jumpspeed(0),
 	jumpcount(0),
 	hero_face_left(false),
 	hero_face_right(true),
 	hero_grappling(false),
-    hero_invisible(false),
+	hero_invisible(false),
 	hero_HP(100),
 	hero_EP(100),
 	hero_MS(3.f),
@@ -25,14 +25,14 @@ CHero::CHero(void):
 	kb_direction(false),
 	invul_frame(0.f),
 	MAX_INVUL(1.f),
-    f_Current_Acceleration(0),
-    hero_mass(4),
-    hero_velocity(0),
-    hero_maxspeed(3),
-    f_force(1),
+	f_Current_Acceleration(0),
+	hero_mass(4),
+	hero_velocity(0),
+	hero_maxspeed(3),
+	f_force(1),
 	MAX_EP(100),
 	Regen_speed(5.f),
-    hero_SCORE(0)
+	hero_SCORE(0)
 {
 }
 CHero::~CHero(void)
@@ -50,7 +50,7 @@ void CHero::HeroInit(float posX,float posY)
 	this->HeroPos.x = posX;
 	this->HeroPos.y = posY;
 
-    
+
 }
 /********************************************************************************
 Hero Jump
@@ -95,7 +95,7 @@ void CHero::HeroMoveLeftRight(const bool mode, const float timeDiff)
 	if (mode)
 	{
 		tempHeroPos.x = HeroPos.x;
-		 Hero_Acceleration(true, timeDiff);  //Acceleration
+		Hero_Acceleration(true, timeDiff);  //Acceleration
 	}
 	else
 	{
@@ -121,7 +121,7 @@ bool CHero::HeroGrapple(CMap* m_cMap,Vector3 direction,Vector3 hookPosition)
 		hero_grappling = false;
 		return true;
 	}
-	
+
 	return false;
 }
 
@@ -139,7 +139,7 @@ void CHero::HeroRegen(double dt)
 void CHero::HeroUseGrapple(Mesh* ptr,float target_x,float target_y)
 {
 	hero_invent.getGrapple().setData(ptr,HeroPos.x + 25.f,HeroPos.y + 40.f,
-			0,target_x - (HeroPos.x + this->mapOffset_X + 25.f),target_y - (HeroPos.y + 40.f),true);
+		0,target_x - (HeroPos.x + this->mapOffset_X + 25.f),target_y - (HeroPos.y + 40.f),true);
 	hero_invent.getGrapple().setRotation(Math::RadianToDegree( -atan2(  ( target_x - (HeroPos.x + this->mapOffset_X + 25.f) ),(target_y - (HeroPos.y + 40.f) ) )));
 	hero_invent.getGrapple().setActive(true);
 }
@@ -263,11 +263,11 @@ void CHero::HeroKnockBack(CMap* m_cMap)
 	}
 }
 /********************************************************************************
- Constrain the position of the Hero to within the border
- ********************************************************************************/
+Constrain the position of the Hero to within the border
+********************************************************************************/
 int CHero::ConstrainHeroX(const int leftBorder, const int rightBorder, 
-								  const int topBorder, const int bottomBorder, 
-								  float timeDiff,int mapWidth, int mapHeight,unsigned maplevel)
+	const int topBorder, const int bottomBorder, 
+	float timeDiff,int mapWidth, int mapHeight,unsigned maplevel)
 {
 	if (HeroPos.x < leftBorder)
 	{
@@ -306,7 +306,7 @@ int CHero::ConstrainHeroX(const int leftBorder, const int rightBorder,
 }
 
 int CHero::ConstrainHeroY(const int leftBorder, const int rightBorder, const int topBorder, const int bottomBorder, 
-						float timeDiff,int screenWidth, int screenHeight,unsigned maplevel)
+	float timeDiff,int screenWidth, int screenHeight,unsigned maplevel)
 {
 	return mapOffset_Y;
 }
@@ -335,7 +335,7 @@ void CHero::Update(CMap* m_cMap,int mapWidth, int mapHeight,unsigned maplevel)
 	}
 
 	// Update Hero's info
-  	if (hero_inMidAir_Up == false && hero_inMidAir_Down == false)
+	if (hero_inMidAir_Up == false && hero_inMidAir_Down == false)
 	{
 	}
 	if (hero_inMidAir_Up == true && hero_inMidAir_Down == false)
@@ -397,88 +397,88 @@ void CHero::Update(CMap* m_cMap,int mapWidth, int mapHeight,unsigned maplevel)
 		}
 	}
 
-    //****************************************//
-    //                                        //
-    //             TILE COLLISION             //
-    //                                        //
-    //****************************************//
-    if(HeroTileCheck(m_cMap, TILE_LASER_HORIZONTAL,true,true,true,true,HeroPos.x - HERO_OFFSET,HeroPos.y,mapOffset_X,jumpspeed) == true)
-    {
-        //hero_HP -= 7.5; // Minus health for touching the lasers.
-        hero_HP -= 1; // Minus health for touching the lasers.
-    }
-    if(HeroTileCheck(m_cMap, TILE_LASER_VERTICAL,true,true,true,true,HeroPos.x - HERO_OFFSET,HeroPos.y,mapOffset_X,jumpspeed) == true)
-    {
-        //hero_HP -= 7.5; // Minus health for touching the lasers.
-        hero_HP -= 1; // Minus health for touching the lasers.
-    }
-    
+	//****************************************//
+	//                                        //
+	//             TILE COLLISION             //
+	//                                        //
+	//****************************************//
+	if(HeroTileCheck(m_cMap, TILE_LASER_HORIZONTAL,true,true,true,true,HeroPos.x - HERO_OFFSET,HeroPos.y,mapOffset_X,jumpspeed) == true)
+	{
+		//hero_HP -= 7.5; // Minus health for touching the lasers.
+		hero_HP -= 1; // Minus health for touching the lasers.
+	}
+	if(HeroTileCheck(m_cMap, TILE_LASER_VERTICAL,true,true,true,true,HeroPos.x - HERO_OFFSET,HeroPos.y,mapOffset_X,jumpspeed) == true)
+	{
+		//hero_HP -= 7.5; // Minus health for touching the lasers.
+		hero_HP -= 1; // Minus health for touching the lasers.
+	}
+
 
 	if(HeroTileCheck(m_cMap, TILE_STEALTH_BOX,true,true,false,false,HeroPos.x - HERO_OFFSET,HeroPos.y,mapOffset_X,jumpspeed) == true)
-    {
-        hero_invisible = true;
-    }
-    else
-    {
-        hero_invisible = false;
-    }
-    
-    if(HeroTileCheck(m_cMap, TILE_HEALTH,true,true,true,true,GetHeroPos_x(),GetHeroPos_y(),GetMapOffset_x(),Getjumpspeed()) == true)
-    {
-        float tempHeroPos_x = CHero::GetInstance()->GetHeroPos_x();	//Hero current position X
-        float tempHeroPos_y = CHero::GetInstance()->GetHeroPos_y();	//Hero current position Y
-        int checkPosition_X = (int)((CHero::GetInstance()->GetMapOffset_x() + tempHeroPos_x) / m_cMap->GetTileSize());	//Hero tile position X
-        int checkPosition_Y = m_cMap->GetNumOfTiles_Height() - (int) ( (tempHeroPos_y + m_cMap->GetTileSize()) / m_cMap->GetTileSize());
-        int checkPosition_Y3 = m_cMap->GetNumOfTiles_Height() - (int) ceil( (float) (tempHeroPos_y + m_cMap->GetTileSize() + 25.f) / m_cMap->GetTileSize());
-        int checkPosition_Y4 = m_cMap->GetNumOfTiles_Height() - (int) ceil( (float) (tempHeroPos_y + m_cMap->GetTileSize() + 40.f) / m_cMap->GetTileSize());
+	{
+		hero_invisible = true;
+	}
+	else
+	{
+		hero_invisible = false;
+	}
 
-        if(hero_HP != 100) // If not 100 goes in here
-        {
-            if(hero_HP < 100 && hero_HP > 75) // if Health is in between 75 to 100, set it to 100
-            {
-                //CHero::GetInstance()->setHero_Health(100);
-                hero_HP = 100;
-            }
-            else if(hero_HP <= 75) // If health is lower or equals to 75, health plus 25.
-            {
-                //CHero::GetInstance()->setHero_Health(CHero::GetInstance()->Gethero_HP() + 25);
-                hero_HP += 25;
-            }
-        }
+	if(HeroTileCheck(m_cMap, TILE_HEALTH,true,true,true,true,GetHeroPos_x(),GetHeroPos_y(),GetMapOffset_x(),Getjumpspeed()) == true)
+	{
+		float tempHeroPos_x = CHero::GetInstance()->GetHeroPos_x();	//Hero current position X
+		float tempHeroPos_y = CHero::GetInstance()->GetHeroPos_y();	//Hero current position Y
+		int checkPosition_X = (int)((CHero::GetInstance()->GetMapOffset_x() + tempHeroPos_x) / m_cMap->GetTileSize());	//Hero tile position X
+		int checkPosition_Y = m_cMap->GetNumOfTiles_Height() - (int) ( (tempHeroPos_y + m_cMap->GetTileSize()) / m_cMap->GetTileSize());
+		int checkPosition_Y3 = m_cMap->GetNumOfTiles_Height() - (int) ceil( (float) (tempHeroPos_y + m_cMap->GetTileSize() + 25.f) / m_cMap->GetTileSize());
+		int checkPosition_Y4 = m_cMap->GetNumOfTiles_Height() - (int) ceil( (float) (tempHeroPos_y + m_cMap->GetTileSize() + 40.f) / m_cMap->GetTileSize());
 
-         m_cMap->theScreenMap[checkPosition_Y][checkPosition_X] = 0;
-        m_cMap->theScreenMap[checkPosition_Y][checkPosition_X + 1] = 0;
-        m_cMap->theScreenMap[checkPosition_Y][checkPosition_X + 2] = 0;
-        m_cMap->theScreenMap[checkPosition_Y3][checkPosition_X] = 0;
-        m_cMap->theScreenMap[checkPosition_Y3][checkPosition_X + 1] = 0;
-        m_cMap->theScreenMap[checkPosition_Y3][checkPosition_X + 2] = 0;
-        m_cMap->theScreenMap[checkPosition_Y4][checkPosition_X] = 0;
-        m_cMap->theScreenMap[checkPosition_Y4][checkPosition_X + 1] = 0;
-        m_cMap->theScreenMap[checkPosition_Y4][checkPosition_X + 2] = 0;
-    }
-        
-    if(HeroTileCheck(m_cMap, TILE_SCORE,true,true,true,true,GetHeroPos_x(),GetHeroPos_y(),GetMapOffset_x(),Getjumpspeed()) == true)
-    {
-        float tempHeroPos_x = CHero::GetInstance()->GetHeroPos_x();	//Hero current position X
-        float tempHeroPos_y = CHero::GetInstance()->GetHeroPos_y();	//Hero current position Y
-        int checkPosition_X = (int)((CHero::GetInstance()->GetMapOffset_x() + tempHeroPos_x) / m_cMap->GetTileSize());	//Hero tile position X
-        int checkPosition_Y = m_cMap->GetNumOfTiles_Height() - (int) ( (tempHeroPos_y + m_cMap->GetTileSize()) / m_cMap->GetTileSize());
-        int checkPosition_Y3 = m_cMap->GetNumOfTiles_Height() - (int) ceil( (float) (tempHeroPos_y + m_cMap->GetTileSize() + 25.f) / m_cMap->GetTileSize());
-        int checkPosition_Y4 = m_cMap->GetNumOfTiles_Height() - (int) ceil( (float) (tempHeroPos_y + m_cMap->GetTileSize() + 40.f) / m_cMap->GetTileSize());
+		if(hero_HP != 100) // If not 100 goes in here
+		{
+			if(hero_HP < 100 && hero_HP > 75) // if Health is in between 75 to 100, set it to 100
+			{
+				//CHero::GetInstance()->setHero_Health(100);
+				hero_HP = 100;
+			}
+			else if(hero_HP <= 75) // If health is lower or equals to 75, health plus 25.
+			{
+				//CHero::GetInstance()->setHero_Health(CHero::GetInstance()->Gethero_HP() + 25);
+				hero_HP += 25;
+			}
+		}
 
-        hero_SCORE += 100;
+		m_cMap->theScreenMap[checkPosition_Y][checkPosition_X] = 0;
+		m_cMap->theScreenMap[checkPosition_Y][checkPosition_X + 1] = 0;
+		m_cMap->theScreenMap[checkPosition_Y][checkPosition_X + 2] = 0;
+		m_cMap->theScreenMap[checkPosition_Y3][checkPosition_X] = 0;
+		m_cMap->theScreenMap[checkPosition_Y3][checkPosition_X + 1] = 0;
+		m_cMap->theScreenMap[checkPosition_Y3][checkPosition_X + 2] = 0;
+		m_cMap->theScreenMap[checkPosition_Y4][checkPosition_X] = 0;
+		m_cMap->theScreenMap[checkPosition_Y4][checkPosition_X + 1] = 0;
+		m_cMap->theScreenMap[checkPosition_Y4][checkPosition_X + 2] = 0;
+	}
 
-        m_cMap->theScreenMap[checkPosition_Y][checkPosition_X] = 0;
-        m_cMap->theScreenMap[checkPosition_Y][checkPosition_X + 1] = 0;
-        m_cMap->theScreenMap[checkPosition_Y][checkPosition_X + 2] = 0;
-        m_cMap->theScreenMap[checkPosition_Y3][checkPosition_X] = 0;
-        m_cMap->theScreenMap[checkPosition_Y3][checkPosition_X + 1] = 0;
-        m_cMap->theScreenMap[checkPosition_Y3][checkPosition_X + 2] = 0;
-        m_cMap->theScreenMap[checkPosition_Y4][checkPosition_X] = 0;
-        m_cMap->theScreenMap[checkPosition_Y4][checkPosition_X + 1] = 0;
-        m_cMap->theScreenMap[checkPosition_Y4][checkPosition_X + 2] = 0;
-        
-    }
+	if(HeroTileCheck(m_cMap, TILE_SCORE,true,true,true,true,GetHeroPos_x(),GetHeroPos_y(),GetMapOffset_x(),Getjumpspeed()) == true)
+	{
+		float tempHeroPos_x = CHero::GetInstance()->GetHeroPos_x();	//Hero current position X
+		float tempHeroPos_y = CHero::GetInstance()->GetHeroPos_y();	//Hero current position Y
+		int checkPosition_X = (int)((CHero::GetInstance()->GetMapOffset_x() + tempHeroPos_x) / m_cMap->GetTileSize());	//Hero tile position X
+		int checkPosition_Y = m_cMap->GetNumOfTiles_Height() - (int) ( (tempHeroPos_y + m_cMap->GetTileSize()) / m_cMap->GetTileSize());
+		int checkPosition_Y3 = m_cMap->GetNumOfTiles_Height() - (int) ceil( (float) (tempHeroPos_y + m_cMap->GetTileSize() + 25.f) / m_cMap->GetTileSize());
+		int checkPosition_Y4 = m_cMap->GetNumOfTiles_Height() - (int) ceil( (float) (tempHeroPos_y + m_cMap->GetTileSize() + 40.f) / m_cMap->GetTileSize());
+
+		hero_SCORE += 100;
+
+		m_cMap->theScreenMap[checkPosition_Y][checkPosition_X] = 0;
+		m_cMap->theScreenMap[checkPosition_Y][checkPosition_X + 1] = 0;
+		m_cMap->theScreenMap[checkPosition_Y][checkPosition_X + 2] = 0;
+		m_cMap->theScreenMap[checkPosition_Y3][checkPosition_X] = 0;
+		m_cMap->theScreenMap[checkPosition_Y3][checkPosition_X + 1] = 0;
+		m_cMap->theScreenMap[checkPosition_Y3][checkPosition_X + 2] = 0;
+		m_cMap->theScreenMap[checkPosition_Y4][checkPosition_X] = 0;
+		m_cMap->theScreenMap[checkPosition_Y4][checkPosition_X + 1] = 0;
+		m_cMap->theScreenMap[checkPosition_Y4][checkPosition_X + 2] = 0;
+
+	}
 
 	HeroKnockBack(m_cMap);
 	ConstrainHeroX(100, 600, 25, 575, 1.0f,mapWidth,mapHeight,maplevel);
@@ -590,86 +590,86 @@ void CHero::SetHeroPos_y(float input)
 
 void CHero::setHero_Velocity(float New_Velocity)
 {
-    hero_velocity = New_Velocity;
+	hero_velocity = New_Velocity;
 }
 
 void CHero::Hero_Acceleration(bool LeftOrRight,const float timeDiff)
 {
-    f_Current_Acceleration = f_force / hero_mass; // Get Acceleration
+	f_Current_Acceleration = f_force / hero_mass; // Get Acceleration
 
-    if(LeftOrRight) //Move Left
-    {
+	if(LeftOrRight) //Move Left
+	{
 
-        if(hero_velocity > -hero_maxspeed)
-        {
-            hero_velocity -= f_Current_Acceleration * timeDiff;
-        }
-        else if (hero_velocity <= -hero_maxspeed)
-        {
-            hero_velocity = -hero_maxspeed;
-        }
-        
+		if(hero_velocity > -hero_maxspeed)
+		{
+			hero_velocity -= f_Current_Acceleration * timeDiff;
+		}
+		else if (hero_velocity <= -hero_maxspeed)
+		{
+			hero_velocity = -hero_maxspeed;
+		}
+
 		HeroPos.x = HeroPos.x + (float)(hero_velocity * timeDiff);  // Translate Hero's position according to the velocity
-    }
-    else           //Move Right
-    {
-        if(hero_velocity < hero_maxspeed)
-        {
-            hero_velocity += f_Current_Acceleration * timeDiff;
-        }
-        else if (hero_velocity >= hero_maxspeed)
-        {
-            hero_velocity = hero_maxspeed;
-        }
-        
+	}
+	else           //Move Right
+	{
+		if(hero_velocity < hero_maxspeed)
+		{
+			hero_velocity += f_Current_Acceleration * timeDiff;
+		}
+		else if (hero_velocity >= hero_maxspeed)
+		{
+			hero_velocity = hero_maxspeed;
+		}
+
 		HeroPos.x = HeroPos.x + (float)(hero_velocity * timeDiff);
-    }
-    
+	}
+
 }
 
 void CHero::setHero_Deceleration(bool LeftorRight ,float Decelerate)
 {
-    if(!LeftorRight) // RIGHT
-    {
-        hero_velocity = Decelerate;
-        HeroPos.x += (float)(hero_velocity);
-    }
-    else //LEFT
-    {
-        hero_velocity = Decelerate;
-        HeroPos.x +=  (float)(hero_velocity);
-    }
+	if(!LeftorRight) // RIGHT
+	{
+		hero_velocity = Decelerate;
+		HeroPos.x += (float)(hero_velocity);
+	}
+	else //LEFT
+	{
+		hero_velocity = Decelerate;
+		HeroPos.x +=  (float)(hero_velocity);
+	}
 }
 
 float CHero::getHero_Velocity(void)
 {
-    return hero_velocity;
+	return hero_velocity;
 }
 
 void CHero::setHero_Health(int newHealth)
 {
-    hero_HP = newHealth;
+	hero_HP = newHealth;
 }
 
 void CHero::setHero_Invi(bool NewInvi)
 {
-    this->hero_invisible = NewInvi;
+	this->hero_invisible = NewInvi;
 }
 bool CHero::getHero_Invi()
 {
-    return hero_invisible;
+	return hero_invisible;
 }
 
 int CHero::getHero_Score()
 {
-    return hero_SCORE;
+	return hero_SCORE;
 }
 void CHero::setHero_Score(int NewScore)
 {
-    hero_SCORE = NewScore;
+	hero_SCORE = NewScore;
 }
 
 void CHero::setHero_EP(int NewEnergy)
 {
-    hero_EP = NewEnergy;
+	hero_EP = NewEnergy;
 }

@@ -20,9 +20,9 @@ StudioProject::StudioProject()
 	rearWallTileOffset_y(0),
 	rearWallFineOffset_x(0),
 	rearWallFineOffset_y(0),
-    GetorNot(false),
-    CollisionRange(40*40),
-    POWERUP_SIZE(25.f)
+	GetorNot(false),
+	CollisionRange(40*40),
+	POWERUP_SIZE(25.f)
 {
 
 }
@@ -50,9 +50,9 @@ void StudioProject::InitGL()
 	glEnable(GL_DEPTH_TEST);
 	// Accept fragment if it closer to the camera than the former one
 	glDepthFunc(GL_LESS); 
-	
+
 	glEnable(GL_CULL_FACE);
-	
+
 	glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 
 	glEnable(GL_BLEND);
@@ -64,7 +64,7 @@ void StudioProject::InitGL()
 void StudioProject::InitShaders()
 {
 	m_programID = LoadShaders( "Shader//Fog.vertexshader", "Shader//Fog.fragmentshader" );
-	
+
 	// Get a handle for our uniform
 	m_parameters[U_MVP] = glGetUniformLocation(m_programID, "MVP");
 	//m_parameters[U_MODEL] = glGetUniformLocation(m_programID, "M");
@@ -125,7 +125,7 @@ void StudioProject::InitShaders()
 	lights[1].position.Set(1, 1, 0);
 	lights[1].color.Set(1, 1, 0.5f);
 	lights[1].power = 0.4f;
-	
+
 	glUniform1i(m_parameters[U_NUMLIGHTS], 1);
 	glUniform1i(m_parameters[U_TEXT_ENABLED], 0);
 
@@ -138,7 +138,7 @@ void StudioProject::InitShaders()
 	glUniform1f(m_parameters[U_LIGHT0_COSCUTOFF], lights[0].cosCutoff);
 	glUniform1f(m_parameters[U_LIGHT0_COSINNER], lights[0].cosInner);
 	glUniform1f(m_parameters[U_LIGHT0_EXPONENT], lights[0].exponent);
-	
+
 	glUniform1i(m_parameters[U_LIGHT1_TYPE], lights[1].type);
 	glUniform3fv(m_parameters[U_LIGHT1_COLOR], 1, &lights[1].color.r);
 	glUniform1f(m_parameters[U_LIGHT1_POWER], lights[1].power);
@@ -195,16 +195,16 @@ void StudioProject::InitMesh()
 
 	meshList[GEO_CONTROLS_TEXT] = MeshBuilder::Generate2DMesh("GameMenuControlsText", Color(1, 1, 1), 0, 0, 200, 30);
 	meshList[GEO_CONTROLS_TEXT]->textureID = LoadTGA("Image//Menu//ControlsText.tga");
-	
+
 	meshList[GEO_LOAD_TEXT] = MeshBuilder::Generate2DMesh("GameMenuLoadText", Color(1, 1, 1), 0, 0, 100, 30);
 	meshList[GEO_LOAD_TEXT]->textureID = LoadTGA("Image//Menu//Menu_Loadtext.tga");
-	
+
 	meshList[GEO_LEVEL_TEXT] = MeshBuilder::Generate2DMesh("GameMenuLevelText", Color(1, 1, 1), 0, 0, 250, 30);
 	meshList[GEO_LEVEL_TEXT]->textureID = LoadTGA("Image//Menu//Menu_Levelstext.tga");
 
 	meshList[GEO_GRAPPLING_HOOK] = MeshBuilder::Generate2DHook("Grapplinghook", Color(1, 1, 1), 0, 0, 25, 25);
 	meshList[GEO_GRAPPLING_HOOK]->textureID = LoadTGA("Image//Weapon//Grappling_Hook.tga");
-	
+
 	meshList[GEO_GUARD_DETECTION] = MeshBuilder::GenerateQuad("DetectionRange",Color(1,1,1), 225.f);
 	meshList[GEO_GUARD_DETECTION]->textureID = LoadTGA("Image//Enemies//Enemy_detection.tga");
 }
@@ -245,11 +245,11 @@ void StudioProject::InitVariables()
 
 	choice = 0;
 
-    //Deceleration Physics
-    f_deceleration = 20;
+	//Deceleration Physics
+	f_deceleration = 20;
 
-    //Init for Tiles || Game related stuff
-    Money_Score = 0;
+	//Init for Tiles || Game related stuff
+	Money_Score = 0;
 }
 void StudioProject::InitHUD()
 {
@@ -265,8 +265,8 @@ void StudioProject::InitHUD()
 	meshList[GEO_HUD_EP] = MeshBuilder::GenerateQuad("HUD_energypoints",Color(1, 1, 1), 20.f);
 	meshList[GEO_HUD_EP]->textureID = LoadTGA("Image//HUD//HUD_energypoints.tga");
 
-    meshList[GEO_HUD_SHURIKEN] = MeshBuilder::GenerateQuad("HUD_SHURIKEN",Color(1, 1, 1), 3.f);
-    meshList[GEO_HUD_SHURIKEN]->textureID = LoadTGA("Image//Weapon//Weapon_Shuriken.tga");
+	meshList[GEO_HUD_SHURIKEN] = MeshBuilder::GenerateQuad("HUD_SHURIKEN",Color(1, 1, 1), 3.f);
+	meshList[GEO_HUD_SHURIKEN]->textureID = LoadTGA("Image//Weapon//Weapon_Shuriken.tga");
 }
 void StudioProject::InitBackground()
 {
@@ -295,7 +295,7 @@ void StudioProject::InitHero()
 	//==================================================================================//
 	meshList[GEO_PLAYER_IDLE_RIGHT] = MeshBuilder::GenerateSpriteAnimation("Hero_idle_right",2,2);
 	meshList[GEO_PLAYER_IDLE_RIGHT]->textureArray[0] = LoadTGA("Image//Player//Player_Idle.tga");
-	
+
 	CHero::GetInstance()->Hero_idle_right = dynamic_cast<CSpriteAnimation*>(meshList[GEO_PLAYER_IDLE_RIGHT]);
 	if(CHero::GetInstance()->Hero_idle_right)
 	{
@@ -305,7 +305,7 @@ void StudioProject::InitHero()
 
 	meshList[GEO_PLAYER_IDLE_LEFT] = MeshBuilder::GenerateSpriteAnimation("Hero_idle_left",2,2);
 	meshList[GEO_PLAYER_IDLE_LEFT]->textureArray[0] = LoadTGA("Image//Player//Player_Idle.tga");
-	
+
 	CHero::GetInstance()->Hero_idle_left = dynamic_cast<CSpriteAnimation*>(meshList[GEO_PLAYER_IDLE_LEFT]);
 	if(CHero::GetInstance()->Hero_idle_left)
 	{
@@ -321,7 +321,7 @@ void StudioProject::InitHero()
 
 	meshList[GEO_PLAYER_RUN_RIGHT] = MeshBuilder::GenerateSpriteAnimation("Hero_run_right",2,9);
 	meshList[GEO_PLAYER_RUN_RIGHT]->textureArray[0] = LoadTGA("Image//Player//Player_walking_sprite.tga");
-	
+
 	CHero::GetInstance()->Hero_run_right = dynamic_cast<CSpriteAnimation*>(meshList[GEO_PLAYER_RUN_RIGHT]);
 	if(CHero::GetInstance()->Hero_run_right)
 	{
@@ -331,14 +331,14 @@ void StudioProject::InitHero()
 
 	meshList[GEO_PLAYER_RUN_LEFT] = MeshBuilder::GenerateSpriteAnimation("Hero_run_left",2,9);
 	meshList[GEO_PLAYER_RUN_LEFT]->textureArray[0] = LoadTGA("Image//Player//Player_walking_sprite.tga");
-	
+
 	CHero::GetInstance()->Hero_run_left = dynamic_cast<CSpriteAnimation*>(meshList[GEO_PLAYER_RUN_LEFT]);
 	if(CHero::GetInstance()->Hero_run_left)
 	{
 		CHero::GetInstance()->Hero_run_left->m_anim = new Animation();
 		CHero::GetInstance()->Hero_run_left->m_anim->Set(9, 17, 1, 1.f, false,Vector3(0,0,1),0,0.f,HERO_SIZE);
 	} 
-    
+
 
 	//===================================================================================//
 	//				
@@ -410,7 +410,7 @@ void StudioProject::InitHero()
 	//							JUMP													//
 	//
 	//==================================================================================//
-	
+
 	meshList[GEO_PLAYER_JUMP_RIGHT] = MeshBuilder::GenerateSpriteAnimation("Hero_jump_right",1,1);
 	meshList[GEO_PLAYER_JUMP_RIGHT]->textureArray[0] = LoadTGA("Image//Player//Player_Jump_Right.tga");
 
@@ -420,7 +420,7 @@ void StudioProject::InitHero()
 		CHero::GetInstance()->Hero_jump_right->m_anim = new Animation();
 		CHero::GetInstance()->Hero_jump_right->m_anim->Set(0, 0, 1, 1.f, false,Vector3(0,0,1),0,0.f,HERO_SIZE);
 	}
-	
+
 	meshList[GEO_PLAYER_JUMP_LEFT] = MeshBuilder::GenerateSpriteAnimation("Hero_jump_left",1,1);
 	meshList[GEO_PLAYER_JUMP_LEFT]->textureArray[0] = LoadTGA("Image//Player//Player_Jump_Left.tga");
 
@@ -470,7 +470,7 @@ void StudioProject::InitMap()
 	//This is the sprite animation seen when transiting from 1 map to another
 	meshList[MAP_TRANSITION] = MeshBuilder::GenerateSpriteAnimation("maptransition",1,9);
 	meshList[MAP_TRANSITION]->textureArray[0] = LoadTGA("Image//TransitionSprite.tga");
-	
+
 	MapTransition = dynamic_cast<CSpriteAnimation*>(meshList[MAP_TRANSITION]);
 	if(MapTransition)
 	{
@@ -484,86 +484,86 @@ void StudioProject::InitTiles()
 	meshList[GEO_TILECAVE]->textureID = LoadTGA("Image//Tiles//CaveTile3.tga");
 
 	/*
-		Generate Tile is the function that breaks up the tileset and generate the tile 
-		based on the selected col and row, Tile size needs to be 26 
+	Generate Tile is the function that breaks up the tileset and generate the tile 
+	based on the selected col and row, Tile size needs to be 26 
 	*/
 	//Ground
-	meshList[GEO_TILE_METALSUPPORT_LEFT] = MeshBuilder::GenerateTile("Metal_Support_Left",7,14,3,4,26);
+	meshList[GEO_TILE_METALSUPPORT_LEFT] = MeshBuilder::GenerateTile("Metal_Support_Left",7,14,3,4,26.f);
 	meshList[GEO_TILE_METALSUPPORT_LEFT]->textureID = LoadTGA("Image//Tiles//Tile_Floor.tga");
 
-	meshList[GEO_TILE_METALSUPPORT_RIGHT] = MeshBuilder::GenerateTile("Metal_Support_Right",7,14,3,5,26);
+	meshList[GEO_TILE_METALSUPPORT_RIGHT] = MeshBuilder::GenerateTile("Metal_Support_Right",7,14,3,5,26.f);
 	meshList[GEO_TILE_METALSUPPORT_RIGHT]->textureID = LoadTGA("Image//Tiles//Tile_Floor.tga");
 
-	meshList[GEO_TILE_METALFLOOR] = MeshBuilder::GenerateTile("Metal_floor",7,14,1,2,26);
+	meshList[GEO_TILE_METALFLOOR] = MeshBuilder::GenerateTile("Metal_floor",7,14,1,2,26.f);
 	meshList[GEO_TILE_METALFLOOR]->textureID = LoadTGA("Image//Tiles//Tile_Floor.tga");
 
-	meshList[GEO_TILE_METALCORNER] = MeshBuilder::GenerateTile("Metal_Corner",7,14,1,4,26);
+	meshList[GEO_TILE_METALCORNER] = MeshBuilder::GenerateTile("Metal_Corner",7,14,1,4,26.f);
 	meshList[GEO_TILE_METALCORNER]->textureID = LoadTGA("Image//Tiles//Tile_Floor.tga");
-    
-    meshList[GEO_TILE_DOOR] = MeshBuilder::GenerateTile("Metal_Corner",7,14,0,11,26);
+
+	meshList[GEO_TILE_DOOR] = MeshBuilder::GenerateTile("Metal_Corner",7,14,0,11,26.f);
 	meshList[GEO_TILE_DOOR]->textureID = LoadTGA("Image//Tiles//Tile_Floor.tga");
 
-    meshList[GEO_TILE_LASER_HORIZONTAL] = MeshBuilder::GenerateTile("Laser",7,14,5,10,26);
+	meshList[GEO_TILE_LASER_HORIZONTAL] = MeshBuilder::GenerateTile("Laser",7,14,5,10,26.f);
 	meshList[GEO_TILE_LASER_HORIZONTAL]->textureID = LoadTGA("Image//Tiles//Tile_Floor.tga");
-    
-    meshList[GEO_TILE_LASER_VERTICAL] = MeshBuilder::GenerateTile("Laser",7,14,6,10,26);
+
+	meshList[GEO_TILE_LASER_VERTICAL] = MeshBuilder::GenerateTile("Laser",7,14,6,10,26.f);
 	meshList[GEO_TILE_LASER_VERTICAL]->textureID = LoadTGA("Image//Tiles//Tile_Floor.tga");
 
-    meshList[GEO_TILE_LASER_SWITCH] = MeshBuilder::GenerateTile("Laser_Switch",7,14,6,0,26);
+	meshList[GEO_TILE_LASER_SWITCH] = MeshBuilder::GenerateTile("Laser_Switch",7,14,6,0,26.f);
 	meshList[GEO_TILE_LASER_SWITCH]->textureID = LoadTGA("Image//Tiles//Tile_Floor.tga");
-    
-    meshList[GEO_TILE_HEALTH] = MeshBuilder::GenerateTile("HEALTH",7,14,6,12,26);
+
+	meshList[GEO_TILE_HEALTH] = MeshBuilder::GenerateTile("HEALTH",7,14,6,12,26.f);
 	meshList[GEO_TILE_HEALTH]->textureID = LoadTGA("Image//Tiles//Tile_Floor.tga");
-    
-    meshList[GEO_TILE_SCORE] = MeshBuilder::GenerateTile("Score",7,14,5,13,26);
+
+	meshList[GEO_TILE_SCORE] = MeshBuilder::GenerateTile("Score",7,14,5,13,26.f);
 	meshList[GEO_TILE_SCORE]->textureID = LoadTGA("Image//Tiles//Tile_Floor.tga");
 
-    meshList[GEO_TILE_SHURIKEN] = MeshBuilder::GenerateTile("SHURIKEN",7,14,4,8,26);
+	meshList[GEO_TILE_SHURIKEN] = MeshBuilder::GenerateTile("SHURIKEN",7,14,4,8,26.f);
 	meshList[GEO_TILE_SHURIKEN]->textureID = LoadTGA("Image//Tiles//Tile_Floor.tga");
 
-	meshList[GEO_WINDOW_TOP] = MeshBuilder::GenerateTile("GEO_WINDOW",3,7,0,0,26);
+	meshList[GEO_WINDOW_TOP] = MeshBuilder::GenerateTile("GEO_WINDOW",3,7,0,0,26.f);
 	meshList[GEO_WINDOW_TOP]->textureID = LoadTGA("Image//Tiles//Tile_OfficeWindow.tga");
 
-	meshList[GEO_WINDOW_LEFT] = MeshBuilder::GenerateTile("GEO_WINDOW",3,7,2,5,26);
+	meshList[GEO_WINDOW_LEFT] = MeshBuilder::GenerateTile("GEO_WINDOW",3,7,2,5,26.f);
 	meshList[GEO_WINDOW_LEFT]->textureID = LoadTGA("Image//Tiles//Tile_OfficeWindow.tga");
-	
-	meshList[GEO_WINDOW_RIGHT] = MeshBuilder::GenerateTile("GEO_WINDOW",3,7,2,6,26);
+
+	meshList[GEO_WINDOW_RIGHT] = MeshBuilder::GenerateTile("GEO_WINDOW",3,7,2,6,26.f);
 	meshList[GEO_WINDOW_RIGHT]->textureID = LoadTGA("Image//Tiles//Tile_OfficeWindow.tga");
-	
-	meshList[GEO_WINDOW_BOTTOM] = MeshBuilder::GenerateTile("GEO_WINDOW",3,7,1,0,26);
+
+	meshList[GEO_WINDOW_BOTTOM] = MeshBuilder::GenerateTile("GEO_WINDOW",3,7,1,0,26.f);
 	meshList[GEO_WINDOW_BOTTOM]->textureID = LoadTGA("Image//Tiles//Tile_OfficeWindow.tga");
 
-	meshList[GEO_REAR_WALL] = MeshBuilder::GenerateTile("GEO_REAR_WALL",3,7,2,3,26);
+	meshList[GEO_REAR_WALL] = MeshBuilder::GenerateTile("GEO_REAR_WALL",3,7,2,3,26.f);
 	meshList[GEO_REAR_WALL]->textureID = LoadTGA("Image//Tiles//Tile_OfficeWindow.tga");
 
-	meshList[GEO_REAR_GLASS] = MeshBuilder::GenerateTile("GEO_REAR_GLASS",3,7,2,2,26);
+	meshList[GEO_REAR_GLASS] = MeshBuilder::GenerateTile("GEO_REAR_GLASS",3,7,2,2,26.f);
 	meshList[GEO_REAR_GLASS]->textureID = LoadTGA("Image//Tiles//Tile_OfficeWindow.tga");
 
-    meshList[GEO_TILE_OBJECTIVE] = MeshBuilder::GenerateTile("Objective",7,14,1,13,26);
+	meshList[GEO_TILE_OBJECTIVE] = MeshBuilder::GenerateTile("Objective",7,14,1,13,26.f);
 	meshList[GEO_TILE_OBJECTIVE]->textureID = LoadTGA("Image//Tiles//Tile_Floor.tga");
-    
-    meshList[GEO_TILE_LASER_SHOOTER_UP] = MeshBuilder::GenerateTile("Objective",7,14,6,7,26);
+
+	meshList[GEO_TILE_LASER_SHOOTER_UP] = MeshBuilder::GenerateTile("Objective",7,14,6,7,26.f);
 	meshList[GEO_TILE_LASER_SHOOTER_UP]->textureID = LoadTGA("Image//Tiles//Tile_Floor.tga");
 
-    meshList[GEO_TILE_LASER_SHOOTER_DOWN] = MeshBuilder::GenerateTile("Objective",7,14,5,7,26);
+	meshList[GEO_TILE_LASER_SHOOTER_DOWN] = MeshBuilder::GenerateTile("Objective",7,14,5,7,26.f);
 	meshList[GEO_TILE_LASER_SHOOTER_DOWN]->textureID = LoadTGA("Image//Tiles//Tile_Floor.tga");
 
-    meshList[GEO_TILE_LASER_SHOOTER_LEFT] = MeshBuilder::GenerateTile("Objective",7,14,5,6,26);
+	meshList[GEO_TILE_LASER_SHOOTER_LEFT] = MeshBuilder::GenerateTile("Objective",7,14,5,6,26.f);
 	meshList[GEO_TILE_LASER_SHOOTER_LEFT]->textureID = LoadTGA("Image//Tiles//Tile_Floor.tga");
 
-    meshList[GEO_TILE_LASER_SHOOTER_RIGHT] = MeshBuilder::GenerateTile("Objective",7,14,6,6,26);
+	meshList[GEO_TILE_LASER_SHOOTER_RIGHT] = MeshBuilder::GenerateTile("Objective",7,14,6,6,26.f);
 	meshList[GEO_TILE_LASER_SHOOTER_RIGHT]->textureID = LoadTGA("Image//Tiles//Tile_Floor.tga");
 
-    meshList[GEO_TILE_TREASURECHEST] = MeshBuilder::Generate2DMesh("GEO_TILE_TREASURECHEST", Color(1,1,1), 0,0,25,25);
+	meshList[GEO_TILE_TREASURECHEST] = MeshBuilder::Generate2DMesh("GEO_TILE_TREASURECHEST", Color(1,1,1), 0,0,25,25);
 	meshList[GEO_TILE_TREASURECHEST]->textureID = LoadTGA("Image//Tiles//tile4_treasurechest.tga");
 
-    meshList[GEO_TILE_STEALTH_BOX] = MeshBuilder::GenerateTile("Objective",1,1,1,1,26);
+	meshList[GEO_TILE_STEALTH_BOX] = MeshBuilder::GenerateTile("Objective",1,1,1,1,26.f);
 	meshList[GEO_TILE_STEALTH_BOX]->textureID = LoadTGA("Image//Tiles//Tile_Stealth_Box.tga");
-    
-    meshList[GEO_TILE_FINISH_CLOSE] = MeshBuilder::GenerateTile("FINISH_CLOSE",7,14,0,7,26);
+
+	meshList[GEO_TILE_FINISH_CLOSE] = MeshBuilder::GenerateTile("FINISH_CLOSE",7,14,0,7,26.f);
 	meshList[GEO_TILE_FINISH_CLOSE]->textureID = LoadTGA("Image//Tiles//Tile_Floor.tga");
-    
-    meshList[GEO_TILE_FINISH_OPEN] = MeshBuilder::GenerateTile("FINISH_OPEN",7,14,0,6,26);
+
+	meshList[GEO_TILE_FINISH_OPEN] = MeshBuilder::GenerateTile("FINISH_OPEN",7,14,0,6,26.f);
 	meshList[GEO_TILE_FINISH_OPEN]->textureID = LoadTGA("Image//Tiles//Tile_Floor.tga");
 
 	theArrayOfGoodies = new CGoodies*[10];
@@ -574,13 +574,13 @@ void StudioProject::InitTiles()
 		theArrayOfGoodies[i]->SetMesh(MeshBuilder::Generate2DMesh("GEO_TILE_TREASURECHEST", Color(1,1,1), 0,0,25,25));
 		theArrayOfGoodies[i]->SetTextureID(LoadTGA("Image//Tiles//tile4_treasurechest.tga"));
 	}
-    
+
 }
 void StudioProject::InitWeapon()
 {
 	meshList[GEO_GRAPPLING_HOOK] = MeshBuilder::Generate2DHook("Grapplinghook", Color(1, 1, 1), 0, 0, 25, 25);
 	meshList[GEO_GRAPPLING_HOOK]->textureID = LoadTGA("Image//Weapon//Grappling_Hook.tga");
-	
+
 	meshList[GEO_SHURIKEN] = MeshBuilder::GenerateQuad("Shuriken",Color(1,1,1),25.f);
 	meshList[GEO_SHURIKEN]->textureID = LoadTGA("Image//Weapon//Weapon_Shuriken.tga");
 
@@ -603,7 +603,7 @@ void StudioProject::Init()
 	InitHero();
 	InitWeapon();
 	LoadEnemies(m_CurrentLevel);
-    LoadConsumables(m_CurrentLevel);
+	LoadConsumables(m_CurrentLevel);
 
 }
 
@@ -620,8 +620,8 @@ void StudioProject::Reset(bool hasWon)
 		CHero::GetInstance()->Gethero_EP() = 50;
 		CHero::GetInstance()->setMapOffset_x(0);
 		CHero::GetInstance()->setMapOffset_y(0);
-        CHero::GetInstance()->getInventory().setShurikenCount(20);
-        CHero::GetInstance()->setHero_Score(0);
+		CHero::GetInstance()->getInventory().setShurikenCount(20);
+		CHero::GetInstance()->setHero_Score(0);
 
 		m_CurrentLevel = 1;
 
@@ -630,7 +630,7 @@ void StudioProject::Reset(bool hasWon)
 		Lv1Clear = false;
 		LoadMap(m_CurrentLevel);
 		LoadEnemies(m_CurrentLevel);
-        LoadConsumables(m_CurrentLevel);
+		LoadConsumables(m_CurrentLevel);
 		//Map
 		Transiting = false;
 		m_cMap = m_cMap_Level1;
@@ -656,7 +656,7 @@ void StudioProject::Reset(bool hasWon)
 		m_cMap = m_cMap_Level1;
 
 		soundplayer.stopSound();
-	
+
 		GameMenu.setReset(false);
 	}
 }
@@ -682,7 +682,6 @@ void StudioProject::SaveGame()
 			saveFile << (m_CurrentLevel);
 
 			Save = false;
-			load = true;
 		}
 		saveFile.close();
 	}
@@ -708,7 +707,7 @@ void StudioProject::LoadHero()
 					getline(herodata, info);
 
 					istringstream is(info);
-					
+
 					for(string value; getline(is, value, ','); )
 					{
 						Hero_position.push_back((atoi(value.c_str())));
@@ -723,9 +722,9 @@ void StudioProject::LoadHero()
 	{
 		unsigned j = 0; // used to control variables passed in
 		j+=6;	
-		CHero::GetInstance()->HeroInit(Hero_position[j-6],Hero_position[j-5]);
+		CHero::GetInstance()->HeroInit((float)Hero_position[j-6],(float)Hero_position[j-5]);
 		CHero::GetInstance()->Gethero_HP() = Hero_position[j-4];
-		CHero::GetInstance()->Gethero_EP() = Hero_position[j-3];
+		CHero::GetInstance()->Gethero_EP() = (float)Hero_position[j-3];
 		CHero::GetInstance()->setMapOffset_x(Hero_position[j-2]);
 		CHero::GetInstance()->setMapOffset_y(Hero_position[j-1]);
 		LoadMap(Hero_position[j]);
@@ -742,9 +741,9 @@ void StudioProject::LoadMap(int level)
 			m_cMap_Level1->LoadMap( "Image//MapDesigns//Map_Level1.csv");
 			m_cMap = m_cMap_Level1;
 			LoadEnemies(level);
-            LoadConsumables(level);
-            GetorNot = false;
-            cout << "Loaded" << endl;
+			LoadConsumables(level);
+			GetorNot = false;
+			cout << "Loaded" << endl;
 		}
 		break;
 	case 2:
@@ -752,9 +751,9 @@ void StudioProject::LoadMap(int level)
 			m_cMap_Level1->LoadMap( "Image//MapDesigns//Map_Level2.csv");
 			m_cMap = m_cMap_Level1;
 			LoadEnemies(level);
-            LoadConsumables(level);
-            GetorNot = false;
-            cout << "Loaded" << endl;
+			LoadConsumables(level);
+			GetorNot = false;
+			cout << "Loaded" << endl;
 		}
 		break;
 	case 3:
@@ -762,8 +761,8 @@ void StudioProject::LoadMap(int level)
 			m_cMap_Level3->LoadMap( "Image//MapDesigns//Map_Level3.csv");
 			m_cMap = m_cMap_Level3;
 			LoadEnemies(level);
-            LoadConsumables(level);
-            GetorNot = false;
+			LoadConsumables(level);
+			GetorNot = false;
 		}
 		break;
 	case 4:
@@ -774,8 +773,8 @@ void StudioProject::LoadMap(int level)
 			m_cMap_Level4->LoadMap( "Image//MapDesigns//Map_Level4.csv");
 			m_cMap = m_cMap_Level4;
 			LoadEnemies(level);
-            LoadConsumables(level);
-            GetorNot = false;
+			LoadConsumables(level);
+			GetorNot = false;
 		}
 		break;
 	case 5:
@@ -783,8 +782,8 @@ void StudioProject::LoadMap(int level)
 			m_cMap_Level5->LoadMap( "Image//MapDesigns//Map_Level1.csv");
 			m_cMap = m_cMap_Level5;
 			LoadEnemies(level);
-            LoadConsumables(level);
-            GetorNot = false;
+			LoadConsumables(level);
+			GetorNot = false;
 		}
 		break;
 	}
@@ -927,7 +926,7 @@ void StudioProject::LoadEnemies(unsigned Level)
 	}
 
 	/*=================================================================================					
-	SKELETON MONSTER										
+	GUARDS									
 	==================================================================================*/
 
 	/*
@@ -979,7 +978,7 @@ void StudioProject::LoadEnemies(unsigned Level)
 					enemy->DeathAnimation_Right->m_anim = new Animation();
 					enemy->DeathAnimation_Right->m_anim->Set(0, 6, 0, 1.f, false,Vector3((float)enemy->GetPos_x(),(float)enemy->GetPos_y(),1),0,0.f,ENEMY_SIZE);
 				}
-				
+
 				meshList[GEO_GUARD1_DEATH_LEFT] = MeshBuilder::GenerateSpriteAnimation("Guard1_dying_Left",3,10);
 				meshList[GEO_GUARD1_DEATH_LEFT]->textureArray[0] = LoadTGA("Image//Enemies//Normal//Death//Guard_DyingLeft.tga");
 				enemy->DeathAnimation_Left = dynamic_cast<CSpriteAnimation*>(meshList[GEO_GUARD1_DEATH_LEFT]);
@@ -988,7 +987,7 @@ void StudioProject::LoadEnemies(unsigned Level)
 					enemy->DeathAnimation_Left->m_anim = new Animation();
 					enemy->DeathAnimation_Left->m_anim->Set(0, 6, 0, 1.f, false,Vector3((float)enemy->GetPos_x(),(float)enemy->GetPos_y(),1),0,0.f,ENEMY_SIZE);
 				}
-				
+
 				//Attacking animation
 				meshList[GEO_GUARD1_ATTACK_RIGHT] = MeshBuilder::GenerateSpriteAnimation("Guard1_attack_right",1,2);
 				meshList[GEO_GUARD1_ATTACK_RIGHT]->textureArray[0] = LoadTGA("Image//Enemies//Normal//Guard_AttackR.tga");
@@ -1010,71 +1009,12 @@ void StudioProject::LoadEnemies(unsigned Level)
 
 				enemyContainer.push_back(enemy);
 			}
-			/*
-			Guard 2
-			*/
-			else if(positionData[j-1] == 2)
-			{
-				enemy->Init(positionData[j-5],positionData[j-4],positionData[j-3],positionData[j-2],true,CEnemy::GHOST,positionData[j]);
-				enemy->ChangeStrategy(new CStrategy_Kill());
-
-				//Right walk
-				meshList[GEO_GHOST_WALK_RIGHT] = MeshBuilder::GenerateSpriteAnimation("ghost_Walk_right",1,9);
-				meshList[GEO_GHOST_WALK_RIGHT]->textureArray[0] = LoadTGA("Image//GhostMonster//GhostWalk_Right.tga");
-				enemy->WalkAnimation_Right = dynamic_cast<CSpriteAnimation*>(meshList[GEO_GHOST_WALK_RIGHT]);
-				if(enemy->WalkAnimation_Right)
-				{
-					enemy->WalkAnimation_Right->m_anim = new Animation();
-					enemy->WalkAnimation_Right->m_anim->Set(1, 8, 1, 1.f, true,Vector3((float)enemy->GetPos_x(),(float)enemy->GetPos_y(),1),0,0.f,ENEMY_SIZE);
-				}
-
-				//Left Walk
-				meshList[GEO_GHOST_WALK_LEFT] = MeshBuilder::GenerateSpriteAnimation("ghost_walk_left",1,9);
-				meshList[GEO_GHOST_WALK_LEFT]->textureArray[0] = LoadTGA("Image//GhostMonster//GhostWalk_Left.tga");
-				enemy->WalkAnimation_Left = dynamic_cast<CSpriteAnimation*>(meshList[GEO_GHOST_WALK_LEFT]);
-				if(enemy->WalkAnimation_Left)
-				{
-					enemy->WalkAnimation_Left->m_anim = new Animation();
-					enemy->WalkAnimation_Left->m_anim->Set(1, 8, 1, 1.f, true,Vector3((float)enemy->GetPos_x(),(float)enemy->GetPos_y(),1),0,0.f,ENEMY_SIZE);
-				}
-
-				//Death animation
-				meshList[GEO_GHOST_DEATH_RIGHT] = MeshBuilder::GenerateSpriteAnimation("ghost_death_right",1,7);
-				meshList[GEO_GHOST_DEATH_RIGHT]->textureArray[0] = LoadTGA("Image//GhostMonster//GhostDeath_Right.tga");
-				enemy->DeathAnimation_Right = dynamic_cast<CSpriteAnimation*>(meshList[GEO_GHOST_DEATH_RIGHT]);
-				if(enemy->DeathAnimation_Right)
-				{
-					enemy->DeathAnimation_Right->m_anim = new Animation();
-					enemy->DeathAnimation_Right->m_anim->Set(0, 6, 0, 1.f, false,Vector3((float)enemy->GetPos_x(),(float)enemy->GetPos_y(),1),0,0.f,ENEMY_SIZE);
-				}
-
-				//Attacking animation
-				meshList[GEO_GHOST_ATTACK_RIGHT] = MeshBuilder::GenerateSpriteAnimation("ghost_attack_right",1,4);
-				meshList[GEO_GHOST_ATTACK_RIGHT]->textureArray[0] = LoadTGA("Image//GhostMonster//GhostAttack_Right.tga");
-				enemy->AttackAnimation_Right = dynamic_cast<CSpriteAnimation*>(meshList[GEO_GHOST_ATTACK_RIGHT]);
-				if(enemy->AttackAnimation_Right)
-				{
-					enemy->AttackAnimation_Right->m_anim = new Animation();
-					enemy->AttackAnimation_Right->m_anim->Set(0, 3, 0, 1.f, false,Vector3((float)enemy->GetPos_x(),(float)enemy->GetPos_y(),1),0,0.f,100.f);
-				}
-
-				meshList[GEO_GHOST_ATTACK_LEFT] = MeshBuilder::GenerateSpriteAnimation("ghost_attack_left",1,4);
-				meshList[GEO_GHOST_ATTACK_LEFT]->textureArray[0] = LoadTGA("Image//GhostMonster//GhostAttack_Left.tga");
-				enemy->AttackAnimation_Left = dynamic_cast<CSpriteAnimation*>(meshList[GEO_GHOST_ATTACK_LEFT]);
-				if(enemy->AttackAnimation_Left)
-				{
-					enemy->AttackAnimation_Left->m_anim = new Animation();
-					enemy->AttackAnimation_Left->m_anim->Set(0, 3, 0, 1.f, false,Vector3((float)enemy->GetPos_x(),(float)enemy->GetPos_y(),1),0,0.f,100.f);
-				}
-
-				enemyContainer.push_back(enemy);
-			}
 		}
 	}
 }
 void StudioProject::LoadConsumables(unsigned level)
 {
-    /*
+	/*
 	This function reads the enemies data from a text file based on the level
 	Example, if 1 is passed into the function, the switch case will open the Level1 text file,
 	Add more if required.
@@ -1084,211 +1024,211 @@ void StudioProject::LoadConsumables(unsigned level)
 	string data = "";	//Used to store string from text file
 	//vector<int> ConsumablePosition;	//Local vector to store the data from text file to be used later on
 
-    switch(level)
-    {
-    case 1:
-        {
-            ifstream datafiles("Source//TextFiles//Powerups//Powerups_Level1Data.txt");
-            if(datafiles.is_open())
-            {
-                while(datafiles.good())
-                {
-                    getline(datafiles, data);
+	switch(level)
+	{
+	case 1:
+		{
+			ifstream datafiles("Source//TextFiles//Powerups//Powerups_Level1Data.txt");
+			if(datafiles.is_open())
+			{
+				while(datafiles.good())
+				{
+					getline(datafiles, data);
 
-                    istringstream is(data);
-                    // If this line is not a comment line, then process it
-                    if(!(data.find("//") == NULL) && data != "")
-                    {
-                        //Stores data into vector
+					istringstream is(data);
+					// If this line is not a comment line, then process it
+					if(!(data.find("//") == NULL) && data != "")
+					{
+						//Stores data into vector
 
-                        for(string line; getline(is, line, ','); )
-                        {
-                            ConsumablePosition.push_back((atoi(line.c_str())));
-                        }
-                    }
-                }
-            }
-            else
-            {
-                cout << "Error on opening" << endl;
-            }
-            datafiles.close();
-        }
-        break;
+						for(string line; getline(is, line, ','); )
+						{
+							ConsumablePosition.push_back((atoi(line.c_str())));
+						}
+					}
+				}
+			}
+			else
+			{
+				cout << "Error on opening" << endl;
+			}
+			datafiles.close();
+		}
+		break;
 
-    case 2:
-        {
-            ifstream datafiles("Source//TextFiles//Powerups//Powerups_Level2Data.txt");
-            if(datafiles.is_open())
-            {
-                while(datafiles.good())
-                {
-                    getline(datafiles, data);
+	case 2:
+		{
+			ifstream datafiles("Source//TextFiles//Powerups//Powerups_Level2Data.txt");
+			if(datafiles.is_open())
+			{
+				while(datafiles.good())
+				{
+					getline(datafiles, data);
 
-                    istringstream is(data);
-                    // If this line is not a comment line, then process it
-                    if(!(data.find("//") == NULL) && data != "")
-                    {
-                        //Stores data into vector
-                        for(string line; getline(is, line, ','); )
-                        {
-                            ConsumablePosition.push_back((atoi(line.c_str())));
-                        }
-                    }
-                }
-            }
-            else
-            {
-                cout << "Error on opening" << endl;
-            }
-            datafiles.close();
-        }
-        break;
-    case 3:
-        {
-            ifstream datafiles("Source//TextFiles//Powerups//Powerups_Level3Data.txt");
-            if(datafiles.is_open())
-            {
-                while(datafiles.good())
-                {
-                    getline(datafiles, data);
+					istringstream is(data);
+					// If this line is not a comment line, then process it
+					if(!(data.find("//") == NULL) && data != "")
+					{
+						//Stores data into vector
+						for(string line; getline(is, line, ','); )
+						{
+							ConsumablePosition.push_back((atoi(line.c_str())));
+						}
+					}
+				}
+			}
+			else
+			{
+				cout << "Error on opening" << endl;
+			}
+			datafiles.close();
+		}
+		break;
+	case 3:
+		{
+			ifstream datafiles("Source//TextFiles//Powerups//Powerups_Level3Data.txt");
+			if(datafiles.is_open())
+			{
+				while(datafiles.good())
+				{
+					getline(datafiles, data);
 
-                    istringstream is(data);
-                    // If this line is not a comment line, then process it
-                    if(!(data.find("//") == NULL) && data != "")
-                    {
-                        //Stores data into vector
-                        for(string line; getline(is, line, ','); )
-                        {
-                            ConsumablePosition.push_back((atoi(line.c_str())));
-                        }
-                    }
-                }
-            }
-            else
-            {
-                cout << "Error on opening" << endl;
-            }
-            datafiles.close();
-        }
-        break;
-    case 4:
-        {
+					istringstream is(data);
+					// If this line is not a comment line, then process it
+					if(!(data.find("//") == NULL) && data != "")
+					{
+						//Stores data into vector
+						for(string line; getline(is, line, ','); )
+						{
+							ConsumablePosition.push_back((atoi(line.c_str())));
+						}
+					}
+				}
+			}
+			else
+			{
+				cout << "Error on opening" << endl;
+			}
+			datafiles.close();
+		}
+		break;
+	case 4:
+		{
 
-            ifstream datafiles("Source//TextFiles//Powerups//Powerups_Level4Data.txt");
-            if(datafiles.is_open())
-            {
-                while(datafiles.good())
-                {
-                    getline(datafiles, data);
+			ifstream datafiles("Source//TextFiles//Powerups//Powerups_Level4Data.txt");
+			if(datafiles.is_open())
+			{
+				while(datafiles.good())
+				{
+					getline(datafiles, data);
 
-                    istringstream is(data);
-                    // If this line is not a comment line, then process it
-                    if(!(data.find("//") == NULL) && data != "")
-                    {
-                        //Stores data into vector
-                        for(string line; getline(is, line, ','); )
-                        {
-                            ConsumablePosition.push_back((atoi(line.c_str())));
-                        }
-                    }
-                }
-            }
-            else
-            {
-                cout << "Error on opening" << endl;
-            }
-            datafiles.close();
+					istringstream is(data);
+					// If this line is not a comment line, then process it
+					if(!(data.find("//") == NULL) && data != "")
+					{
+						//Stores data into vector
+						for(string line; getline(is, line, ','); )
+						{
+							ConsumablePosition.push_back((atoi(line.c_str())));
+						}
+					}
+				}
+			}
+			else
+			{
+				cout << "Error on opening" << endl;
+			}
+			datafiles.close();
 
-            break;
-        }
-    case 5:
-        {
-            ifstream datafiles("Source//TextFiles//Powerups//Powerups_Level5Data.txt");
-            if(datafiles.is_open())
-            {
-                while(datafiles.good())
-                {
-                    getline(datafiles, data);
+			break;
+		}
+	case 5:
+		{
+			ifstream datafiles("Source//TextFiles//Powerups//Powerups_Level5Data.txt");
+			if(datafiles.is_open())
+			{
+				while(datafiles.good())
+				{
+					getline(datafiles, data);
 
-                    istringstream is(data);
-                    // If this line is not a comment line, then process it
-                    if(!(data.find("//") == NULL) && data != "")
-                    {
-                        //Stores data into vector
-                        for(string line; getline(is, line, ','); )
-                        {
-                            ConsumablePosition.push_back((atoi(line.c_str())));
-                        }
-                    }
-                }
-            }
-            else
-            {
-                cout << "Error on opening" << endl;
-            }
-            datafiles.close();
-        }
-        break;
-    }
-        
-    if(ConsumablePosition.size() > 0)
-    {
-        int j = -1;
-        for(unsigned i = 0; i < (ConsumablePosition.size() / 3); ++i)
-        {
-            j += 3;
-            CTreasureChest * Chest = new CTreasureChest();
-            Chest->ChestInit(ConsumablePosition[j-2],ConsumablePosition[j-1],ConsumablePosition[j],true);
+					istringstream is(data);
+					// If this line is not a comment line, then process it
+					if(!(data.find("//") == NULL) && data != "")
+					{
+						//Stores data into vector
+						for(string line; getline(is, line, ','); )
+						{
+							ConsumablePosition.push_back((atoi(line.c_str())));
+						}
+					}
+				}
+			}
+			else
+			{
+				cout << "Error on opening" << endl;
+			}
+			datafiles.close();
+		}
+		break;
+	}
 
-            if(ConsumablePosition[j] == 1)
-            {
-                meshList[GEO_POWERUP_ANIMATION] = MeshBuilder::GenerateSpriteAnimation("Health",3,10);
-                meshList[GEO_POWERUP_ANIMATION]->textureArray[0] = LoadTGA("Image//PowerUp//PowerUp_Sprite.tga");
-                Chest->Powerup_Animation = dynamic_cast<CSpriteAnimation*>(meshList[GEO_POWERUP_ANIMATION]);
-                if(Chest->Powerup_Animation)
-                {
-                    Chest->Powerup_Animation->m_anim = new Animation();
-                    Chest->Powerup_Animation->m_anim->Set(10, 17, 1, 1.f, true,Vector3((float)ConsumablePosition[j-2],(float)ConsumablePosition[j-1],1),0,0.f,25.f);
-                }
-            }
-            if(ConsumablePosition[j] == 2)
-            {
-                meshList[GEO_POWERUP_ANIMATION] = MeshBuilder::GenerateSpriteAnimation("Score",3,10);
-                meshList[GEO_POWERUP_ANIMATION]->textureArray[0] = LoadTGA("Image//PowerUp//PowerUp_Sprite.tga");
-                Chest->Powerup_Animation = dynamic_cast<CSpriteAnimation*>(meshList[GEO_POWERUP_ANIMATION]);
-                if(Chest->Powerup_Animation)
-                {
-                    Chest->Powerup_Animation->m_anim = new Animation();
-                    Chest->Powerup_Animation->m_anim->Set(0, 9, 1, 1.f, true,Vector3((float)ConsumablePosition[j-2],(float)ConsumablePosition[j-1],1),0,0.f,25.f);
-                }
-            }
-            if(ConsumablePosition[j] == 3)
-            {
-                meshList[GEO_POWERUP_ANIMATION] = MeshBuilder::GenerateSpriteAnimation("Energy",3,10);
-                meshList[GEO_POWERUP_ANIMATION]->textureArray[0] = LoadTGA("Image//PowerUp//PowerUp_Sprite.tga");
-                Chest->Powerup_Animation = dynamic_cast<CSpriteAnimation*>(meshList[GEO_POWERUP_ANIMATION]);
-                if(Chest->Powerup_Animation)
-                {
-                    Chest->Powerup_Animation->m_anim = new Animation();
-                    Chest->Powerup_Animation->m_anim->Set(20, 29, 1, 1.f, true,Vector3((float)ConsumablePosition[j-2],(float)ConsumablePosition[j-1],1),0,0.f,25.f);
-                }
-            }
-            if(ConsumablePosition[j] == 4)
-            {
-                meshList[GEO_POWERUP_ANIMATION] = MeshBuilder::GenerateSpriteAnimation("Shuriken",1,5);
-                meshList[GEO_POWERUP_ANIMATION]->textureArray[0] = LoadTGA("Image//PowerUp//Shuriken.tga");
-                Chest->Powerup_Animation = dynamic_cast<CSpriteAnimation*>(meshList[GEO_POWERUP_ANIMATION]);
-                if(Chest->Powerup_Animation)
-                {
-                    Chest->Powerup_Animation->m_anim = new Animation();
-                    Chest->Powerup_Animation->m_anim->Set(0,4,1,1.f,true,Vector3((float)ConsumablePosition[j-2],(float)ConsumablePosition[j-1],1),0,0.f,25.f);
-                }
-            }
+	if(ConsumablePosition.size() > 0)
+	{
+		int j = -1;
+		for(unsigned i = 0; i < (ConsumablePosition.size() / 3); ++i)
+		{
+			j += 3;
+			CTreasureChest * Chest = new CTreasureChest();
+			Chest->ChestInit((float)ConsumablePosition[j-2],(float)ConsumablePosition[j-1],ConsumablePosition[j],true);
 
-            Treasure.push_back(Chest);
-        }
-    }
+			if(ConsumablePosition[j] == 1)
+			{
+				meshList[GEO_POWERUP_ANIMATION] = MeshBuilder::GenerateSpriteAnimation("Health",3,10);
+				meshList[GEO_POWERUP_ANIMATION]->textureArray[0] = LoadTGA("Image//PowerUp//PowerUp_Sprite.tga");
+				Chest->Powerup_Animation = dynamic_cast<CSpriteAnimation*>(meshList[GEO_POWERUP_ANIMATION]);
+				if(Chest->Powerup_Animation)
+				{
+					Chest->Powerup_Animation->m_anim = new Animation();
+					Chest->Powerup_Animation->m_anim->Set(10, 17, 1, 1.f, true,Vector3((float)ConsumablePosition[j-2],(float)ConsumablePosition[j-1],1),0,0.f,25.f);
+				}
+			}
+			if(ConsumablePosition[j] == 2)
+			{
+				meshList[GEO_POWERUP_ANIMATION] = MeshBuilder::GenerateSpriteAnimation("Score",3,10);
+				meshList[GEO_POWERUP_ANIMATION]->textureArray[0] = LoadTGA("Image//PowerUp//PowerUp_Sprite.tga");
+				Chest->Powerup_Animation = dynamic_cast<CSpriteAnimation*>(meshList[GEO_POWERUP_ANIMATION]);
+				if(Chest->Powerup_Animation)
+				{
+					Chest->Powerup_Animation->m_anim = new Animation();
+					Chest->Powerup_Animation->m_anim->Set(0, 9, 1, 1.f, true,Vector3((float)ConsumablePosition[j-2],(float)ConsumablePosition[j-1],1),0,0.f,25.f);
+				}
+			}
+			if(ConsumablePosition[j] == 3)
+			{
+				meshList[GEO_POWERUP_ANIMATION] = MeshBuilder::GenerateSpriteAnimation("Energy",3,10);
+				meshList[GEO_POWERUP_ANIMATION]->textureArray[0] = LoadTGA("Image//PowerUp//PowerUp_Sprite.tga");
+				Chest->Powerup_Animation = dynamic_cast<CSpriteAnimation*>(meshList[GEO_POWERUP_ANIMATION]);
+				if(Chest->Powerup_Animation)
+				{
+					Chest->Powerup_Animation->m_anim = new Animation();
+					Chest->Powerup_Animation->m_anim->Set(20, 29, 1, 1.f, true,Vector3((float)ConsumablePosition[j-2],(float)ConsumablePosition[j-1],1),0,0.f,25.f);
+				}
+			}
+			if(ConsumablePosition[j] == 4)
+			{
+				meshList[GEO_POWERUP_ANIMATION] = MeshBuilder::GenerateSpriteAnimation("Shuriken",1,5);
+				meshList[GEO_POWERUP_ANIMATION]->textureArray[0] = LoadTGA("Image//PowerUp//Shuriken.tga");
+				Chest->Powerup_Animation = dynamic_cast<CSpriteAnimation*>(meshList[GEO_POWERUP_ANIMATION]);
+				if(Chest->Powerup_Animation)
+				{
+					Chest->Powerup_Animation->m_anim = new Animation();
+					Chest->Powerup_Animation->m_anim->Set(0,4,1,1.f,true,Vector3((float)ConsumablePosition[j-2],(float)ConsumablePosition[j-1],1),0,0.f,25.f);
+				}
+			}
+
+			Treasure.push_back(Chest);
+		}
+	}
 }
 
 void StudioProject::UpdateDebug(double dt)
@@ -1299,7 +1239,7 @@ void StudioProject::UpdateDebug(double dt)
 	{
 		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 	}
-	
+
 	if(Application::IsKeyPressed('5'))
 	{
 		lights[0].type = Light::LIGHT_POINT;
@@ -1336,15 +1276,6 @@ void StudioProject::UpdateDebug(double dt)
 		lights[0].position.y -= (float)(10.f * dt);
 	if(Application::IsKeyPressed('P'))
 		lights[0].position.y += (float)(10.f * dt);
-
-	if(Application::IsKeyPressed('N'))
-	{
-		camera.NoClip = false;
-	}
-	else if(Application::IsKeyPressed('M'))
-	{
-		camera.NoClip = true;
-	}
 }
 void StudioProject::CameraUpdate(double dt)
 {			
@@ -1363,30 +1294,26 @@ void StudioProject::EnemyUpdate(double dt)
 {
 	float tempHeroPos_x = CHero::GetInstance()->GetHeroPos_x();	//Hero current position X
 	float tempHeroPos_y = CHero::GetInstance()->GetHeroPos_y();	//Hero current position Y
-	
+
 	//Updates the enemies
 	for(std::vector<CEnemy *>::iterator it = enemyContainer.begin(); it != enemyContainer.end(); ++it)
 	{
 		CEnemy *Enemy = (CEnemy *)*it;
-		
+
 		//Updating enemy if active
 		if(Enemy->getActive())
 		{
 			Enemy->SetDestination((int)tempHeroPos_x + CHero::GetInstance()->GetMapOffset_x(),(int)tempHeroPos_y +CHero::GetInstance()->GetMapOffset_y());
 			Enemy->Update(m_cMap,ScreenWidth,ScreenHeight,m_CurrentLevel,CHero::GetInstance()->getHero_Invi());
 
-			
+
 		}
-			//Plays sound if enemy is dead
+		//Plays sound if enemy is dead
 		else if(Enemy->DeathAnimation_Right->m_anim->animActive == true)
 		{
 			if(Enemy->enemyType == CEnemy::GUARD1)
 			{
 				soundplayer.playSounds(soundplayer.SKELE_DEATH);
-			}
-			else if(Enemy->enemyType == CEnemy::GHOST)
-			{
-				soundplayer.playSounds(soundplayer.GHOST_DEATH);
 			}
 		}
 		else if(Enemy->DeathAnimation_Left->m_anim->animActive == true)
@@ -1394,10 +1321,6 @@ void StudioProject::EnemyUpdate(double dt)
 			if(Enemy->enemyType == CEnemy::GUARD1)
 			{
 				soundplayer.playSounds(soundplayer.SKELE_DEATH);
-			}
-			else if(Enemy->enemyType == CEnemy::GHOST)
-			{
-				soundplayer.playSounds(soundplayer.GHOST_DEATH);
 			}
 		}
 		//Hero getting attacked by enemy
@@ -1410,13 +1333,13 @@ void StudioProject::EnemyUpdate(double dt)
 			if(Enemy->getStrategy()->getState() == 2)
 			{
 				Enemy->EnemyAttack(meshList[GEO_BULLET],hero_x,hero_y);
-				
+
 			}
 			if(Enemy->getAttackCD()== 2.f)
 			{
 				soundplayer.playSounds(soundplayer.RIFLE);
 			}
-			
+
 		}
 		//Enemy Bullet updating
 		for(unsigned i = 0;i < Enemy->getEnemyBullet().size(); ++i)
@@ -1430,11 +1353,11 @@ void StudioProject::EnemyUpdate(double dt)
 					CHero::GetInstance()->HeroDamaged(Enemy->getEnemyBullet().at(i)->getDamage());
 					Enemy->getEnemyBullet().at(i)->setActive(false);
 				}
-					//soundplayer.playSounds(soundplayer.RIFLE);
-				
+				//soundplayer.playSounds(soundplayer.RIFLE);
+
 			}
 		}
-		
+
 		//Enemy attacking cool down 
 		if(Enemy->getAttackCD() != 0)
 		{
@@ -1490,42 +1413,42 @@ void StudioProject::HeroUpdate(double dt)
 void StudioProject::UpdateSprites(double dt)
 {
 	static bool invisLoaded = false;
-    if( ( CHero::GetInstance()->getHero_Invi() == true && invisLoaded == false ) )
-    {
-        //----------IDLE----------//
-	    meshList[GEO_PLAYER_IDLE_LEFT]->textureArray[0] = LoadTGA("Image//Player//Invisible//Player_Idle_Invisible.tga");           //Left
-	    meshList[GEO_PLAYER_IDLE_RIGHT]->textureArray[0] = LoadTGA("Image//Player//Invisible//Player_Idle_Invisible.tga");          //Right
-        //------------------------//
+	if( ( CHero::GetInstance()->getHero_Invi() == true && invisLoaded == false ) )
+	{
+		//----------IDLE----------//
+		meshList[GEO_PLAYER_IDLE_LEFT]->textureArray[0] = LoadTGA("Image//Player//Invisible//Player_Idle_Invisible.tga");           //Left
+		meshList[GEO_PLAYER_IDLE_RIGHT]->textureArray[0] = LoadTGA("Image//Player//Invisible//Player_Idle_Invisible.tga");          //Right
+		//------------------------//
 
-        //----------RUN----------//
-        meshList[GEO_PLAYER_RUN_LEFT]->textureArray[0] = LoadTGA("Image//Player//Invisible//Player_walking_invisible_sprite.tga");  //Left
-        meshList[GEO_PLAYER_RUN_RIGHT]->textureArray[0] = LoadTGA("Image//Player//Invisible//Player_walking_invisible_sprite.tga"); //Right
-        //-----------------------//
+		//----------RUN----------//
+		meshList[GEO_PLAYER_RUN_LEFT]->textureArray[0] = LoadTGA("Image//Player//Invisible//Player_walking_invisible_sprite.tga");  //Left
+		meshList[GEO_PLAYER_RUN_RIGHT]->textureArray[0] = LoadTGA("Image//Player//Invisible//Player_walking_invisible_sprite.tga"); //Right
+		//-----------------------//
 
-        //----------JUMP----------//
-        meshList[GEO_PLAYER_JUMP_LEFT]->textureArray[0] = LoadTGA("Image//Player//Invisible//Player_Jump_Left_Invisible.tga");      //Left
-        meshList[GEO_PLAYER_JUMP_RIGHT]->textureArray[0] = LoadTGA("Image//Player//Invisible//Player_Jump_Right_Invisible.tga");    //Right
-        //-----------------------//
+		//----------JUMP----------//
+		meshList[GEO_PLAYER_JUMP_LEFT]->textureArray[0] = LoadTGA("Image//Player//Invisible//Player_Jump_Left_Invisible.tga");      //Left
+		meshList[GEO_PLAYER_JUMP_RIGHT]->textureArray[0] = LoadTGA("Image//Player//Invisible//Player_Jump_Right_Invisible.tga");    //Right
+		//-----------------------//
 		invisLoaded = true;
-    }
-    else if( (CHero::GetInstance()->getHero_Invi() == false && invisLoaded == true) )
-    {
-        //----------IDLE----------//
-        meshList[GEO_PLAYER_IDLE_LEFT]->textureArray[0] = LoadTGA("Image//Player//Player_Idle.tga");               //Left
-        meshList[GEO_PLAYER_IDLE_RIGHT]->textureArray[0] = LoadTGA("Image//Player//Player_Idle.tga");              //Right
-        //------------------------//
+	}
+	else if( (CHero::GetInstance()->getHero_Invi() == false && invisLoaded == true) )
+	{
+		//----------IDLE----------//
+		meshList[GEO_PLAYER_IDLE_LEFT]->textureArray[0] = LoadTGA("Image//Player//Player_Idle.tga");               //Left
+		meshList[GEO_PLAYER_IDLE_RIGHT]->textureArray[0] = LoadTGA("Image//Player//Player_Idle.tga");              //Right
+		//------------------------//
 
-        //----------RUN----------//
-        meshList[GEO_PLAYER_RUN_LEFT]->textureArray[0] = LoadTGA("Image//Player//Player_walking_sprite.tga");      //Left
-        meshList[GEO_PLAYER_RUN_RIGHT]->textureArray[0] = LoadTGA("Image//Player//Player_walking_sprite.tga");     //Right
-        //-----------------------//
+		//----------RUN----------//
+		meshList[GEO_PLAYER_RUN_LEFT]->textureArray[0] = LoadTGA("Image//Player//Player_walking_sprite.tga");      //Left
+		meshList[GEO_PLAYER_RUN_RIGHT]->textureArray[0] = LoadTGA("Image//Player//Player_walking_sprite.tga");     //Right
+		//-----------------------//
 
-        //----------JUMP----------//
-        meshList[GEO_PLAYER_JUMP_LEFT]->textureArray[0] = LoadTGA("Image//Player//Player_Jump_Left.tga");          //Left
-        meshList[GEO_PLAYER_JUMP_RIGHT]->textureArray[0] = LoadTGA("Image//Player//Player_Jump_Right.tga");        //Right
-        //-----------------------//
+		//----------JUMP----------//
+		meshList[GEO_PLAYER_JUMP_LEFT]->textureArray[0] = LoadTGA("Image//Player//Player_Jump_Left.tga");          //Left
+		meshList[GEO_PLAYER_JUMP_RIGHT]->textureArray[0] = LoadTGA("Image//Player//Player_Jump_Right.tga");        //Right
+		//-----------------------//
 		invisLoaded = false;
-    }
+	}
 	//==================================//
 	//	Jump 							//
 	//==================================//
@@ -1536,9 +1459,9 @@ void StudioProject::UpdateSprites(double dt)
 	CHero::GetInstance()->Hero_jump_left->m_anim->animPosition.y =  CHero::GetInstance()->GetHeroPos_y();	//Setting sprite position to hero position
 
 	/*
-		Check if hero is jumping or falling
-		&&
-		Check if hero is using any forms of attacks
+	Check if hero is jumping or falling
+	&&
+	Check if hero is using any forms of attacks
 	*/
 	if((CHero::GetInstance()->Gethero_inMidAir_Up() == true || CHero::GetInstance()->Gethero_inMidAir_Down() == true) && 
 		(CHero::GetInstance()->Hero_attack_1_right->m_anim->animActive == false && CHero::GetInstance()->Hero_attack_1_left->m_anim->animActive == false && 
@@ -1577,7 +1500,7 @@ void StudioProject::UpdateSprites(double dt)
 	CHero::GetInstance()->Hero_run_right->m_anim->animPosition.x = CHero::GetInstance()->GetHeroPos_x();	//Setting sprite position to hero position
 	CHero::GetInstance()->Hero_run_right->m_anim->animPosition.y =  CHero::GetInstance()->GetHeroPos_y();	//Setting sprite position to hero position
 	/*
-		If hero is jumping, running animation is set to false
+	If hero is jumping, running animation is set to false
 	*/
 	if(CHero::GetInstance()->Gethero_inMidAir_Down() == true || CHero::GetInstance()->Gethero_inMidAir_Up() == true)
 	{
@@ -1594,7 +1517,7 @@ void StudioProject::UpdateSprites(double dt)
 	CHero::GetInstance()->Hero_run_left->m_anim->animPosition.x = CHero::GetInstance()->GetHeroPos_x();	//Setting sprite position to hero position
 	CHero::GetInstance()->Hero_run_left->m_anim->animPosition.y =  CHero::GetInstance()->GetHeroPos_y();	//Setting sprite position to hero position
 	/*
-		If hero is jumping, running animation is set to false
+	If hero is jumping, running animation is set to false
 	*/
 	if(CHero::GetInstance()->Gethero_inMidAir_Down() == true || CHero::GetInstance()->Gethero_inMidAir_Up() == true)
 	{
@@ -1613,7 +1536,7 @@ void StudioProject::UpdateSprites(double dt)
 	CHero::GetInstance()->Hero_idle_left->m_anim->animPosition.x = CHero::GetInstance()->GetHeroPos_x();	//Setting sprite position to hero position
 	CHero::GetInstance()->Hero_idle_left->m_anim->animPosition.y =  CHero::GetInstance()->GetHeroPos_y();	//Setting sprite position to hero position
 	/*
-		Checks if hero is doing any other actions at all
+	Checks if hero is doing any other actions at all
 	*/
 	if(CHero::GetInstance()->Hero_run_right->m_anim->animActive == true || CHero::GetInstance()->Hero_run_left->m_anim->animActive == true ||
 		CHero::GetInstance()->Hero_attack_1_right->m_anim->animActive == true || CHero::GetInstance()->Hero_attack_1_left->m_anim->animActive == true ||
@@ -1642,7 +1565,7 @@ void StudioProject::UpdateSprites(double dt)
 	{
 		CHero::GetInstance()->Hero_idle_left->Update(dt);
 	}
-	
+
 	if(CHero::GetInstance()->Hero_idle_right)
 	{
 		CHero::GetInstance()->Hero_idle_right->Update(dt);
@@ -1699,207 +1622,207 @@ void StudioProject::UpdateWeapon()
 
 void StudioProject::UpdatePowerUp(double dt)
 {
-    for(std::vector<CTreasureChest *>::iterator it = Treasure.begin(); it != Treasure.end(); ++it)
-    {
-        float hero_x = CHero::GetInstance()->GetHeroPos_x();
-        hero_x += 25;
-        hero_x += CHero::GetInstance()->GetMapOffset_x(); // Translate the power up according to map offset
+	for(std::vector<CTreasureChest *>::iterator it = Treasure.begin(); it != Treasure.end(); ++it)
+	{
+		float hero_x = CHero::GetInstance()->GetHeroPos_x();
+		hero_x += 25;
+		hero_x += CHero::GetInstance()->GetMapOffset_x(); // Translate the power up according to map offset
 		hero_x -= HERO_OFFSET;
-        float hero_y = CHero::GetInstance()->GetHeroPos_y();
-        hero_y += 25;
+		float hero_y = CHero::GetInstance()->GetHeroPos_y();
+		hero_y += 25;
 
-        CTreasureChest * Chest= (CTreasureChest *)*it;
-        if(Chest->getActive()) //If it is active it will check
-        {
-            Chest->Powerup_Animation->Update(dt);
-            if(((Chest->getPositionX() - hero_x) * (Chest->getPositionX() - hero_x)) + (Chest->getPositionY() - hero_y) * (Chest->getPositionY() - hero_y) <= CollisionRange) // Collision check
-            {
-                if(Chest->getType() == Chest->POWERUP_HEALTH)
-                {
-                    if(CHero::GetInstance()->Gethero_HP() != 100) // If not 100 goes in here
-                    {
-                        if(CHero::GetInstance()->Gethero_HP() < 100 && CHero::GetInstance()->Gethero_HP() > 75) // if Health is in between 75 to 100, set it to 100
-                        {
-                            CHero::GetInstance()->setHero_Health(100);
-                        }
-                        else if(CHero::GetInstance()->Gethero_HP() <= 75) // If health is lower or equals to 75, health plus 25.
-                        {
-                            CHero::GetInstance()->setHero_Health(CHero::GetInstance()->Gethero_HP() + 25);
-                        }
-                    }
+		CTreasureChest * Chest= (CTreasureChest *)*it;
+		if(Chest->getActive()) //If it is active it will check
+		{
+			Chest->Powerup_Animation->Update(dt);
+			if(((Chest->getPositionX() - hero_x) * (Chest->getPositionX() - hero_x)) + (Chest->getPositionY() - hero_y) * (Chest->getPositionY() - hero_y) <= CollisionRange) // Collision check
+			{
+				if(Chest->getType() == Chest->POWERUP_HEALTH)
+				{
+					if(CHero::GetInstance()->Gethero_HP() != 100) // If not 100 goes in here
+					{
+						if(CHero::GetInstance()->Gethero_HP() < 100 && CHero::GetInstance()->Gethero_HP() > 75) // if Health is in between 75 to 100, set it to 100
+						{
+							CHero::GetInstance()->setHero_Health(100);
+						}
+						else if(CHero::GetInstance()->Gethero_HP() <= 75) // If health is lower or equals to 75, health plus 25.
+						{
+							CHero::GetInstance()->setHero_Health(CHero::GetInstance()->Gethero_HP() + 25);
+						}
+					}
 					soundplayer.playSounds(soundplayer.HEALTH);
-                }
+				}
 				if(Chest->getType() == Chest->POWERUP_SCORE)
 				{
 					soundplayer.playSounds(soundplayer.COIN);
-                    CHero::GetInstance()->setHero_Score(CHero::GetInstance()->getHero_Score() + 100);
+					CHero::GetInstance()->setHero_Score(CHero::GetInstance()->getHero_Score() + 100);
 				}
 				if(Chest->getType() == Chest->POWERUP_ENERGY)
 				{
 					soundplayer.playSounds(soundplayer.POWER_UP);
-                    if(CHero::GetInstance()->Gethero_EP() != 100) // If not 100 goes in here
-                    {
-                        if(CHero::GetInstance()->Gethero_EP() < 100 && CHero::GetInstance()->Gethero_EP() > 75) // if energy is in between 75 to 100, set it to 100
-                        {
-                            CHero::GetInstance()->setHero_EP(100);
-                        }
-                        else if(CHero::GetInstance()->Gethero_EP() <= 75) // If energy is lower or equals to 75, energy plus 25.
-                        {
-                            CHero::GetInstance()->setHero_EP(CHero::GetInstance()->Gethero_EP() + 25);
-                        }
-                    }
+					if(CHero::GetInstance()->Gethero_EP() != 100) // If not 100 goes in here
+					{
+						if(CHero::GetInstance()->Gethero_EP() < 100 && CHero::GetInstance()->Gethero_EP() > 75) // if energy is in between 75 to 100, set it to 100
+						{
+							CHero::GetInstance()->setHero_EP(100);
+						}
+						else if(CHero::GetInstance()->Gethero_EP() <= 75) // If energy is lower or equals to 75, energy plus 25.
+						{
+							CHero::GetInstance()->setHero_EP(CHero::GetInstance()->Gethero_EP() + 25.f);
+						}
+					}
 				}
 				if(Chest->getType() == Chest->POWERUP_SHURIKEN)
 				{
 					soundplayer.playSounds(soundplayer.POWER_UP);
 				}
-                if(Chest->getType() == Chest->POWERUP_SHURIKEN)
-                {
-                    CHero::GetInstance()->getInventory().IncrementShuriken();   //Adds a shuriken
-                }
+				if(Chest->getType() == Chest->POWERUP_SHURIKEN)
+				{
+					CHero::GetInstance()->getInventory().IncrementShuriken();   //Adds a shuriken
+				}
 
-                Chest->SetActive(false); // Despawn the power up
-            }
-        }
-    }
+				Chest->SetActive(false); // Despawn the power up
+			}
+		}
+	}
 }
 void StudioProject::UpdateInput(double dt)
 {
 	float tempHeroPos_x = CHero::GetInstance()->GetHeroPos_x();	//Hero current position X
-    float tempHeroPos_y = CHero::GetInstance()->GetHeroPos_y();	//Hero current position Y
-    int checkPosition_X = (int)((CHero::GetInstance()->GetMapOffset_x() + tempHeroPos_x) / m_cMap->GetTileSize());	//Hero tile position X
-    int checkPosition_Y = m_cMap->GetNumOfTiles_Height() - (int) ( (tempHeroPos_y + m_cMap->GetTileSize()) / m_cMap->GetTileSize());	//Hero tile position Y
-    int checkPosition_Y3 = m_cMap->GetNumOfTiles_Height() - (int) ceil( (float) (tempHeroPos_y + m_cMap->GetTileSize() + 25.f) / m_cMap->GetTileSize());
-    int checkPosition_Y4 = m_cMap->GetNumOfTiles_Height() - (int) ceil( (float) (tempHeroPos_y + m_cMap->GetTileSize() + 40.f) / m_cMap->GetTileSize());
-    
-    if(HeroTileCheck(m_cMap, TILE_FINISH,true,true,true,true,tempHeroPos_x,tempHeroPos_y,CHero::GetInstance()->GetMapOffset_x(),CHero::GetInstance()->Getjumpspeed()) == true)
-    {
-        if(GetorNot == false)
-        {
-        }
-        else
-        {
-            //Changing levels after completing one
-            m_CurrentLevel++;
-            LoadMap(m_CurrentLevel);
-            LoadEnemies(m_CurrentLevel);
-            LoadConsumables(m_CurrentLevel);
-            CHero::GetInstance()->HeroInit(50,500);
-            CHero::GetInstance()->Gethero_HP() = 100;
-            CHero::GetInstance()->Gethero_EP() = 50;
-            CHero::GetInstance()->setMapOffset_x(0);
-            CHero::GetInstance()->setMapOffset_y(0);
-        }
-    }
+	float tempHeroPos_y = CHero::GetInstance()->GetHeroPos_y();	//Hero current position Y
+	int checkPosition_X = (int)((CHero::GetInstance()->GetMapOffset_x() + tempHeroPos_x) / m_cMap->GetTileSize());	//Hero tile position X
+	int checkPosition_Y = m_cMap->GetNumOfTiles_Height() - (int) ( (tempHeroPos_y + m_cMap->GetTileSize()) / m_cMap->GetTileSize());	//Hero tile position Y
+	int checkPosition_Y3 = m_cMap->GetNumOfTiles_Height() - (int) ceil( (float) (tempHeroPos_y + m_cMap->GetTileSize() + 25.f) / m_cMap->GetTileSize());
+	int checkPosition_Y4 = m_cMap->GetNumOfTiles_Height() - (int) ceil( (float) (tempHeroPos_y + m_cMap->GetTileSize() + 40.f) / m_cMap->GetTileSize());
 
-     if(Application::IsKeyPressed('Q'))
-    {
-        CHero::GetInstance()->setHero_Health(100); //FOR presentation purpose
-    }
+	if(HeroTileCheck(m_cMap, TILE_FINISH,true,true,true,true,tempHeroPos_x,tempHeroPos_y,CHero::GetInstance()->GetMapOffset_x(),CHero::GetInstance()->Getjumpspeed()) == true)
+	{
+		if(GetorNot == false)
+		{
+		}
+		else
+		{
+			//Changing levels after completing one
+			m_CurrentLevel++;
+			LoadMap(m_CurrentLevel);
+			LoadEnemies(m_CurrentLevel);
+			LoadConsumables(m_CurrentLevel);
+			CHero::GetInstance()->HeroInit(50,500);
+			CHero::GetInstance()->Gethero_HP() = 100;
+			CHero::GetInstance()->Gethero_EP() = 50;
+			CHero::GetInstance()->setMapOffset_x(0);
+			CHero::GetInstance()->setMapOffset_y(0);
+		}
+	}
 
-    //Movement
-    if(Application::IsKeyPressed('W'))	//Interact
-    {
-        if(m_cMap->theScreenMap[checkPosition_Y][checkPosition_X] == TILE_METALCORNER)
-        {
-            Transiting = true;
-            MapTransition->m_anim->animActive = true;
-        }
-        
-        //====OBJECTIVE INPUT=====//
-        if(m_cMap->theScreenMap[checkPosition_Y3][checkPosition_X + 2] == TILE_OBJECTIVE)
-        {
-            m_cMap->theScreenMap[checkPosition_Y3][checkPosition_X + 2] = 0;
-            GetorNot = true;
-        }
+	if(Application::IsKeyPressed('Q'))
+	{
+		CHero::GetInstance()->setHero_Health(100); //FOR presentation purpose
+	}
+
+	//Movement
+	if(Application::IsKeyPressed('W'))	//Interact
+	{
+		if(m_cMap->theScreenMap[checkPosition_Y][checkPosition_X] == TILE_METALCORNER)
+		{
+			Transiting = true;
+			MapTransition->m_anim->animActive = true;
+		}
+
+		//====OBJECTIVE INPUT=====//
+		if(m_cMap->theScreenMap[checkPosition_Y3][checkPosition_X + 2] == TILE_OBJECTIVE)
+		{
+			m_cMap->theScreenMap[checkPosition_Y3][checkPosition_X + 2] = 0;
+			GetorNot = true;
+		}
 		if(m_cMap->theScreenMap[checkPosition_Y3][checkPosition_X + 1] == TILE_OBJECTIVE)
-        {
-            m_cMap->theScreenMap[checkPosition_Y3][checkPosition_X + 1] = 0;
-            GetorNot = true;
-        }
-        if(m_cMap->theScreenMap[checkPosition_Y3][checkPosition_X - 1] == TILE_OBJECTIVE)
-        {
-            m_cMap->theScreenMap[checkPosition_Y3][checkPosition_X - 1] = 0;
-            GetorNot = true;
-        }
+		{
+			m_cMap->theScreenMap[checkPosition_Y3][checkPosition_X + 1] = 0;
+			GetorNot = true;
+		}
+		if(m_cMap->theScreenMap[checkPosition_Y3][checkPosition_X - 1] == TILE_OBJECTIVE)
+		{
+			m_cMap->theScreenMap[checkPosition_Y3][checkPosition_X - 1] = 0;
+			GetorNot = true;
+		}
 		if(m_cMap->theScreenMap[checkPosition_Y3][checkPosition_X - 2] == TILE_OBJECTIVE)
-        {
-            m_cMap->theScreenMap[checkPosition_Y3][checkPosition_X - 2] = 0;
-            GetorNot = true;
-        }
-        //=======================//
+		{
+			m_cMap->theScreenMap[checkPosition_Y3][checkPosition_X - 2] = 0;
+			GetorNot = true;
+		}
+		//=======================//
 
-        //======DOOR INPUT=======//
-        if( 
-            m_cMap->theScreenMap[checkPosition_Y][checkPosition_X + 2]  == TILE_DOOR ||
-            m_cMap->theScreenMap[checkPosition_Y3][checkPosition_X + 2] == TILE_DOOR ||
-            m_cMap->theScreenMap[checkPosition_Y4][checkPosition_X + 2] == TILE_DOOR 
-           )
-        {
-            m_cMap->theScreenMap[checkPosition_Y][checkPosition_X + 2]  = 0;
-            m_cMap->theScreenMap[checkPosition_Y3][checkPosition_X + 2] = 0;
-            m_cMap->theScreenMap[checkPosition_Y4][checkPosition_X + 2] = 0;
-        }
+		//======DOOR INPUT=======//
+		if( 
+			m_cMap->theScreenMap[checkPosition_Y][checkPosition_X + 2]  == TILE_DOOR ||
+			m_cMap->theScreenMap[checkPosition_Y3][checkPosition_X + 2] == TILE_DOOR ||
+			m_cMap->theScreenMap[checkPosition_Y4][checkPosition_X + 2] == TILE_DOOR 
+			)
+		{
+			m_cMap->theScreenMap[checkPosition_Y][checkPosition_X + 2]  = 0;
+			m_cMap->theScreenMap[checkPosition_Y3][checkPosition_X + 2] = 0;
+			m_cMap->theScreenMap[checkPosition_Y4][checkPosition_X + 2] = 0;
+		}
 
-		 if( 
-            m_cMap->theScreenMap[checkPosition_Y][checkPosition_X + 1]  == TILE_DOOR ||
-            m_cMap->theScreenMap[checkPosition_Y3][checkPosition_X + 1] == TILE_DOOR ||
-            m_cMap->theScreenMap[checkPosition_Y4][checkPosition_X + 1] == TILE_DOOR 
-           )
-        {
-            m_cMap->theScreenMap[checkPosition_Y][checkPosition_X + 1]  = 0;
-            m_cMap->theScreenMap[checkPosition_Y3][checkPosition_X + 1] = 0;
-            m_cMap->theScreenMap[checkPosition_Y4][checkPosition_X + 1] = 0;
-        }
+		if( 
+			m_cMap->theScreenMap[checkPosition_Y][checkPosition_X + 1]  == TILE_DOOR ||
+			m_cMap->theScreenMap[checkPosition_Y3][checkPosition_X + 1] == TILE_DOOR ||
+			m_cMap->theScreenMap[checkPosition_Y4][checkPosition_X + 1] == TILE_DOOR 
+			)
+		{
+			m_cMap->theScreenMap[checkPosition_Y][checkPosition_X + 1]  = 0;
+			m_cMap->theScreenMap[checkPosition_Y3][checkPosition_X + 1] = 0;
+			m_cMap->theScreenMap[checkPosition_Y4][checkPosition_X + 1] = 0;
+		}
 
-        if(
-            m_cMap->theScreenMap[checkPosition_Y][checkPosition_X - 1]  == TILE_DOOR ||
-            m_cMap->theScreenMap[checkPosition_Y3][checkPosition_X - 1] == TILE_DOOR ||
-            m_cMap->theScreenMap[checkPosition_Y4][checkPosition_X - 1] == TILE_DOOR 
-           )
-        {
-            m_cMap->theScreenMap[checkPosition_Y][checkPosition_X -1]  = 0;
-            m_cMap->theScreenMap[checkPosition_Y3][checkPosition_X -1] = 0;
-            m_cMap->theScreenMap[checkPosition_Y4][checkPosition_X -1] = 0;
-        }
 		if(
-            m_cMap->theScreenMap[checkPosition_Y][checkPosition_X - 2]  == TILE_DOOR ||
-            m_cMap->theScreenMap[checkPosition_Y3][checkPosition_X - 2] == TILE_DOOR ||
-            m_cMap->theScreenMap[checkPosition_Y4][checkPosition_X - 2] == TILE_DOOR 
-           )
-        {
-            m_cMap->theScreenMap[checkPosition_Y][checkPosition_X -2]  = 0;
-            m_cMap->theScreenMap[checkPosition_Y3][checkPosition_X -2] = 0;
-            m_cMap->theScreenMap[checkPosition_Y4][checkPosition_X -2] = 0;
-        }
+			m_cMap->theScreenMap[checkPosition_Y][checkPosition_X - 1]  == TILE_DOOR ||
+			m_cMap->theScreenMap[checkPosition_Y3][checkPosition_X - 1] == TILE_DOOR ||
+			m_cMap->theScreenMap[checkPosition_Y4][checkPosition_X - 1] == TILE_DOOR 
+			)
+		{
+			m_cMap->theScreenMap[checkPosition_Y][checkPosition_X -1]  = 0;
+			m_cMap->theScreenMap[checkPosition_Y3][checkPosition_X -1] = 0;
+			m_cMap->theScreenMap[checkPosition_Y4][checkPosition_X -1] = 0;
+		}
+		if(
+			m_cMap->theScreenMap[checkPosition_Y][checkPosition_X - 2]  == TILE_DOOR ||
+			m_cMap->theScreenMap[checkPosition_Y3][checkPosition_X - 2] == TILE_DOOR ||
+			m_cMap->theScreenMap[checkPosition_Y4][checkPosition_X - 2] == TILE_DOOR 
+			)
+		{
+			m_cMap->theScreenMap[checkPosition_Y][checkPosition_X -2]  = 0;
+			m_cMap->theScreenMap[checkPosition_Y3][checkPosition_X -2] = 0;
+			m_cMap->theScreenMap[checkPosition_Y4][checkPosition_X -2] = 0;
+		}
 
-        //======================//
+		//======================//
 
-        //LASER SWITCH
-        if(m_cMap->theScreenMap[checkPosition_Y3][checkPosition_X + 2] == TILE_LASER_SWITCH || 
+		//LASER SWITCH
+		if(m_cMap->theScreenMap[checkPosition_Y3][checkPosition_X + 2] == TILE_LASER_SWITCH || 
 			m_cMap->theScreenMap[checkPosition_Y3][checkPosition_X + 1] == TILE_LASER_SWITCH || 
 			m_cMap->theScreenMap[checkPosition_Y3][checkPosition_X - 1] == TILE_LASER_SWITCH ||
 			m_cMap->theScreenMap[checkPosition_Y3][checkPosition_X-2] == TILE_LASER_SWITCH )
-        {
-            int m = 0;
-            for(int i = 0; i < m_cMap->GetNumOfTiles_Height(); ++i)
-            {
-                for(int k = 0; k < m_cMap->GetNumOfTiles_Width()+1; k ++)
-                {
-                    m = tileOffset_x + k;
-                    // If we have reached the right side of the Map, then do not display the extra column of tiles.
-                    if ( (tileOffset_x+k) >= m_cMap->getNumOfTiles_MapWidth() )
-                        break;
-                    if( m_cMap->theScreenMap[i][m] == TILE_LASER_HORIZONTAL || m_cMap->theScreenMap[i][m] == TILE_LASER_VERTICAL)
-                    {
-                        m_cMap->theScreenMap[i][m] = 0;
-                    }
-                }
+		{
+			int m = 0;
+			for(int i = 0; i < m_cMap->GetNumOfTiles_Height(); ++i)
+			{
+				for(int k = 0; k < m_cMap->GetNumOfTiles_Width()+1; k ++)
+				{
+					m = tileOffset_x + k;
+					// If we have reached the right side of the Map, then do not display the extra column of tiles.
+					if ( (tileOffset_x+k) >= m_cMap->getNumOfTiles_MapWidth() )
+						break;
+					if( m_cMap->theScreenMap[i][m] == TILE_LASER_HORIZONTAL || m_cMap->theScreenMap[i][m] == TILE_LASER_VERTICAL)
+					{
+						m_cMap->theScreenMap[i][m] = 0;
+					}
+				}
 
-            }
-        }
+			}
+		}
 
-    }
+	}
 	//Save
 	if(Application::IsKeyPressed(VK_F11))
 	{
@@ -1948,32 +1871,32 @@ void StudioProject::UpdateInput(double dt)
 		CHero::GetInstance()->Hero_run_right->m_anim->animActive = false;
 	}
 
-     //--------Physics------
-    if(!Application::IsKeyPressed('D') && !Application::IsKeyPressed('A')) 
-    {
-        if(CHero::GetInstance()->getHero_Velocity() > 0)
-        {
-            float temp = CHero::GetInstance()->getHero_Velocity();
-            temp -= f_deceleration * dt;
-            if(temp < 0)
-            {
-                temp = 0;
-            }
-            CHero::GetInstance()->setHero_Deceleration(false,temp);
+	//--------Physics------
+	if(!Application::IsKeyPressed('D') && !Application::IsKeyPressed('A')) 
+	{
+		if(CHero::GetInstance()->getHero_Velocity() > 0)
+		{
+			float temp = CHero::GetInstance()->getHero_Velocity();
+			temp -= f_deceleration * (float)dt;
+			if(temp < 0)
+			{
+				temp = 0;
+			}
+			CHero::GetInstance()->setHero_Deceleration(false,temp);
 
-        }
-        if(CHero::GetInstance()->getHero_Velocity() < 0)
-        {
-            float temp = CHero::GetInstance()->getHero_Velocity();
-            temp += f_deceleration * dt;
-            if(temp > 0)
-            {
-                temp = 0;
-            }
-            CHero::GetInstance()->setHero_Deceleration(true,temp);
+		}
+		if(CHero::GetInstance()->getHero_Velocity() < 0)
+		{
+			float temp = CHero::GetInstance()->getHero_Velocity();
+			temp += f_deceleration * (float)dt;
+			if(temp > 0)
+			{
+				temp = 0;
+			}
+			CHero::GetInstance()->setHero_Deceleration(true,temp);
 
-        }   
-    }
+		}   
+	}
 
 	//JUMPING
 	jump_input_delay += (float)dt;
@@ -1985,8 +1908,8 @@ void StudioProject::UpdateInput(double dt)
 	}
 
 	/*
-		Clicking
-		Grappling Hook
+	Clicking
+	Grappling Hook
 	*/
 	//Used for calculating mouse position on the screen
 	double x, y;
@@ -2085,7 +2008,7 @@ void StudioProject::UpdateMap(double dt)
 		Reset(true);
 	}
 
-	
+
 }
 
 void StudioProject::Update(double dt)
@@ -2120,27 +2043,27 @@ void StudioProject::Update(double dt)
 		}
 		if(GameMenu.getHealthBought() == true)
 		{
-				if(CHero::GetInstance()->Gethero_HP() < 100 && CHero::GetInstance()->Gethero_HP() > 75) // if Health is in between 75 to 100, set it to 100
-				{
-					cout<<"HEALTH++";
-					CHero::GetInstance()->setHero_Health(100);
-					//soundplayer.playSounds(soundplayer.HEALTH);
-				}
-				else if(CHero::GetInstance()->Gethero_HP() <= 75) // If health is lower or equals to 75, health plus 25.
-				{
-					cout<<"HEALTH++";
-					CHero::GetInstance()->setHero_Health(CHero::GetInstance()->Gethero_HP() + 25);
-					//soundplayer.playSounds(soundplayer.HEALTH);
-				}
-				soundplayer.playSounds(soundplayer.HEALTH);
-			
+			if(CHero::GetInstance()->Gethero_HP() < 100 && CHero::GetInstance()->Gethero_HP() > 75) // if Health is in between 75 to 100, set it to 100
+			{
+				cout<<"HEALTH++";
+				CHero::GetInstance()->setHero_Health(100);
+				//soundplayer.playSounds(soundplayer.HEALTH);
+			}
+			else if(CHero::GetInstance()->Gethero_HP() <= 75) // If health is lower or equals to 75, health plus 25.
+			{
+				cout<<"HEALTH++";
+				CHero::GetInstance()->setHero_Health(CHero::GetInstance()->Gethero_HP() + 25);
+				//soundplayer.playSounds(soundplayer.HEALTH);
+			}
+			soundplayer.playSounds(soundplayer.HEALTH);
+
 			GameMenu.setHealthBought(false);
 		}
 		else if(GameMenu.getWeaponBought() == true)
 		{
-				cout<<"WEAPON++";
-				CHero::GetInstance()->getInventory().IncrementShuriken();  
-				soundplayer.playSounds(soundplayer.POWER_UP);
+			cout<<"WEAPON++";
+			CHero::GetInstance()->getInventory().IncrementShuriken();  
+			soundplayer.playSounds(soundplayer.POWER_UP);
 			GameMenu.setWeaponBought(false);
 
 		}
@@ -2165,7 +2088,7 @@ void StudioProject::Update(double dt)
 			SaveGame();
 			GameMenu.setSavenQuit(false);
 			exit(0);
-			
+
 		}
 		if(GameMenu.getQuit() == true)
 		{
@@ -2178,7 +2101,7 @@ void StudioProject::Update(double dt)
 	{
 		soundplayer.playSounds(soundplayer.GAMEOVER);
 		GameMenu.setLostSound(true);
-		
+
 	}
 
 	else if(GameMenu.getMenuState() == false && GameMenu.getLostState() == false && GameMenu.getWinState() == false)
@@ -2203,7 +2126,7 @@ void StudioProject::Update(double dt)
 		HeroUpdate(dt);
 		EnemyUpdate(dt);
 
-        UpdatePowerUp(dt);
+		UpdatePowerUp(dt);
 		UpdateWeapon();
 		UpdateSprites(dt);
 		UpdateEnemySprites(dt);
@@ -2220,7 +2143,7 @@ void StudioProject::RenderText(Mesh* mesh, std::string text, Color color)
 {
 	if(!mesh || mesh->textureID <= 0) //Proper error check
 		return;
-	
+
 	glDisable(GL_DEPTH_TEST);
 	glUniform1i(m_parameters[U_TEXT_ENABLED], 1);
 	glUniform3fv(m_parameters[U_TEXT_COLOR], 1, &color.r);
@@ -2303,7 +2226,7 @@ void StudioProject::RenderMesh(Mesh *mesh, bool enableLight)
 	if(enableLight && bLightEnabled)
 	{
 		glUniform1i(m_parameters[U_LIGHTENABLED], 1);
-	
+
 		modelView_inverse_transpose = modelView.GetInverse().GetTranspose();
 		glUniformMatrix4fv(m_parameters[U_MODELVIEW_INVERSE_TRANSPOSE], 1, GL_FALSE, &modelView.a[0]);
 
@@ -2352,7 +2275,7 @@ void StudioProject::RenderMeshIn2D(Mesh *mesh, bool enableLight, float sizeY,flo
 	modelStack.LoadIdentity();
 	modelStack.Translate(x, y, 0);
 	modelStack.Scale(sizeY, sizeX, 1.f);
-	
+
 
 	Mtx44 MVP, modelView, modelView_inverse_transpose;
 	MVP = projectionStack.Top() * viewStack.Top() * modelStack.Top();
@@ -2392,7 +2315,7 @@ void StudioProject::RenderEnemyOnMap2D(Mesh *mesh, bool enableLight, float sizeY
 	modelStack.LoadIdentity();
 	modelStack.PushMatrix();
 	modelStack.Translate(69.f,49.f,0.f);	//Map offset
-	
+
 	modelStack.PushMatrix();
 	modelStack.Translate(x, y, 0);
 	modelStack.Scale(sizeY, sizeX, 1.f);
@@ -2432,54 +2355,54 @@ void StudioProject::Render2DMesh(Mesh *mesh, bool enableLight, float size, float
 	Mtx44 ortho;
 	ortho.SetToOrtho(0, 800, 0, 600, -10, 10);
 	projectionStack.PushMatrix();
-		projectionStack.LoadMatrix(ortho);
-		viewStack.PushMatrix();
-			viewStack.LoadIdentity();
-			modelStack.PushMatrix();
-				modelStack.LoadIdentity();
-				modelStack.Translate(x, y, 0);
-				if(rotate)
-				{
-					modelStack.Rotate(rotation,0,0,1);
-				}
-				modelStack.Scale(size, size, size);
-       
-				Mtx44 MVP, modelView, modelView_inverse_transpose;
-	
-				MVP = projectionStack.Top() * viewStack.Top() * modelStack.Top();
-				glUniformMatrix4fv(m_parameters[U_MVP], 1, GL_FALSE, &MVP.a[0]);
-				for(int i = 0; i < MAX_TEXTURE; ++i)
-				{
-					if(mesh->textureArray[i] > 0)
-					{
-						glUniform1i(m_parameters[U_COLOR_TEXTURE_ENABLED + i], 1);
-					}
-					else
-					{
-						glUniform1i(m_parameters[U_COLOR_TEXTURE_ENABLED + i], 0);
-					}
+	projectionStack.LoadMatrix(ortho);
+	viewStack.PushMatrix();
+	viewStack.LoadIdentity();
+	modelStack.PushMatrix();
+	modelStack.LoadIdentity();
+	modelStack.Translate(x, y, 0);
+	if(rotate)
+	{
+		modelStack.Rotate(rotation,0,0,1);
+	}
+	modelStack.Scale(size, size, size);
 
-					glActiveTexture(GL_TEXTURE0 + i);
-					glBindTexture(GL_TEXTURE_2D, mesh->textureArray[i]);
-					glUniform1i(m_parameters[U_COLOR_TEXTURE + i], i);
-				}
+	Mtx44 MVP, modelView, modelView_inverse_transpose;
 
-				if(mesh->textureID > 0)
-				{
-					glUniform1i(m_parameters[U_COLOR_TEXTURE_ENABLED], 1);
-					glActiveTexture(GL_TEXTURE0);
-					glBindTexture(GL_TEXTURE_2D, mesh->textureID);
-					glUniform1i(m_parameters[U_COLOR_TEXTURE], 0);
-				}
+	MVP = projectionStack.Top() * viewStack.Top() * modelStack.Top();
+	glUniformMatrix4fv(m_parameters[U_MVP], 1, GL_FALSE, &MVP.a[0]);
+	for(int i = 0; i < MAX_TEXTURE; ++i)
+	{
+		if(mesh->textureArray[i] > 0)
+		{
+			glUniform1i(m_parameters[U_COLOR_TEXTURE_ENABLED + i], 1);
+		}
+		else
+		{
+			glUniform1i(m_parameters[U_COLOR_TEXTURE_ENABLED + i], 0);
+		}
 
-				mesh->Render();
-				//if(mesh->textureID > 0)
-				{
-					glBindTexture(GL_TEXTURE_2D, 0);
-				}
+		glActiveTexture(GL_TEXTURE0 + i);
+		glBindTexture(GL_TEXTURE_2D, mesh->textureArray[i]);
+		glUniform1i(m_parameters[U_COLOR_TEXTURE + i], i);
+	}
 
-			modelStack.PopMatrix();
-		viewStack.PopMatrix();
+	if(mesh->textureID > 0)
+	{
+		glUniform1i(m_parameters[U_COLOR_TEXTURE_ENABLED], 1);
+		glActiveTexture(GL_TEXTURE0);
+		glBindTexture(GL_TEXTURE_2D, mesh->textureID);
+		glUniform1i(m_parameters[U_COLOR_TEXTURE], 0);
+	}
+
+	mesh->Render();
+	//if(mesh->textureID > 0)
+	{
+		glBindTexture(GL_TEXTURE_2D, 0);
+	}
+
+	modelStack.PopMatrix();
+	viewStack.PopMatrix();
 	projectionStack.PopMatrix();
 	glEnable(GL_DEPTH_TEST);
 }
@@ -2489,50 +2412,50 @@ void StudioProject::Render2DSprite(Mesh *mesh, bool enableLight, float sizex, fl
 	Mtx44 ortho;
 	ortho.SetToOrtho(0, 800, 0, 600, -10, 10);
 	projectionStack.PushMatrix();
-		projectionStack.LoadMatrix(ortho);
-		viewStack.PushMatrix();
-			viewStack.LoadIdentity();
-			modelStack.PushMatrix();
-				modelStack.LoadIdentity();
-				modelStack.Translate(x, y, 0);
-				modelStack.Scale(sizex, sizey, sizex);
-       
-				Mtx44 MVP, modelView, modelView_inverse_transpose;
-	
-				MVP = projectionStack.Top() * viewStack.Top() * modelStack.Top();
-				glUniformMatrix4fv(m_parameters[U_MVP], 1, GL_FALSE, &MVP.a[0]);
-				for(int i = 0; i < MAX_TEXTURE; ++i)
-				{
-					if(mesh->textureArray[i] > 0)
-					{
-						glUniform1i(m_parameters[U_COLOR_TEXTURE_ENABLED + i], 1);
-					}
-					else
-					{
-						glUniform1i(m_parameters[U_COLOR_TEXTURE_ENABLED + i], 0);
-					}
+	projectionStack.LoadMatrix(ortho);
+	viewStack.PushMatrix();
+	viewStack.LoadIdentity();
+	modelStack.PushMatrix();
+	modelStack.LoadIdentity();
+	modelStack.Translate(x, y, 0);
+	modelStack.Scale(sizex, sizey, sizex);
 
-					glActiveTexture(GL_TEXTURE0 + i);
-					glBindTexture(GL_TEXTURE_2D, mesh->textureArray[i]);
-					glUniform1i(m_parameters[U_COLOR_TEXTURE + i], i);
-				}
+	Mtx44 MVP, modelView, modelView_inverse_transpose;
 
-				if(mesh->textureID > 0)
-				{
-					glUniform1i(m_parameters[U_COLOR_TEXTURE_ENABLED], 1);
-					glActiveTexture(GL_TEXTURE0);
-					glBindTexture(GL_TEXTURE_2D, mesh->textureID);
-					glUniform1i(m_parameters[U_COLOR_TEXTURE], 0);
-				}
+	MVP = projectionStack.Top() * viewStack.Top() * modelStack.Top();
+	glUniformMatrix4fv(m_parameters[U_MVP], 1, GL_FALSE, &MVP.a[0]);
+	for(int i = 0; i < MAX_TEXTURE; ++i)
+	{
+		if(mesh->textureArray[i] > 0)
+		{
+			glUniform1i(m_parameters[U_COLOR_TEXTURE_ENABLED + i], 1);
+		}
+		else
+		{
+			glUniform1i(m_parameters[U_COLOR_TEXTURE_ENABLED + i], 0);
+		}
 
-				mesh->Render();
-				//if(mesh->textureID > 0)
-				{
-					glBindTexture(GL_TEXTURE_2D, 0);
-				}
+		glActiveTexture(GL_TEXTURE0 + i);
+		glBindTexture(GL_TEXTURE_2D, mesh->textureArray[i]);
+		glUniform1i(m_parameters[U_COLOR_TEXTURE + i], i);
+	}
 
-			modelStack.PopMatrix();
-		viewStack.PopMatrix();
+	if(mesh->textureID > 0)
+	{
+		glUniform1i(m_parameters[U_COLOR_TEXTURE_ENABLED], 1);
+		glActiveTexture(GL_TEXTURE0);
+		glBindTexture(GL_TEXTURE_2D, mesh->textureID);
+		glUniform1i(m_parameters[U_COLOR_TEXTURE], 0);
+	}
+
+	mesh->Render();
+	//if(mesh->textureID > 0)
+	{
+		glBindTexture(GL_TEXTURE_2D, 0);
+	}
+
+	modelStack.PopMatrix();
+	viewStack.PopMatrix();
 	projectionStack.PopMatrix();
 	glEnable(GL_DEPTH_TEST);
 }
@@ -2551,7 +2474,7 @@ void StudioProject::RenderWeapon()
 			}
 		}
 	}
-  
+
 	if(CHero::GetInstance()->getInventory().getGrapple().getActive())
 	{
 		Render2DMesh( CHero::GetInstance()->getInventory().getGrapple().getMesh(),false,1.f,CHero::GetInstance()->getInventory().getGrapple().getPos().x,
@@ -2590,12 +2513,12 @@ void StudioProject::RenderMenu(int input)
 				RenderTextOnScreen(meshList[GEO_TEXT], "Z - Heavy Attack", Color(1, 1, 1), 2.f, 15, 26);
 				RenderTextOnScreen(meshList[GEO_TEXT], "X - Light Attack", Color(1, 1, 1), 2.f, 15, 23);
 				RenderTextOnScreen(meshList[GEO_TEXT], "C - Shockwave Attack", Color(1, 1, 1), 2.f, 15, 20);
-		
+
 				RenderTextOnScreen(meshList[GEO_TEXT], "Press 'Enter' to return to main menu", Color(0.3f, 0.3f, 0.3f), 1.5f, 28, 10);
 			}
 		}
 		break;
-			case CMenuClass::LOAD:
+	case CMenuClass::LOAD:
 		{
 			if(GameMenu.getMenuState())
 			{
@@ -2603,7 +2526,7 @@ void StudioProject::RenderMenu(int input)
 				RenderTextOnScreen(meshList[GEO_TEXT], "", Color(1, 1, 1), 2.f, 15, 38);
 				RenderTextOnScreen(meshList[GEO_TEXT], "D - Move Right", Color(1, 1, 1), 2.f, 15, 34);
 
-		
+
 				RenderTextOnScreen(meshList[GEO_TEXT], "Press 'Enter' to return to main menu", Color(0.3f, 0.3f, 0.3f), 1.5f, 28, 10);
 			}
 		}
@@ -2657,14 +2580,11 @@ void StudioProject::RenderMenu(int input)
 		}
 		break;
 
-		
+
 	}
 }
 void StudioProject::RenderHUD(void)
 { 
-	//ICON
-	//RenderMeshIn2D(meshList[GEO_ICON],false,0.7f,0.7f,-69.f,51.f,false);
-
 	//HUD template
 	RenderMeshIn2D(meshList[GEO_HUD_TEMPLATE],false,2.f,2.f,-57.f,51.f,false);
 	//Health points
@@ -2672,10 +2592,10 @@ void StudioProject::RenderHUD(void)
 	//Energy points
 	RenderMeshIn2D(meshList[GEO_HUD_EP],false,0.032f * CHero::GetInstance()->Gethero_EP(),2.f,-69.8f,48.1f,false);
 
-    for(int i = 0; i < CHero::GetInstance()->getInventory().getShurikenCount(); i++)
-    {
-	    RenderMeshIn2D(meshList[GEO_HUD_SHURIKEN],false,2.f,2.f,-55.f + (i * 3.5f),-52.5f,false);
-    }
+	for(int i = 0; i < CHero::GetInstance()->getInventory().getShurikenCount(); i++)
+	{
+		RenderMeshIn2D(meshList[GEO_HUD_SHURIKEN],false,2.f,2.f,-55.f + (i * 3.5f),-52.5f,false);
+	}
 
 	//===================================================//
 	//Debug print
@@ -2698,18 +2618,18 @@ void StudioProject::RenderBackground(void)
 }
 void StudioProject::RenderPowerUp(void)
 {
-    for(std::vector<CTreasureChest *>::iterator it = Treasure.begin(); it != Treasure.end(); ++it)
-    {
-        CTreasureChest * Chest = (CTreasureChest *)*it;
-        if(Chest->getActive())
-        {
-            Render2DSprite(Chest->Powerup_Animation,false,Chest->Powerup_Animation->m_anim->animScale,Chest->Powerup_Animation->m_anim->animScale,Chest->Powerup_Animation->m_anim->animPosition.x - CHero::GetInstance()->GetMapOffset_x(),Chest->Powerup_Animation->m_anim->animPosition.y,false);
-        }
-    }
+	for(std::vector<CTreasureChest *>::iterator it = Treasure.begin(); it != Treasure.end(); ++it)
+	{
+		CTreasureChest * Chest = (CTreasureChest *)*it;
+		if(Chest->getActive())
+		{
+			Render2DSprite(Chest->Powerup_Animation,false,Chest->Powerup_Animation->m_anim->animScale,Chest->Powerup_Animation->m_anim->animScale,Chest->Powerup_Animation->m_anim->animPosition.x - CHero::GetInstance()->GetMapOffset_x(),Chest->Powerup_Animation->m_anim->animPosition.y,false);
+		}
+	}
 }
 /********************************************************************************
- Render the tile map. This is a private function for use in this class only
- ********************************************************************************/
+Render the tile map. This is a private function for use in this class only
+********************************************************************************/
 void StudioProject::RenderTileMap()
 {
 	int m = 0;
@@ -2737,65 +2657,65 @@ void StudioProject::RenderTileMap()
 			{
 				Render2DMesh(meshList[GEO_TILE_METALCORNER], false, 1.f, (float)k*m_cMap->GetTileSize()-CHero::GetInstance()->GetMapFineOffset_x(), 575.f-i*m_cMap->GetTileSize());
 			}
-            else if (m_cMap->theScreenMap[i][m] == TILE_DOOR)
-            {
-                Render2DMesh(meshList[GEO_TILE_DOOR], false, 1.f, (float)k*m_cMap->GetTileSize()-CHero::GetInstance()->GetMapFineOffset_x(), 575.f-i*m_cMap->GetTileSize());
-            }
-            else if (m_cMap->theScreenMap[i][m] == TILE_LASER_HORIZONTAL)
-            {
-                Render2DMesh(meshList[GEO_TILE_LASER_HORIZONTAL], false, 1.f, (float)k*m_cMap->GetTileSize()-CHero::GetInstance()->GetMapFineOffset_x(), 575.f-i*m_cMap->GetTileSize());
-            }
-            else if (m_cMap->theScreenMap[i][m] == TILE_LASER_VERTICAL)
-            {
-                Render2DMesh(meshList[GEO_TILE_LASER_VERTICAL], false, 1.f, (float)k*m_cMap->GetTileSize()-CHero::GetInstance()->GetMapFineOffset_x(), 575.f-i*m_cMap->GetTileSize());
-            }
-            else if (m_cMap->theScreenMap[i][m] == TILE_LASER_SWITCH)
-            {
-                Render2DMesh(meshList[GEO_TILE_LASER_SWITCH], false, 1.f, (float)k*m_cMap->GetTileSize()-CHero::GetInstance()->GetMapFineOffset_x(), 575.f-i*m_cMap->GetTileSize());
-            }
-            else if (m_cMap->theScreenMap[i][m] == TILE_HEALTH)
-            {
-                Render2DMesh(meshList[GEO_TILE_HEALTH], false, 1.f, (float)k*m_cMap->GetTileSize()-CHero::GetInstance()->GetMapFineOffset_x(), 575.f-i*m_cMap->GetTileSize());
-            }
-            else if (m_cMap->theScreenMap[i][m] == TILE_SCORE)
-            {
-                Render2DMesh(meshList[GEO_TILE_SCORE], false, 1.f, (float)k*m_cMap->GetTileSize()-CHero::GetInstance()->GetMapFineOffset_x(), 575.f-i*m_cMap->GetTileSize());
-            }
-            else if (m_cMap->theScreenMap[i][m] == TILE_SHURIKEN)
-            {
-                Render2DMesh(meshList[GEO_TILE_SHURIKEN], false, 1.f, (float)k*m_cMap->GetTileSize()-CHero::GetInstance()->GetMapFineOffset_x(), 575.f-i*m_cMap->GetTileSize());
-            }
-            else if (m_cMap->theScreenMap[i][m] == TILE_OBJECTIVE)
-            {
-                Render2DMesh(meshList[GEO_TILE_OBJECTIVE], false, 1.f, (float)k*m_cMap->GetTileSize()-CHero::GetInstance()->GetMapFineOffset_x(), 575.f-i*m_cMap->GetTileSize());
-            }
-            else if (m_cMap->theScreenMap[i][m] == TILE_LASER_SHOOTER_UP)
-            {
-                Render2DMesh(meshList[GEO_TILE_LASER_SHOOTER_UP], false, 1.f, (float)k*m_cMap->GetTileSize()-CHero::GetInstance()->GetMapFineOffset_x(), 575.f-i*m_cMap->GetTileSize());
-            }
-            else if (m_cMap->theScreenMap[i][m] == TILE_LASER_SHOOTER_DOWN)
-            {
-                Render2DMesh(meshList[GEO_TILE_LASER_SHOOTER_DOWN], false, 1.f, (float)k*m_cMap->GetTileSize()-CHero::GetInstance()->GetMapFineOffset_x(), 575.f-i*m_cMap->GetTileSize());
-            }
-            else if (m_cMap->theScreenMap[i][m] == TILE_LASER_SHOOTER_LEFT)
-            {
-                Render2DMesh(meshList[GEO_TILE_LASER_SHOOTER_LEFT], false, 1.f, (float)k*m_cMap->GetTileSize()-CHero::GetInstance()->GetMapFineOffset_x(), 575.f-i*m_cMap->GetTileSize());
-            }
-            else if (m_cMap->theScreenMap[i][m] == TILE_LASER_SHOOTER_RIGHT)
-            {
-                Render2DMesh(meshList[GEO_TILE_LASER_SHOOTER_RIGHT], false, 1.f, (float)k*m_cMap->GetTileSize()-CHero::GetInstance()->GetMapFineOffset_x(), 575.f-i*m_cMap->GetTileSize());
-            }
-            else if (m_cMap->theScreenMap[i][m] == TILE_STEALTH_BOX)
-            {
-                Render2DMesh(meshList[GEO_TILE_STEALTH_BOX], false, 1.f, (float)k*m_cMap->GetTileSize()-CHero::GetInstance()->GetMapFineOffset_x(), 575.f-i*m_cMap->GetTileSize());
-            }
-            else if (m_cMap->theScreenMap[i][m] == TILE_FINISH)
-            {
-                if(GetorNot == false)
-                    Render2DMesh(meshList[GEO_TILE_FINISH_CLOSE], false, 1.f, (float)k*m_cMap->GetTileSize()-CHero::GetInstance()->GetMapFineOffset_x(), 575.f-i*m_cMap->GetTileSize());
-                else
-                    Render2DMesh(meshList[GEO_TILE_FINISH_OPEN], false, 1.f, (float)k*m_cMap->GetTileSize()-CHero::GetInstance()->GetMapFineOffset_x(), 575.f-i*m_cMap->GetTileSize());
-            }
+			else if (m_cMap->theScreenMap[i][m] == TILE_DOOR)
+			{
+				Render2DMesh(meshList[GEO_TILE_DOOR], false, 1.f, (float)k*m_cMap->GetTileSize()-CHero::GetInstance()->GetMapFineOffset_x(), 575.f-i*m_cMap->GetTileSize());
+			}
+			else if (m_cMap->theScreenMap[i][m] == TILE_LASER_HORIZONTAL)
+			{
+				Render2DMesh(meshList[GEO_TILE_LASER_HORIZONTAL], false, 1.f, (float)k*m_cMap->GetTileSize()-CHero::GetInstance()->GetMapFineOffset_x(), 575.f-i*m_cMap->GetTileSize());
+			}
+			else if (m_cMap->theScreenMap[i][m] == TILE_LASER_VERTICAL)
+			{
+				Render2DMesh(meshList[GEO_TILE_LASER_VERTICAL], false, 1.f, (float)k*m_cMap->GetTileSize()-CHero::GetInstance()->GetMapFineOffset_x(), 575.f-i*m_cMap->GetTileSize());
+			}
+			else if (m_cMap->theScreenMap[i][m] == TILE_LASER_SWITCH)
+			{
+				Render2DMesh(meshList[GEO_TILE_LASER_SWITCH], false, 1.f, (float)k*m_cMap->GetTileSize()-CHero::GetInstance()->GetMapFineOffset_x(), 575.f-i*m_cMap->GetTileSize());
+			}
+			else if (m_cMap->theScreenMap[i][m] == TILE_HEALTH)
+			{
+				Render2DMesh(meshList[GEO_TILE_HEALTH], false, 1.f, (float)k*m_cMap->GetTileSize()-CHero::GetInstance()->GetMapFineOffset_x(), 575.f-i*m_cMap->GetTileSize());
+			}
+			else if (m_cMap->theScreenMap[i][m] == TILE_SCORE)
+			{
+				Render2DMesh(meshList[GEO_TILE_SCORE], false, 1.f, (float)k*m_cMap->GetTileSize()-CHero::GetInstance()->GetMapFineOffset_x(), 575.f-i*m_cMap->GetTileSize());
+			}
+			else if (m_cMap->theScreenMap[i][m] == TILE_SHURIKEN)
+			{
+				Render2DMesh(meshList[GEO_TILE_SHURIKEN], false, 1.f, (float)k*m_cMap->GetTileSize()-CHero::GetInstance()->GetMapFineOffset_x(), 575.f-i*m_cMap->GetTileSize());
+			}
+			else if (m_cMap->theScreenMap[i][m] == TILE_OBJECTIVE)
+			{
+				Render2DMesh(meshList[GEO_TILE_OBJECTIVE], false, 1.f, (float)k*m_cMap->GetTileSize()-CHero::GetInstance()->GetMapFineOffset_x(), 575.f-i*m_cMap->GetTileSize());
+			}
+			else if (m_cMap->theScreenMap[i][m] == TILE_LASER_SHOOTER_UP)
+			{
+				Render2DMesh(meshList[GEO_TILE_LASER_SHOOTER_UP], false, 1.f, (float)k*m_cMap->GetTileSize()-CHero::GetInstance()->GetMapFineOffset_x(), 575.f-i*m_cMap->GetTileSize());
+			}
+			else if (m_cMap->theScreenMap[i][m] == TILE_LASER_SHOOTER_DOWN)
+			{
+				Render2DMesh(meshList[GEO_TILE_LASER_SHOOTER_DOWN], false, 1.f, (float)k*m_cMap->GetTileSize()-CHero::GetInstance()->GetMapFineOffset_x(), 575.f-i*m_cMap->GetTileSize());
+			}
+			else if (m_cMap->theScreenMap[i][m] == TILE_LASER_SHOOTER_LEFT)
+			{
+				Render2DMesh(meshList[GEO_TILE_LASER_SHOOTER_LEFT], false, 1.f, (float)k*m_cMap->GetTileSize()-CHero::GetInstance()->GetMapFineOffset_x(), 575.f-i*m_cMap->GetTileSize());
+			}
+			else if (m_cMap->theScreenMap[i][m] == TILE_LASER_SHOOTER_RIGHT)
+			{
+				Render2DMesh(meshList[GEO_TILE_LASER_SHOOTER_RIGHT], false, 1.f, (float)k*m_cMap->GetTileSize()-CHero::GetInstance()->GetMapFineOffset_x(), 575.f-i*m_cMap->GetTileSize());
+			}
+			else if (m_cMap->theScreenMap[i][m] == TILE_STEALTH_BOX)
+			{
+				Render2DMesh(meshList[GEO_TILE_STEALTH_BOX], false, 1.f, (float)k*m_cMap->GetTileSize()-CHero::GetInstance()->GetMapFineOffset_x(), 575.f-i*m_cMap->GetTileSize());
+			}
+			else if (m_cMap->theScreenMap[i][m] == TILE_FINISH)
+			{
+				if(GetorNot == false)
+					Render2DMesh(meshList[GEO_TILE_FINISH_CLOSE], false, 1.f, (float)k*m_cMap->GetTileSize()-CHero::GetInstance()->GetMapFineOffset_x(), 575.f-i*m_cMap->GetTileSize());
+				else
+					Render2DMesh(meshList[GEO_TILE_FINISH_OPEN], false, 1.f, (float)k*m_cMap->GetTileSize()-CHero::GetInstance()->GetMapFineOffset_x(), 575.f-i*m_cMap->GetTileSize());
+			}
 		}
 	}
 }
@@ -2810,7 +2730,7 @@ void StudioProject::RenderRearTileMap()
 		rearWallTileOffset_x += m_cRearMap->getNumOfTiles_MapWidth() - m_cRearMap->GetNumOfTiles_Width();
 	}
 	rearWallFineOffset_x = rearWallOffset_x % m_cRearMap->GetTileSize();
-	
+
 	int m = 0;
 
 	for(int i = 0; i < m_cRearMap->GetNumOfTiles_Height(); i ++)
@@ -2850,25 +2770,14 @@ void StudioProject::RenderRearTileMap()
 }
 void StudioProject::RenderDebug(void)
 {
-    /*
-	std::ostringstream sss;
-	sss.precision(5);
-	sss << "heropos.x: "<< CHero::GetInstance()->GetMapOffset_x() + CHero::GetInstance()->GetHeroPos_x();
-	RenderTextOnScreen(meshList[GEO_TEXT], sss.str(), Color(0, 1, 0), 3, 2, 7);
-
-	std::ostringstream ssss;
-	ssss.precision(5);
-	ssss << "heropos.y: "<<CHero::GetInstance()->GetHeroPos_y();
-	RenderTextOnScreen(meshList[GEO_TEXT], ssss.str(), Color(0, 1, 0), 3, 2, 4);
-    */
-    std::ostringstream sssss;
+	std::ostringstream sssss;
 	sssss.precision(5);
-    sssss << "Score: "<<CHero::GetInstance()->getHero_Score();
+	sssss << "Score: "<<CHero::GetInstance()->getHero_Score();
 	RenderTextOnScreen(meshList[GEO_TEXT], sssss.str(), Color(0, 1, 0), 3, 70, 59);
 
-    std::ostringstream ssssss;
+	std::ostringstream ssssss;
 	ssssss.precision(5);
-    ssssss << "Shurikens: ";
+	ssssss << "Shurikens: ";
 	RenderTextOnScreen(meshList[GEO_TEXT], ssssss.str(), Color(0, 1, 0), 3, 2, 4);
 }
 void StudioProject::RenderHeroSprites(void)
@@ -2921,7 +2830,7 @@ void StudioProject::RenderHeroSprites(void)
 		Render2DSprite(CHero::GetInstance()->Hero_jump_left,false,CHero::GetInstance()->Hero_jump_left->m_anim->animScale,CHero::GetInstance()->Hero_jump_left->m_anim->animScale,
 			CHero::GetInstance()->Hero_jump_left->m_anim->animPosition.x,CHero::GetInstance()->Hero_jump_left->m_anim->animPosition.y + HERO_OFFSET,false);
 	}
-	
+
 }
 void StudioProject::RenderEnemySprites(CEnemy* enemyInput)
 {
@@ -2931,7 +2840,7 @@ void StudioProject::RenderEnemySprites(CEnemy* enemyInput)
 	//Detection Range
 	if(enemyInput->getHealth() > 0 )
 	{
-		Render2DMesh(meshList[GEO_GUARD_DETECTION],false,1.f,enemy_x + 25.f,enemy_y + (ENEMY_SIZE * 0.5));
+		Render2DMesh(meshList[GEO_GUARD_DETECTION],false,1.f,enemy_x + 25.f,enemy_y + (ENEMY_SIZE * 0.5f));
 	}
 	//Walking right
 	if(enemyInput->WalkAnimation_Right->m_anim->animActive == true)
@@ -3017,17 +2926,17 @@ void StudioProject::ClearBuffer(void)
 	perspective.SetToPerspective(45.0f, 4.0f / 3.0f, 0.1f, 10000.0f);
 	//perspective.SetToOrtho(-80, 80, -60, 60, -1000, 1000);
 	projectionStack.LoadMatrix(perspective);
-	
+
 }
 void StudioProject::EnableCamera(void)
 {
 	// Camera matrix
 	viewStack.LoadIdentity();
 	viewStack.LookAt(
-						camera.position.x, camera.position.y, camera.position.z,
-						camera.target.x, camera.target.y, camera.target.z,
-						camera.up.x, camera.up.y, camera.up.z
-					);
+		camera.position.x, camera.position.y, camera.position.z,
+		camera.target.x, camera.target.y, camera.target.z,
+		camera.up.x, camera.up.y, camera.up.z
+		);
 	// Model matrix : an identity matrix (model will be at the origin)
 	modelStack.LoadIdentity();
 }
@@ -3056,14 +2965,14 @@ void StudioProject::Render()
 	else if(GameMenu.getMenuState() == false && GameMenu.getLostState() == false && GameMenu.getWinState() == false && GameMenu.getPauseState() == false)
 	{
 		/*===================
-			GAME START
+		GAME START
 		=====================*/
 		RenderBackground();
 
 		//RenderRearTileMap();
 
 		RenderTileMap();
-		
+
 		RenderPowerUp();
 		for(std::vector<CEnemy *>::iterator it = enemyContainer.begin(); it != enemyContainer.end(); ++it)
 		{
@@ -3114,12 +3023,12 @@ void StudioProject::Exit()
 		delete enemy;
 		enemyContainer.pop_back();
 	}
-    while(Treasure.size() > 0)
-    {
-        CTreasureChest* Chest = Treasure.back();
-        delete Chest;
-        Treasure.pop_back();
-    }
+	while(Treasure.size() > 0)
+	{
+		CTreasureChest* Chest = Treasure.back();
+		delete Chest;
+		Treasure.pop_back();
+	}
 	glDeleteProgram(m_programID);
 	glDeleteVertexArrays(1, &m_vertexArrayID);
 }

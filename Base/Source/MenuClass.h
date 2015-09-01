@@ -1,13 +1,29 @@
+/******************************************************************************/
+/*!
+\file	CMenuClass.h
+\author Princeton Chew, Jessica Teo
+\par	email: 141991A@mymail.nyp.edu.sg
+\brief
+Menu Class
+*/
+/******************************************************************************/
 #pragma once
 #include "Vector2.h"
 #include "Shop.h"
 
+/******************************************************************************/
+/*!
+		Class CMenuClass
+\brief
+Defines the variables and functions required for the menu in game.
+
+*/
+/******************************************************************************/
 class CMenuClass
 {
 public:
 	/*
-		Different menu states
-		Add more if needed
+	Different menu states
 	*/
 	enum MENU_STATE
 	{
@@ -20,6 +36,9 @@ public:
 		PAUSE,
 		MAX_STATE,
 	};
+	/*
+	Enum for different levels
+	*/
 	enum LEVELS
 	{
 		LEVEL1 = 1,
@@ -29,6 +48,9 @@ public:
 		LEVEL5,
 		MAX_LEVEL,
 	};
+	/*
+	Enum for different buy options
+	*/
 	enum BUY
 	{
 		B_HEALTH = 1,
@@ -36,6 +58,9 @@ public:
 		B_OUT,
 		MAX_THINGS,
 	};
+	/*
+	Enum for pause state
+	*/
 	enum PAUSE_MENU
 	{
 		SAVE,
@@ -46,85 +71,83 @@ public:
 		MAX_PAUSE_MENU,
 	};
 
-	CMenuClass(void);
-	~CMenuClass(void);
+	CMenuClass(void);	//Default constructor
+	~CMenuClass(void);	//Default destructor
 
-	//Menu update
-	int Update(double dt);
-	void ControlMenu();
-	void DefaultMenu();
-	void LoadingMenu();
-	int  LevelSelectMenu();
-	void LostScreen();
-	void WinScreen();
-	void PauseMenu();
+	int Update(double dt);	//Update menu
+	void ControlMenu();	//Control menu
+	void DefaultMenu();	//Default menu
+	void LoadingMenu();	//Loading menu
+	int LevelSelectMenu();	//Level selection menu
+	void LostScreen();	//Lose screen
+	void WinScreen();	//Win Screen
+	void PauseMenu();	//Pause menu
 
-	//Get and Set functions
-	float getCurrentSelectPos_X();
-	float getCurrentSelectPos_Y();
+	float getCurrentSelectPos_X();	//Get current selection x position
+	float getCurrentSelectPos_Y();	//Get current selection y position
 
-	bool getControlState();
-	
-	bool getLoadingLevels();
-	void setLoadingLevels(bool input);
-	bool getChoosingLevels();
-	int igetCurrentLevel(); 
+	bool getControlState();	//Get control menu status
 
-	bool getLostState();
-	void setLostState(bool input);
-	bool getWinState();
-	void setWinState(bool input);
-	bool getMenuState();
+	bool getLoadingLevels();	//Get loading level menu status
+	void setLoadingLevels(bool input);	//Set loading level menu status
+	bool getChoosingLevels();	//Get choosing levels
+	int igetCurrentLevel();		//Get current level
 
-	void setPauseState(bool input);
-	bool getPauseState();
+	bool getLostState();	//Get lost state of game
+	void setLostState(bool input);	//Set lost status of game
+	bool getWinState();	//Get win state of game
+	void setWinState(bool input);	//Set win status of game
+	bool getMenuState();	//Get the state of menu
 
-	bool getSave();
-	void setSave(bool input);
-	bool getSavenQuit();
-	void setSavenQuit(bool input);
-	bool getQuit();
-	void setQuit(bool input);
+	void setPauseState(bool input);	//Set pause menu state
+	bool getPauseState();	//Get pause menu state
 
-	bool getHealthBought();
-	void setHealthBought(bool input);
-	bool getWeaponBought();
-	void setWeaponBought(bool input);
-	
-	bool AddHealth(int);
-	bool AddWeapon(int);
+	bool getSave();	//Get save menu option
+	void setSave(bool input);	//Set save menu state
+	bool getSavenQuit();	//Get save and quit menu option
+	void setSavenQuit(bool input);	//Set save and quit menu option
+	bool getQuit();	//Get quit status of menu
+	void setQuit(bool input);	//Set quit status of menu
 
-	bool getLostSound();
-	void setLostSound(bool input);
+	bool getHealthBought();	//Get health bought status
+	void setHealthBought(bool input);	//Set health bought status
+	bool getWeaponBought();	//Get weapon bought status
+	void setWeaponBought(bool input);	//Set weapon bought status
 
-	float getLevel1Size();
-	float getLevel2Size();
-	float getLevel3Size();
-	float getLevel4Size();
-	float getLevel5Size();
+	bool AddHealth(int);	//Adding health to player
+	bool AddWeapon(int);	//Adding weapon to player
 
-	float getHealthSize();
-	float getWeaponSize();
-	float getOutSize();
+	bool getLostSound();	//Get lost sound of menu
+	void setLostSound(bool input);	//set lost sound of menu
 
-	float getSaveSize();
-	float getQuitSize();
-	float getSQSize();
-	float getReturnSize();
-	float getReturnMainSize();
+	float getLevel1Size();	//Get level 1 text size
+	float getLevel2Size();	//Get level 2 text size
+	float getLevel3Size();	//Get level 3 text size
+	float getLevel4Size();	//Get level 4 text size
+	float getLevel5Size();	//Get level 5 text size
 
-	int MenuStates();
-	bool getReset();
-	void setReset(bool input);
+	float getHealthSize();	//Get health text size
+	float getWeaponSize();	//Get weapon text size
+	float getOutSize();	//Get out text size
 
-	void menuFeedback();
-	void menuFeedback2();
+	float getSaveSize();	//Get save text size
+	float getQuitSize();	//Get quit text size
+	float getSQSize();	//Get save n quit text size
+	float getReturnSize();	//Get return text size
+	float getReturnMainSize();	//Get return main text size
+
+	int MenuStates();	//Get menu states
+	bool getReset();	//Get reset state of game
+	void setReset(bool input);	//Set reset state of game
+
+	void menuFeedback();	//Feed back for menu
+	void menuFeedback2();	//Feed back for menu
 
 	float inputDelay;	//limter for input delay
 	float DELAY_RATE;	//Input delay rate
-	float DELAY_RATE2;
-	float DELAY_RATE3;
-	float DELAY_RATE4;
+	float DELAY_RATE2;	//Input delay rate
+	float DELAY_RATE3;	//Input delay rate
+	float DELAY_RATE4;	//Input delay rate
 
 private:
 	CShop Money;
@@ -139,7 +162,7 @@ private:
 	Vector2 loadPos;
 	Vector2 levelPos;
 	Vector2 currentSelectionPos;	//feedBackpos
-	
+
 	bool save;
 	bool save_n_quit;
 	bool quit;

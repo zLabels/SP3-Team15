@@ -13,13 +13,10 @@
 #include <vector>
 #include "Vector2.h"
 
-#include "Minimap.h"
-#include "C3DObject.h"
 #include "Enemy.h"
 #include "Map.h"
 #include "Hero.h"
 #include "SpriteAnimation.h"
-#include "Monster.h"
 #include "MenuClass.h"
 #include "Shuriken.h"
 #include "GrapplingHook.h"
@@ -191,7 +188,6 @@ class StudioProject : public Scene
         GEO_HUD_SHURIKEN,
 		NUM_GEOMETRY,
 	};
-
 	enum REAR_TILE_TYPE
 	{
 		WINDOW_TOP = 1,

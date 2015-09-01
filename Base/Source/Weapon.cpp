@@ -11,6 +11,11 @@ CWeapon::CWeapon(void) :
 
 CWeapon::~CWeapon(void)
 {
+	if(m_meshPtr)
+	{
+		delete m_meshPtr;
+		m_meshPtr = NULL;
+	}
 }
 
 void CWeapon::setData(Mesh* ptr,float pos_x,float pos_y,int damage,float dir_x,float dir_y,bool active)

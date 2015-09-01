@@ -12,10 +12,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\Application.cpp" />
-    <ClCompile Include="Source\C2DBoundBox.cpp" />
-    <ClCompile Include="Source\C3dAABB.cpp" />
-    <ClCompile Include="Source\C3dOBB.cpp" />
-    <ClCompile Include="Source\C3DObject.cpp" />
     <ClCompile Include="Source\Camera.cpp" />
     <ClCompile Include="Source\Camera3.cpp" />
     <ClCompile Include="Source\Enemy.cpp" />
@@ -25,7 +21,6 @@
     <ClCompile Include="Source\GrapplingHook.cpp" />
     <ClCompile Include="Source\Hero.cpp" />
     <ClCompile Include="Source\Inventory.cpp" />
-    <ClCompile Include="Source\LoadHmap.cpp" />
     <ClCompile Include="Source\LoadOBJ.cpp" />
     <ClCompile Include="Source\LoadTGA.cpp" />
     <ClCompile Include="Source\main.cpp" />
@@ -33,8 +28,6 @@
     <ClCompile Include="Source\MenuClass.cpp" />
     <ClCompile Include="Source\Mesh.cpp" />
     <ClCompile Include="Source\MeshBuilder.cpp" />
-    <ClCompile Include="Source\Minimap.cpp" />
-    <ClCompile Include="Source\Monster.cpp" />
     <ClCompile Include="Source\shader.cpp" />
     <ClCompile Include="Source\Shop.cpp" />
     <ClCompile Include="Source\Shuriken.cpp" />
@@ -50,10 +43,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Application.h" />
-    <ClInclude Include="Source\C2DBoundBox.h" />
-    <ClInclude Include="Source\C3dAABB.h" />
-    <ClInclude Include="Source\C3dOBB.h" />
-    <ClInclude Include="Source\C3DObject.h" />
     <ClInclude Include="Source\Camera.h" />
     <ClInclude Include="Source\Camera3.h" />
     <ClInclude Include="Source\Enemy.h" />
@@ -65,7 +54,6 @@
     <ClInclude Include="Source\Hero.h" />
     <ClInclude Include="Source\Inventory.h" />
     <ClInclude Include="Source\Light.h" />
-    <ClInclude Include="Source\LoadHmap.h" />
     <ClInclude Include="Source\LoadOBJ.h" />
     <ClInclude Include="Source\LoadTGA.h" />
     <ClInclude Include="Source\Map.h" />
@@ -73,8 +61,6 @@
     <ClInclude Include="Source\MenuClass.h" />
     <ClInclude Include="Source\Mesh.h" />
     <ClInclude Include="Source\MeshBuilder.h" />
-    <ClInclude Include="Source\Minimap.h" />
-    <ClInclude Include="Source\Monster.h" />
     <ClInclude Include="Source\Scene.h" />
     <ClInclude Include="Source\shader.hpp" />
     <ClInclude Include="Source\Shop.h" />

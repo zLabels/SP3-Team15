@@ -4,37 +4,36 @@
 #include "SpriteAnimation.h"
 class CTreasureChest : public CGoodies
 {
-    
-
 public:
 	CTreasureChest(void);
 	~CTreasureChest(void);
-    
-    enum POWERUP_TYPE
-    {
-        POWERUP_HEALTH = 1,
-        POWERUP_SCORE,
-        POWERUP_ENERGY,
-        POWERUP_SHURIKEN,
-        MAX_POWERUP
-    };
 
-    void ChestInit(float posX, float posY,int type,bool active);
+	//Enum for type of power ups available in game
+	enum POWERUP_TYPE
+	{
+		POWERUP_HEALTH = 1,
+		POWERUP_SCORE,
+		POWERUP_ENERGY,
+		POWERUP_SHURIKEN,
+		MAX_POWERUP
+	};
 
-    void setPositionX(float);
-    float getPositionX();
+	void ChestInit(float posX, float posY,int type,bool active);	//Initialize this class variables
 
-     void setPositionY(float);
-    float getPositionY();
+	void setPositionX(float);	//Setting power up position x
+	float getPositionX();	//Getting power up position x
 
-    void SetActive(bool);
-    bool getActive();
+	void setPositionY(float);	//Setting power up position y
+	float getPositionY();	//Getting power up position y
 
-    int getType();
+	void SetActive(bool);	//Setting active status of power up
+	bool getActive();	//Getting active status of power up
 
-    CSpriteAnimation* Powerup_Animation;
+	int getType();	//Getting type of power up
+
+	CSpriteAnimation* Powerup_Animation;	//Sprite animation pointer for power up
 private:
-    Vector2 Position;
-    bool active;
-    int type;
+	Vector2 Position;	//Vector2 for x and y position of power up
+	bool active;	//bool to store active status of power up
+	int type;	//int to store type of power up
 };

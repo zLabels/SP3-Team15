@@ -1,3 +1,12 @@
+/******************************************************************************/
+/*!
+\file	Enemy.h
+\author Princeton Chew
+\par	email: 141991A@mymail.nyp.edu.sg
+\brief
+Enemy AI Class
+*/
+/******************************************************************************/
 #pragma once
 #include "Vector2.h"
 #include "Map.h"
@@ -7,17 +16,25 @@
 #include "Mesh.h"
 #include "TileCollision.h"
 
+/******************************************************************************/
+/*!
+		Class CEnemy
+\brief
+Defines the variables and functions required for the enemy AI
+
+*/
+/******************************************************************************/
 class CEnemy
 {
 	// friend class CStrategy;
 public:
-	CEnemy(void);
-	~CEnemy(void);
+	CEnemy(void);	//Default Constructor
+	~CEnemy(void);	//Default Destructor
 
+	//Enum for type of enemy
 	enum ENEMY_TYPE
 	{
 		GUARD1,
-		GHOST,
 		MAX_ENEMY
 	};
 
@@ -44,8 +61,8 @@ public:
 	CEnemyBullet* FetchBullet();	//Fetch enemy bullet from vector
 
 	int ConstrainEnemyX(const int leftBorder, const int rightBorder, 
-								  const int topBorder, const int bottomBorder, 
-								  float timeDiff,int mapWidth, int mapHeight,unsigned maplevel);	//Constrain Enemy X axis
+		const int topBorder, const int bottomBorder, 
+		float timeDiff,int mapWidth, int mapHeight,unsigned maplevel);	//Constrain Enemy X axis
 
 	bool CheckCollision (CMap* m_cMap, bool m_bCheckLeft,bool m_bCheckRight, bool m_bCheckUp, bool m_bCheckDown);	//Enemy CheckCollision
 
@@ -73,8 +90,10 @@ private:
 
 	// The Destination is the position of the Hero
 	Vector2 theDestination;
+
+	//Strategy of enemy
 	CStrategy* theStrategy;
-	
+
 	float enemyAttackCD;	//Enemy attack cool down
 	float MAX_ATTACK_CD;	//maximum attack cool down
 	bool enemyAttacking;	//Enemy using an attack
