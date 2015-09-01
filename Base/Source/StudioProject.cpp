@@ -557,8 +557,8 @@ void StudioProject::InitTiles()
 	meshList[GEO_REAR_GLASS] = MeshBuilder::GenerateTile("GEO_REAR_GLASS",3,7,2,2,26.f);
 	meshList[GEO_REAR_GLASS]->textureID = LoadTGA("Image//Tiles//Tile_OfficeWindow.tga");
 
-	meshList[GEO_TILE_OBJECTIVE] = MeshBuilder::GenerateTile("Objective",7,14,1,13,26.f);
-	meshList[GEO_TILE_OBJECTIVE]->textureID = LoadTGA("Image//Tiles//Tile_Floor.tga");
+	meshList[GEO_TILE_OBJECTIVE] = MeshBuilder::GenerateTile("Objective",1,1,1,1,26.f);
+	meshList[GEO_TILE_OBJECTIVE]->textureID = LoadTGA("Image//Tiles//Tile_Objective.tga");
 
 	meshList[GEO_TILE_LASER_SHOOTER_UP] = MeshBuilder::GenerateTile("Objective",7,14,6,7,26.f);
 	meshList[GEO_TILE_LASER_SHOOTER_UP]->textureID = LoadTGA("Image//Tiles//Tile_Floor.tga");
@@ -578,11 +578,11 @@ void StudioProject::InitTiles()
 	meshList[GEO_TILE_STEALTH_BOX] = MeshBuilder::GenerateTile("Objective",1,1,1,1,26.f);
 	meshList[GEO_TILE_STEALTH_BOX]->textureID = LoadTGA("Image//Tiles//Tile_Stealth_Box.tga");
 
-	meshList[GEO_TILE_FINISH_CLOSE] = MeshBuilder::GenerateTile("FINISH_CLOSE",7,14,0,7,26.f);
-	meshList[GEO_TILE_FINISH_CLOSE]->textureID = LoadTGA("Image//Tiles//Tile_Floor.tga");
+	meshList[GEO_TILE_FINISH_CLOSE] = MeshBuilder::GenerateTile("FINISH_CLOSE",1,1,1,1,26.f);
+	meshList[GEO_TILE_FINISH_CLOSE]->textureID = LoadTGA("Image//Tiles//Tile_Finish3.tga");
 
-	meshList[GEO_TILE_FINISH_OPEN] = MeshBuilder::GenerateTile("FINISH_OPEN",7,14,0,6,26.f);
-	meshList[GEO_TILE_FINISH_OPEN]->textureID = LoadTGA("Image//Tiles//Tile_Floor.tga");
+	meshList[GEO_TILE_FINISH_OPEN] = MeshBuilder::GenerateTile("FINISH_OPEN",1,1,1,1,26.f);
+	meshList[GEO_TILE_FINISH_OPEN]->textureID = LoadTGA("Image//Tiles//Tile_Finish2.tga");
 
 	theArrayOfGoodies = new CGoodies*[10];
 	for(unsigned i = 0; i < 10; ++i)
@@ -753,16 +753,15 @@ void StudioProject::LoadHero()
 	}
 	if(Hero_position.size() > 0)
 	{
-		unsigned j = 7; // used to control variables passed in	
+		unsigned j = 7; // used to control variables passed in
+		LoadMap(Hero_position[j-1]);
 		CHero::GetInstance()->HeroInit((float)Hero_position[j-7],(float)Hero_position[j-6]);
 		CHero::GetInstance()->Gethero_HP() = Hero_position[j-5];
 		CHero::GetInstance()->Gethero_EP() = (float)Hero_position[j-4];
 		CHero::GetInstance()->setMapOffset_x(Hero_position[j-3]);
 		CHero::GetInstance()->setMapOffset_y(Hero_position[j-2]);
-		LoadMap(Hero_position[j-1]);
 		CHero::GetInstance()->setHero_Score(Hero_position[j]);
 	}
-
 }
 
 void StudioProject::LoadMap(int level)
@@ -771,7 +770,6 @@ void StudioProject::LoadMap(int level)
 	{
 	case 1:
 		{
-
 			m_cMap_Level1->LoadMap( "Image//MapDesigns//Map_Level1.csv");
 			m_cMap = m_cMap_Level1;
 			m_CurrentLevel = 1;
@@ -783,8 +781,8 @@ void StudioProject::LoadMap(int level)
 		break;
 	case 2:
 		{
-			m_cMap_Level1->LoadMap( "Image//MapDesigns//Map_Level2.csv");
-			m_cMap = m_cMap_Level1;
+			m_cMap_Level2->LoadMap( "Image//MapDesigns//Map_Level2.csv");
+			m_cMap = m_cMap_Level2;
 			m_CurrentLevel = 2;
 			LoadEnemies(level);
 			LoadConsumables(level);
@@ -1694,7 +1692,7 @@ void StudioProject::UpdatePowerUp(double dt)
 				if(Chest->getType() == Chest->POWERUP_SCORE)
 				{
 					soundplayer.playSounds(soundplayer.COIN);
-					CHero::GetInstance()->setHero_Score(CHero::GetInstance()->getHero_Score() + 100);
+					CHero::GetInstance()->setHero_Score(CHero::GetInstance()->getHero_Score() + 25);
 				}
 				if(Chest->getType() == Chest->POWERUP_ENERGY)
 				{
@@ -2848,6 +2846,7 @@ void StudioProject::RenderDebug(void)
 	ssssss.precision(5);
 	ssssss << "Shurikens: ";
 	RenderTextOnScreen(meshList[GEO_TEXT], ssssss.str(), Color(0, 1, 0), 3, 2, 4);
+
 }
 void StudioProject::RenderHeroSprites(void)
 {
