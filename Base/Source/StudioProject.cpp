@@ -557,8 +557,8 @@ void StudioProject::InitTiles()
 	meshList[GEO_REAR_GLASS] = MeshBuilder::GenerateTile("GEO_REAR_GLASS",3,7,2,2,26.f);
 	meshList[GEO_REAR_GLASS]->textureID = LoadTGA("Image//Tiles//Tile_OfficeWindow.tga");
 
-	meshList[GEO_TILE_OBJECTIVE] = MeshBuilder::GenerateTile("Objective",7,14,1,13,26.f);
-	meshList[GEO_TILE_OBJECTIVE]->textureID = LoadTGA("Image//Tiles//Tile_Floor.tga");
+	meshList[GEO_TILE_OBJECTIVE] = MeshBuilder::GenerateTile("Objective",1,1,1,1,26.f);
+	meshList[GEO_TILE_OBJECTIVE]->textureID = LoadTGA("Image//Tiles//Tile_Objective.tga");
 
 	meshList[GEO_TILE_LASER_SHOOTER_UP] = MeshBuilder::GenerateTile("Objective",7,14,6,7,26.f);
 	meshList[GEO_TILE_LASER_SHOOTER_UP]->textureID = LoadTGA("Image//Tiles//Tile_Floor.tga");
@@ -578,11 +578,11 @@ void StudioProject::InitTiles()
 	meshList[GEO_TILE_STEALTH_BOX] = MeshBuilder::GenerateTile("Objective",1,1,1,1,26.f);
 	meshList[GEO_TILE_STEALTH_BOX]->textureID = LoadTGA("Image//Tiles//Tile_Stealth_Box.tga");
 
-	meshList[GEO_TILE_FINISH_CLOSE] = MeshBuilder::GenerateTile("FINISH_CLOSE",7,14,0,7,26.f);
-	meshList[GEO_TILE_FINISH_CLOSE]->textureID = LoadTGA("Image//Tiles//Tile_Floor.tga");
+	meshList[GEO_TILE_FINISH_CLOSE] = MeshBuilder::GenerateTile("FINISH_CLOSE",1,1,1,1,26.f);
+	meshList[GEO_TILE_FINISH_CLOSE]->textureID = LoadTGA("Image//Tiles//Tile_Finish3.tga");
 
-	meshList[GEO_TILE_FINISH_OPEN] = MeshBuilder::GenerateTile("FINISH_OPEN",7,14,0,6,26.f);
-	meshList[GEO_TILE_FINISH_OPEN]->textureID = LoadTGA("Image//Tiles//Tile_Floor.tga");
+	meshList[GEO_TILE_FINISH_OPEN] = MeshBuilder::GenerateTile("FINISH_OPEN",1,1,1,1,26.f);
+	meshList[GEO_TILE_FINISH_OPEN]->textureID = LoadTGA("Image//Tiles//Tile_Finish2.tga");
 
 	theArrayOfGoodies = new CGoodies*[10];
 	for(unsigned i = 0; i < 10; ++i)
