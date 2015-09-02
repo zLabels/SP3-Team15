@@ -536,10 +536,10 @@ void StudioProject::Reset(bool hasWon)
 	{
 		CHero::GetInstance()->HeroInit(50,400);
 		CHero::GetInstance()->Gethero_HP() = 100;
-		CHero::GetInstance()->Gethero_EP() = 50;
+		CHero::GetInstance()->Gethero_EP() = 100;
 		CHero::GetInstance()->setMapOffset_x(0);
 		CHero::GetInstance()->setMapOffset_y(0);
-		CHero::GetInstance()->getInventory().setShurikenCount(20);
+		CHero::GetInstance()->getInventory().setShurikenCount(5);
 		CHero::GetInstance()->setHero_Score(0);
 
 		m_CurrentLevel = 1;
@@ -671,6 +671,9 @@ void StudioProject::LoadMap(int level)
 	{
 	case 1:
 		{
+            CHero::GetInstance()->SetHeroPos_x(50);
+			CHero::GetInstance()->SetHeroPos_y(500);
+
 			m_cMap_Level1->LoadMap( "Image//MapDesigns//Map_Level1.csv");
 			m_cMap = m_cMap_Level1;
 			m_CurrentLevel = 1;
@@ -1649,6 +1652,7 @@ void StudioProject::UpdateInput(double dt)
 	if(Application::IsKeyPressed('Q'))
 	{
 		CHero::GetInstance()->setHero_Health(100); //FOR presentation purpose
+        CHero::GetInstance()->setHero_EP(100);
 	}
 
 	//Movement
