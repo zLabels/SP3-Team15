@@ -488,7 +488,7 @@ void StudioProject::InitTiles()
 	meshList[GEO_TILE_FINISH_CLOSE]->textureID = LoadTGA("Image//Tiles//Tile_Teleporter_Closed.tga");
 
 	meshList[GEO_TILE_FINISH_OPEN] = MeshBuilder::GenerateTile("FINISH_OPEN",1,1,1,1,26.f);
-	meshList[GEO_TILE_FINISH_OPEN]->textureID = LoadTGA("Image//Tiles//Tile_Finish2.tga");
+	meshList[GEO_TILE_FINISH_OPEN]->textureID = LoadTGA("Image//Tiles//Tile_Teleporter_Open.tga");
 }
 void StudioProject::InitWeapon()
 {
