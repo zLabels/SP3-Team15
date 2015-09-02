@@ -187,6 +187,9 @@ void StudioProject::InitMesh()
 	meshList[GEO_LEVEL_TEXT] = MeshBuilder::Generate2DMesh("GameMenuLevelText", Color(1, 1, 1), 0, 0, 100, 30);
 	meshList[GEO_LEVEL_TEXT]->textureID = LoadTGA("Image//Menu//levels.tga");
 
+	meshList[GEO_CREDITS_TEXT] = MeshBuilder::Generate2DMesh("GameMenuLevelText", Color(1, 1, 1), 0, 0, 100, 30);
+	meshList[GEO_CREDITS_TEXT]->textureID = LoadTGA("Image//Menu//credits.tga");
+
 	meshList[GEO_CONTROLS_TAB_TEXT] = MeshBuilder::Generate2DMesh("GameMenuLevelText", Color(1, 1, 1), 0, 0, 200, 30);
 	meshList[GEO_CONTROLS_TAB_TEXT]->textureID = LoadTGA("Image//Menu//controls_tab.tga");
 
@@ -253,6 +256,8 @@ void StudioProject::InitVariables()
 
 	//Init for Tiles || Game related stuff
 	Money_Score = 0;
+
+	Bought = false;
 }
 void StudioProject::InitHUD()
 {
@@ -487,7 +492,7 @@ void StudioProject::InitTiles()
 	meshList[GEO_TILE_FINISH_CLOSE] = MeshBuilder::GenerateTile("FINISH_CLOSE",1,1,1,1,80.f);
 	meshList[GEO_TILE_FINISH_CLOSE]->textureID = LoadTGA("Image//Tiles//Tile_Teleporter_Closed.tga");
 
-	meshList[GEO_TILE_FINISH_OPEN] = MeshBuilder::GenerateTile("FINISH_OPEN",1,1,1,1,26.f);
+	meshList[GEO_TILE_FINISH_OPEN] = MeshBuilder::GenerateTile("FINISH_OPEN",1,1,1,1,80.f);
 	meshList[GEO_TILE_FINISH_OPEN]->textureID = LoadTGA("Image//Tiles//Tile_Teleporter_Open.tga");
 }
 void StudioProject::InitWeapon()
@@ -1970,15 +1975,17 @@ void StudioProject::Update(double dt)
 					CHero::GetInstance()->setHero_Score(CHero::GetInstance()->getHero_Score() - 5);
 					CHero::GetInstance()->setHero_Health(100);
 					soundplayer.playSounds(soundplayer.HEALTH);
+					Bought = true;
 				}
 				else if(CHero::GetInstance()->Gethero_HP() <= 75) // If health is lower or equals to 75, health plus 25.
 				{
 					CHero::GetInstance()->setHero_Score(CHero::GetInstance()->getHero_Score() - 5);
 					CHero::GetInstance()->setHero_Health(CHero::GetInstance()->Gethero_HP() + 25);
 					soundplayer.playSounds(soundplayer.HEALTH);
+					Bought = true;
 				}
 			}
-			
+			Bought = false;
 			GameMenu.setHealthBought(false);
 		}
 		else if(GameMenu.getWeaponBought() == true)
@@ -2438,6 +2445,7 @@ void StudioProject::RenderMenu(int input)
 				Render2DMesh(meshList[GEO_CONTROLS_TAB_TEXT],false,0.8f,265,295);
 				Render2DMesh(meshList[GEO_LOAD_TEXT],false,0.8f,350,240);
 				Render2DMesh(meshList[GEO_LEVEL_TEXT],false,1.f,330,185);
+				Render2DMesh(meshList[GEO_CREDITS_TEXT],false,1.f,330,130);
 
 				Render2DMesh(meshList[GEO_MENU_FEEDBACK],false,1.f,GameMenu.getCurrentSelectPos_X(),GameMenu.getCurrentSelectPos_Y());
 				RenderTextOnScreen(meshList[GEO_TEXT], "Press Escape To Exit", Color(0.3f, 0.3f, 0.3f), 2.f, 32, 10);
@@ -2460,11 +2468,24 @@ void StudioProject::RenderMenu(int input)
 			}
 		}
 		break;
+	case CMenuClass::CREDITS:
+		{
+			if(GameMenu.getMenuState())
+			{
+				RenderTextOnScreen(meshList[GEO_TEXT], "PRINCETON", Color(1, 1, 1), 2.f, 15, 40);
+				RenderTextOnScreen(meshList[GEO_TEXT], "JUN YAN", Color(1, 1, 1), 2.f, 15, 36);
+				RenderTextOnScreen(meshList[GEO_TEXT], "JESSICA", Color(1, 1, 1), 2.f, 15, 32);
+				RenderTextOnScreen(meshList[GEO_TEXT], "KAI JIE", Color(1, 1, 1), 2.f, 15, 28);
+
+		
+				RenderTextOnScreen(meshList[GEO_TEXT], "Press 'Enter' to return to main menu", Color(0.3f, 0.3f, 0.3f), 1.5f, 28, 10);
+			}
+		}
 	case CMenuClass::LOAD:
 		{
 			if(GameMenu.getMenuState())
 			{
-				RenderTextOnScreen(meshList[GEO_TEXT], "LOAD PREVIOUS GAME STATE", Color(1, 1, 1), 2.f, 15, 42);
+				//RenderTextOnScreen(meshList[GEO_TEXT], "LOAD PREVIOUS GAME STATE", Color(1, 1, 1), 2.f, 15, 42);
 				RenderTextOnScreen(meshList[GEO_TEXT], "", Color(1, 1, 1), 2.f, 15, 38);
 
 
@@ -2510,6 +2531,10 @@ void StudioProject::RenderMenu(int input)
 				RenderTextOnScreen(meshList[GEO_TEXT], "+HEALTH($5)   ", Color(1, 1, 1), GameMenu.getHealthSize(), 15, 38);
 				RenderTextOnScreen(meshList[GEO_TEXT], "+SHURIKEN($10)", Color(1, 1, 1), GameMenu.getWeaponSize(), 15, 34);
 				RenderTextOnScreen(meshList[GEO_TEXT], "RETURN", Color(0.3f, 0.3f, 0.3f), GameMenu.getOutSize(), 28, 10);
+				if(Bought == true)
+				{
+					RenderTextOnScreen(meshList[GEO_TEXT], "+HEALTH($5)   ", Color(1, 1, 1), GameMenu.getHealthSize(), 30, 40);
+				}
 			}
 		}
 	case CMenuClass::PAUSE:
@@ -2900,19 +2925,23 @@ void StudioProject::Render()
 	ClearBuffer();
 	EnableCamera();
 
-	if(GameMenu.getMenuState() == true && GameMenu.getControlState() == false && GameMenu.getLoadingLevels() == false  && GameMenu.getChoosingLevels() == false && GameMenu.getLostState() == false)	//Rendering Default screen
+	if(GameMenu.getMenuState() == true && GameMenu.getControlState() == false && GameMenu.getLoadingLevels() == false  && GameMenu.getChoosingLevels() == false && GameMenu.getLostState() == false&& GameMenu.getCreditsState() == false )	//Rendering Default screen
 	{
 		RenderMenu(CMenuClass::PLAY_GAME);
 	}
-	else if(GameMenu.getMenuState() == true && GameMenu.getControlState() == true && GameMenu.getLoadingLevels() == false && GameMenu.getChoosingLevels() == false && GameMenu.getLostState() == false)	//Rendering Control Screen
+	else if(GameMenu.getMenuState() == true && GameMenu.getControlState() == true && GameMenu.getLoadingLevels() == false && GameMenu.getChoosingLevels() == false && GameMenu.getLostState() == false&& GameMenu.getCreditsState() == false )	//Rendering Control Screen
 	{
 		RenderMenu(CMenuClass::CONTROLS);
 	}
-	else if(GameMenu.getMenuState() == true && GameMenu.getLoadingLevels() == true && GameMenu.getControlState() == false && GameMenu.getChoosingLevels() == false  && GameMenu.getLostState() == false)	//Rendering Control Screen
+	else if(GameMenu.getMenuState() == true && GameMenu.getControlState() == false && GameMenu.getCreditsState() == true && GameMenu.getLoadingLevels() == false && GameMenu.getChoosingLevels() == false && GameMenu.getLostState() == false)	//Rendering Control Screen
+	{
+		RenderMenu(CMenuClass::CREDITS);
+	}
+	else if(GameMenu.getMenuState() == true && GameMenu.getLoadingLevels() == true && GameMenu.getControlState() == false && GameMenu.getChoosingLevels() == false  && GameMenu.getLostState() == false&& GameMenu.getCreditsState() == false )	//Rendering Control Screen
 	{
 		RenderMenu(CMenuClass::LOAD);
 	}
-	else if(GameMenu.getMenuState() == true && GameMenu.getLoadingLevels() == false && GameMenu.getChoosingLevels() == true && GameMenu.getControlState() == false  && GameMenu.getLostState() == false)	//Rendering Control Screen
+	else if(GameMenu.getMenuState() == true && GameMenu.getLoadingLevels() == false && GameMenu.getChoosingLevels() == true && GameMenu.getControlState() == false  && GameMenu.getLostState() == false&& GameMenu.getCreditsState() == false )	//Rendering Control Screen
 	{
 		RenderMenu(CMenuClass::LEVEL_SELECTION);
 	}

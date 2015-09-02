@@ -30,6 +30,7 @@ public:
 	{
 		PLAY_GAME = 1,
 		CONTROLS,
+		CREDITS,
 		LEVEL_SELECTION,
 		LOAD,
 		LOSE_SCREEN,
@@ -83,11 +84,15 @@ public:
 	void LostScreen();	//Lose screen
 	void WinScreen();	//Win Screen
 	void PauseMenu();	//Pause menu
+	void CreditsMenu();
+
 
 	float getCurrentSelectPos_X();	//Get current selection x position
 	float getCurrentSelectPos_Y();	//Get current selection y position
 
 	bool getControlState();	//Get control menu status
+
+	bool getCreditsState();//Get credits
 
 	bool getLoadingLevels();	//Get loading level menu status
 	void setLoadingLevels(bool input);	//Set loading level menu status
@@ -163,6 +168,7 @@ private:
 	Vector2 controlPos;	//feedback pos
 	Vector2 loadPos;
 	Vector2 levelPos;
+	Vector2 creditPos;
 	Vector2 currentSelectionPos;	//feedBackpos
 
 	bool save;
@@ -176,6 +182,7 @@ private:
 
 	bool showMenu;	//Menu loop control
 	bool showControls;	//Control menu
+	bool showCredits;
 	bool Loading; //Loading menu
 	bool LevelSelect; //Level Selecting Menu
 

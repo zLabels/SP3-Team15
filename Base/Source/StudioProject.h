@@ -162,6 +162,7 @@ class StudioProject : public Scene
 		GEO_CONTROLS_TAB_TEXT,
 		GEO_LOAD_TEXT,
 		GEO_LEVEL_TEXT,
+		GEO_CREDITS_TEXT,
 		//the level maps
 		GEO_LEVEL1,
 		GEO_LEVEL2,
@@ -337,7 +338,7 @@ private:
     int Money_Score;
     bool GetorNot;
     bool NoObjective;
-
+	bool Bought;
     //Vector for the powerups
     vector<CTreasureChest*> Treasure;
     vector<int> ConsumablePosition;

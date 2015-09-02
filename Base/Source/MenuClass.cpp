@@ -15,11 +15,13 @@ CMenuClass::CMenuClass(void)
 	controlPos.x = 450.f;
 	loadPos.x = 450.f;
 	levelPos.x = 450.f;
+	creditPos.x = 450.f;
 
 	playPos.y = 335.f;	//Feedback position
 	controlPos.y = 280.f;
 	loadPos.y = 225.f;
 	levelPos.y = 175.f;
+	creditPos.y = 125.f;
 
 	inputDelay = 0.f;
 	DELAY_RATE = 0.2f;
@@ -33,6 +35,7 @@ CMenuClass::CMenuClass(void)
 	//Level4Size = 3.f;
 	//Level5Size = 3.f;
 
+	showCredits = false;
 	showControls = false;
 	Loading = false;
 	LevelSelect = false;
@@ -68,6 +71,11 @@ bool CMenuClass::getMenuState()
 bool CMenuClass::getControlState()
 {
 	return showControls;
+}
+
+bool CMenuClass::getCreditsState()
+{
+	return showCredits;
 }
 
 bool CMenuClass::getLoadingLevels()
@@ -288,6 +296,11 @@ void CMenuClass::menuFeedback()
 		currentSelectionPos.x = levelPos.x;
 		currentSelectionPos.y = levelPos.y;
 	}
+	else if(menuOption == CREDITS)
+	{
+		currentSelectionPos.x = creditPos.x;
+		currentSelectionPos.y = creditPos.y;
+	}
 }
 void CMenuClass::menuFeedback2()
 {
@@ -342,6 +355,16 @@ void CMenuClass::ControlMenu()
 	if(Application::IsKeyPressed(VK_RETURN)  && inputDelay > DELAY_RATE)
 	{
 		showControls = false;
+		inputDelay = 0.f;
+	}
+}
+
+	
+void CMenuClass::CreditsMenu()
+{
+	if(Application::IsKeyPressed(VK_RETURN)  && inputDelay > DELAY_RATE)
+	{
+		showCredits  = false;
 		inputDelay = 0.f;
 	}
 }
@@ -508,12 +531,13 @@ void CMenuClass::DefaultMenu()
 	{
 		if(menuOption == PLAY_GAME)
 		{
-			menuOption = LEVEL_SELECTION;
+			menuOption = CREDITS;
 		}
 		else if(menuOption == CONTROLS)
 		{
 			menuOption = PLAY_GAME;
 		}
+
 		else if(menuOption == LOAD)
 		{
 			menuOption = CONTROLS;
@@ -522,6 +546,11 @@ void CMenuClass::DefaultMenu()
 		{
 			menuOption = LOAD;
 		}
+		else if(menuOption == CREDITS)
+		{
+			menuOption = LEVEL_SELECTION;
+		}
+
 		inputDelay = 0.f;
 	}
 
@@ -541,8 +570,13 @@ void CMenuClass::DefaultMenu()
 		}
 		else if(menuOption == LEVEL_SELECTION)
 		{
+			menuOption = CREDITS;
+		}
+		else if(menuOption == CREDITS)
+		{
 			menuOption = PLAY_GAME;
 		}
+
 		inputDelay = 0.f;
 	}
 
@@ -557,6 +591,11 @@ void CMenuClass::DefaultMenu()
 	else if(Application::IsKeyPressed(VK_RETURN) && menuOption == CONTROLS  && inputDelay > DELAY_RATE)
 	{
 		showControls = true;
+		inputDelay = 0.f;
+	}
+	else if(Application::IsKeyPressed(VK_RETURN) && menuOption == CREDITS  && inputDelay > DELAY_RATE)
+	{
+		showCredits = true;
 		inputDelay = 0.f;
 	}
 	else if(Application::IsKeyPressed(VK_RETURN) && menuOption == LOAD  && inputDelay > DELAY_RATE)
@@ -787,20 +826,24 @@ int CMenuClass::Update(double dt)
 	inputDelay += (float)dt;
 	
 	//Display default menu
-	if(showMenu == true && showControls == false && Loading == false && LevelSelect == false)
+	if(showMenu == true && showControls == false && Loading == false && LevelSelect == false && showCredits == false)
 	{
 		DefaultMenu();
 	}
 	//Display Control menu
-	else if(showMenu == true && showControls == true && Loading == false && LevelSelect == false)
+	else if(showMenu == true && showControls == true && Loading == false && LevelSelect == false && showCredits == false)
 	{
 		ControlMenu();
 	}
-	else if(showMenu == true && Loading == true && showControls == false && LevelSelect == false)
+	else if(showMenu == true && showControls == false && Loading == false && LevelSelect == false && showCredits == true)
+	{
+		CreditsMenu();
+	}
+	else if(showMenu == true && Loading == true && showControls == false && LevelSelect == false && showCredits == false)
 	{
 		LoadingMenu();
 	}
-	else if(showMenu == true && LevelSelect == true && Loading == false && showControls == false)
+	else if(showMenu == true && LevelSelect == true && Loading == false && showControls == false && showCredits == false)
 	{
 		int select = LevelSelectMenu();
 		if(select != 0)
