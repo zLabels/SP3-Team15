@@ -119,8 +119,9 @@ bool HeroCollisionCheck( CMap* m_cMap,bool m_bCheckLeft,bool m_bCheckRight, bool
 
 		for(unsigned i = 1; i < TILE_MAX_COLLISION; ++i)
 		{
-			if (  (m_cMap->theScreenMap[checkPosition_Y][checkPosition_X3] == i) ||
-				  (m_cMap->theScreenMap[checkPosition_Y][checkPosition_X2] == i) )
+			if ( (m_cMap->theScreenMap[checkPosition_Y][checkPosition_X2] == i) ||  
+				  (m_cMap->theScreenMap[checkPosition_Y][checkPosition_X2+1] == i) ||
+				  (m_cMap->theScreenMap[checkPosition_Y][checkPosition_X3] == i) )
 			{
 				return true;
 			}
