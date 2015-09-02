@@ -28,13 +28,6 @@ StudioProject::StudioProject()
 }
 StudioProject::~StudioProject()
 {
-	for(unsigned i = 0; i< 10; ++i)
-	{
-		delete theArrayOfGoodies[i];
-	}
-
-	delete theArrayOfGoodies;
-
 	if(m_cMap)
 	{
 		delete m_cMap;
@@ -171,18 +164,9 @@ void StudioProject::InitMesh()
 		meshList[i] = NULL;
 	}
 
-	meshList[GEO_AXES] = MeshBuilder::GenerateAxes("reference", 1000, 1000, 1000);
-	meshList[GEO_QUAD] = MeshBuilder::GenerateQuad("quad", Color(1, 1, 1), 1.f);
-	meshList[GEO_QUAD]->textureID = LoadTGA("Image//calibri.tga");
 	meshList[GEO_TEXT] = MeshBuilder::GenerateText("text", 16, 16);
 	meshList[GEO_TEXT]->textureID = LoadTGA("Image//HoboStdFont.tga");
 	meshList[GEO_TEXT]->material.kAmbient.Set(1, 0, 0);
-
-	meshList[GEO_RING] = MeshBuilder::GenerateRing("ring", Color(1, 0, 1), 36, 1, 0.5f);
-	meshList[GEO_LIGHTBALL] = MeshBuilder::GenerateSphere("lightball", Color(1, 1, 1), 18, 36, 1.f);
-	meshList[GEO_CONE] = MeshBuilder::GenerateCone("cone", Color(0.5f, 1, 0.3f), 36, 10.f, 10.f);
-	meshList[GEO_CONE]->material.kDiffuse.Set(0.99f, 0.99f, 0.99f);
-	meshList[GEO_CONE]->material.kSpecular.Set(0.f, 0.f, 0.f);
 
 	//GameMenu
 	meshList[GEO_MENU_BACKGROUND] = MeshBuilder::Generate2DMesh("GameMenu_background", Color(1, 1, 1), 50, 50, 800,600);
@@ -272,9 +256,6 @@ void StudioProject::InitVariables()
 }
 void StudioProject::InitHUD()
 {
-	meshList[GEO_ICON] = MeshBuilder::GenerateQuad("Saber_icon",Color(1, 1, 1), 20.f);
-	meshList[GEO_ICON]->textureID = LoadTGA("Image//Saber//Saber_icon.tga");
-
 	meshList[GEO_HUD_TEMPLATE] = MeshBuilder::GenerateQuad("HUD_template",Color(1, 1, 1), 20.f);
 	meshList[GEO_HUD_TEMPLATE]->textureID = LoadTGA("Image//HUD//HUD_template.tga");
 
@@ -293,14 +274,6 @@ void StudioProject::InitBackground()
 	//First background
 	meshList[GEO_BACKGROUND] = MeshBuilder::Generate2DMesh("GEO_BACKGROUND", Color(1, 1, 1), 0, 0, 900, 600);
 	meshList[GEO_BACKGROUND]->textureID = LoadTGA("Image//Map//Map_Background.tga");
-
-	//Second layer for parrallax
-	meshList[GEO_LAYER_2] = MeshBuilder::Generate2DMesh("Layer2", Color(1, 1, 1), 0, 0, 900, 600);
-	meshList[GEO_LAYER_2]->textureID = LoadTGA("Image//Backgroundlayer2.tga");
-
-	//Third layer for parrallax
-	meshList[GEO_LAYER_3] = MeshBuilder::Generate2DMesh("Layer3", Color(1, 1, 1), 0, 0, 900, 600);
-	meshList[GEO_LAYER_3]->textureID = LoadTGA("Image//Backgroundlayer3.tga");
 }
 void StudioProject::InitHero()
 {
@@ -358,72 +331,6 @@ void StudioProject::InitHero()
 		CHero::GetInstance()->Hero_run_left->m_anim = new Animation();
 		CHero::GetInstance()->Hero_run_left->m_anim->Set(9, 17, 1, 1.f, false,Vector3(0,0,1),0,0.f,HERO_SIZE);
 	} 
-
-
-	//===================================================================================//
-	//				
-	//							ATTACKS													//
-	//
-	//==================================================================================//
-	meshList[GEO_SABER_ATTACK_1_RIGHT] = MeshBuilder::GenerateSpriteAnimation("Saber_attack_1_right",1,7);
-	meshList[GEO_SABER_ATTACK_1_RIGHT]->textureArray[0] = LoadTGA("Image//Saber//Saber_attack1_right.tga");
-
-	CHero::GetInstance()->Hero_attack_1_right = dynamic_cast<CSpriteAnimation*>(meshList[GEO_SABER_ATTACK_1_RIGHT]);
-	if(CHero::GetInstance()->Hero_attack_1_right)
-	{
-		CHero::GetInstance()->Hero_attack_1_right->m_anim = new Animation();
-		CHero::GetInstance()->Hero_attack_1_right->m_anim->Set(0, 6, 1, 0.7f, false,Vector3(0,0,1),0,0.f,HERO_SIZE + 40.f);
-	}
-
-	meshList[GEO_SABER_ATTACK_1_LEFT] = MeshBuilder::GenerateSpriteAnimation("Saber_attack_1_left",1,7);
-	meshList[GEO_SABER_ATTACK_1_LEFT]->textureArray[0] = LoadTGA("Image//Saber//Saber_attack1_left.tga");
-
-	CHero::GetInstance()->Hero_attack_1_left = dynamic_cast<CSpriteAnimation*>(meshList[GEO_SABER_ATTACK_1_LEFT]);
-	if(CHero::GetInstance()->Hero_attack_1_left)
-	{
-		CHero::GetInstance()->Hero_attack_1_left->m_anim = new Animation();
-		CHero::GetInstance()->Hero_attack_1_left->m_anim->Set(0, 6, 1, 0.7f, false,Vector3(0,0,1),0,0.f,HERO_SIZE + 40.f);
-	}
-
-	meshList[GEO_SABER_ATTACK_2_RIGHT] = MeshBuilder::GenerateSpriteAnimation("Saber_attack_2_right",1,8);
-	meshList[GEO_SABER_ATTACK_2_RIGHT]->textureArray[0] = LoadTGA("Image//Saber//Saber_attack2_right.tga");
-
-	CHero::GetInstance()->Hero_attack_2_right = dynamic_cast<CSpriteAnimation*>(meshList[GEO_SABER_ATTACK_2_RIGHT]);
-	if(CHero::GetInstance()->Hero_attack_2_right)
-	{
-		CHero::GetInstance()->Hero_attack_2_right->m_anim = new Animation();
-		CHero::GetInstance()->Hero_attack_2_right->m_anim->Set(0, 7, 1, 0.7f, false,Vector3(0,0,1),0,0.f,HERO_SIZE + 10.f);
-	}
-
-	meshList[GEO_SABER_ATTACK_2_LEFT] = MeshBuilder::GenerateSpriteAnimation("Saber_attack_2_left",1,8);
-	meshList[GEO_SABER_ATTACK_2_LEFT]->textureArray[0] = LoadTGA("Image//Saber//Saber_attack2_left.tga");
-
-	CHero::GetInstance()->Hero_attack_2_left = dynamic_cast<CSpriteAnimation*>(meshList[GEO_SABER_ATTACK_2_LEFT]);
-	if(CHero::GetInstance()->Hero_attack_2_left)
-	{
-		CHero::GetInstance()->Hero_attack_2_left->m_anim = new Animation();
-		CHero::GetInstance()->Hero_attack_2_left->m_anim->Set(0, 7, 1, 0.7f, false,Vector3(0,0,1),0,0.f,HERO_SIZE + 10.f);
-	}
-
-	meshList[GEO_SABER_SHOCKWAVE_RIGHT] = MeshBuilder::GenerateSpriteAnimation("Saber_shockwave_right",1,6);
-	meshList[GEO_SABER_SHOCKWAVE_RIGHT]->textureArray[0] = LoadTGA("Image//Saber//Saber_shockwave_right.tga");
-
-	CHero::GetInstance()->Hero_shockwave_right = dynamic_cast<CSpriteAnimation*>(meshList[GEO_SABER_SHOCKWAVE_RIGHT]);
-	if(CHero::GetInstance()->Hero_shockwave_right)
-	{
-		CHero::GetInstance()->Hero_shockwave_right->m_anim = new Animation();
-		CHero::GetInstance()->Hero_shockwave_right->m_anim->Set(0, 5, 0, 1.f, false,Vector3(0,0,1),0,0.f,HERO_SIZE);
-	}
-
-	meshList[GEO_SABER_SHOCKWAVE_LEFT] = MeshBuilder::GenerateSpriteAnimation("Saber_shockwave_left",1,6);
-	meshList[GEO_SABER_SHOCKWAVE_LEFT]->textureArray[0] = LoadTGA("Image//Saber//Saber_shockwave_left.tga");
-
-	CHero::GetInstance()->Hero_shockwave_left = dynamic_cast<CSpriteAnimation*>(meshList[GEO_SABER_SHOCKWAVE_LEFT]);
-	if(CHero::GetInstance()->Hero_shockwave_left)
-	{
-		CHero::GetInstance()->Hero_shockwave_left->m_anim = new Animation();
-		CHero::GetInstance()->Hero_shockwave_left->m_anim->Set(0, 5, 0, 1.f, false,Vector3(0,0,1),0,0.f,HERO_SIZE);
-	}
 
 	//===================================================================================//
 	//				
@@ -500,9 +407,6 @@ void StudioProject::InitMap()
 }
 void StudioProject::InitTiles()
 {
-	meshList[GEO_TILECAVE] = MeshBuilder::Generate2DMesh("GEO_CAVE", Color(1, 1, 1), 0, 0, 70, 80);
-	meshList[GEO_TILECAVE]->textureID = LoadTGA("Image//Tiles//CaveTile3.tga");
-
 	/*
 	Generate Tile is the function that breaks up the tileset and generate the tile 
 	based on the selected col and row, Tile size needs to be 26 
@@ -580,21 +484,11 @@ void StudioProject::InitTiles()
 	meshList[GEO_TILE_STEALTH_BOX] = MeshBuilder::GenerateTile("Objective",1,1,1,1,26.f);
 	meshList[GEO_TILE_STEALTH_BOX]->textureID = LoadTGA("Image//Tiles//Tile_Stealth_Box.tga");
 
-	meshList[GEO_TILE_FINISH_CLOSE] = MeshBuilder::GenerateTile("FINISH_CLOSE",1,1,1,1,26.f);
-	meshList[GEO_TILE_FINISH_CLOSE]->textureID = LoadTGA("Image//Tiles//Tile_Finish3.tga");
+	meshList[GEO_TILE_FINISH_CLOSE] = MeshBuilder::GenerateTile("FINISH_CLOSE",1,1,1,1,80.f);
+	meshList[GEO_TILE_FINISH_CLOSE]->textureID = LoadTGA("Image//Tiles//Tile_Teleporter_Closed.tga");
 
 	meshList[GEO_TILE_FINISH_OPEN] = MeshBuilder::GenerateTile("FINISH_OPEN",1,1,1,1,26.f);
-	meshList[GEO_TILE_FINISH_OPEN]->textureID = LoadTGA("Image//Tiles//Tile_Finish2.tga");
-
-	theArrayOfGoodies = new CGoodies*[10];
-	for(unsigned i = 0; i < 10; ++i)
-	{
-		theArrayOfGoodies[i] = theGoodiesFactory.Create(CGoodiesFactory::TREASURE_CHEST);
-		theArrayOfGoodies[i]->SetPos(150 + i*25, 150);
-		theArrayOfGoodies[i]->SetMesh(MeshBuilder::Generate2DMesh("GEO_TILE_TREASURECHEST", Color(1,1,1), 0,0,25,25));
-		theArrayOfGoodies[i]->SetTextureID(LoadTGA("Image//Tiles//tile4_treasurechest.tga"));
-	}
-
+	meshList[GEO_TILE_FINISH_OPEN]->textureID = LoadTGA("Image//Tiles//Tile_Teleporter_Open.tga");
 }
 void StudioProject::InitWeapon()
 {
@@ -1061,7 +955,6 @@ void StudioProject::LoadConsumables(unsigned level)
 	ConsumablePosition.clear();
 	Treasure.clear();	//Clearing the vector of treasures
 	string data = "";	//Used to store string from text file
-	//vector<int> ConsumablePosition;	//Local vector to store the data from text file to be used later on
 
 	switch(level)
 	{
@@ -1502,10 +1395,7 @@ void StudioProject::UpdateSprites(double dt)
 	&&
 	Check if hero is using any forms of attacks
 	*/
-	if((CHero::GetInstance()->Gethero_inMidAir_Up() == true || CHero::GetInstance()->Gethero_inMidAir_Down() == true) && 
-		(CHero::GetInstance()->Hero_attack_1_right->m_anim->animActive == false && CHero::GetInstance()->Hero_attack_1_left->m_anim->animActive == false && 
-		CHero::GetInstance()->Hero_attack_2_right->m_anim->animActive == false && CHero::GetInstance()->Hero_attack_2_left->m_anim->animActive == false && 
-		CHero::GetInstance()->Hero_shockwave_right->m_anim->animActive == false && CHero::GetInstance()->Hero_shockwave_left->m_anim->animActive == false))
+	if( (CHero::GetInstance()->Gethero_inMidAir_Up() == true || CHero::GetInstance()->Gethero_inMidAir_Down() == true) )
 	{
 		if(CHero::GetInstance()->Gethero_face_right() == true)	//Check if hero is facing right
 		{
@@ -1578,9 +1468,6 @@ void StudioProject::UpdateSprites(double dt)
 	Checks if hero is doing any other actions at all
 	*/
 	if(CHero::GetInstance()->Hero_run_right->m_anim->animActive == true || CHero::GetInstance()->Hero_run_left->m_anim->animActive == true ||
-		CHero::GetInstance()->Hero_attack_1_right->m_anim->animActive == true || CHero::GetInstance()->Hero_attack_1_left->m_anim->animActive == true ||
-		CHero::GetInstance()->Hero_attack_2_right->m_anim->animActive == true || CHero::GetInstance()->Hero_attack_2_left->m_anim->animActive == true ||
-		CHero::GetInstance()->Hero_shockwave_right->m_anim->animActive == true || CHero::GetInstance()->Hero_shockwave_left->m_anim->animActive == true ||
 		CHero::GetInstance()->Hero_jump_right->m_anim->animActive == true || CHero::GetInstance()->Hero_jump_left->m_anim->animActive == true)
 	{
 		CHero::GetInstance()->Hero_idle_right->m_anim->animActive = false;
@@ -1760,7 +1647,7 @@ void StudioProject::UpdateInput(double dt)
 	}
 
 	//Movement
-	if(Application::IsKeyPressed('W'))	//Interact
+	if(Application::IsKeyPressed('E'))	//Interact
 	{
 		if(m_cMap->theScreenMap[checkPosition_Y][checkPosition_X] == TILE_METALCORNER)
 		{
@@ -1873,9 +1760,6 @@ void StudioProject::UpdateInput(double dt)
 	}
 	//Walk Left
 	if(Application::IsKeyPressed('A') && !CHero::GetInstance()->getInventory().getGrapple().getHooked() &&
-		CHero::GetInstance()->Hero_attack_1_right->m_anim->animActive == false && CHero::GetInstance()->Hero_attack_1_left->m_anim->animActive == false &&
-		CHero::GetInstance()->Hero_attack_2_right->m_anim->animActive == false && CHero::GetInstance()->Hero_attack_2_left->m_anim->animActive == false &&
-		CHero::GetInstance()->Hero_shockwave_right->m_anim->animActive == false && CHero::GetInstance()->Hero_shockwave_left->m_anim->animActive == false &&
 		CHero::GetInstance()->Hero_run_right->m_anim->animActive == false)
 	{
 		CHero::GetInstance()->HeroMoveLeftRight(true , 1.0f);
@@ -1892,9 +1776,6 @@ void StudioProject::UpdateInput(double dt)
 	}
 	//Walk Right
 	if(Application::IsKeyPressed('D') && !CHero::GetInstance()->getInventory().getGrapple().getHooked() &&
-		CHero::GetInstance()->Hero_attack_1_right->m_anim->animActive == false && CHero::GetInstance()->Hero_attack_1_left->m_anim->animActive == false &&
-		CHero::GetInstance()->Hero_attack_2_right->m_anim->animActive == false && CHero::GetInstance()->Hero_attack_2_left->m_anim->animActive == false &&
-		CHero::GetInstance()->Hero_shockwave_right->m_anim->animActive == false && CHero::GetInstance()->Hero_shockwave_left->m_anim->animActive == false &&
 		CHero::GetInstance()->Hero_run_left->m_anim->animActive == false)
 	{
 		CHero::GetInstance()->HeroMoveLeftRight(false , 1.0f);
@@ -3042,7 +2923,7 @@ void StudioProject::Render()
 		=====================*/
 		RenderBackground();
 
-		//RenderRearTileMap();
+		RenderRearTileMap();
 
 		RenderTileMap();
 
