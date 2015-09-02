@@ -484,8 +484,8 @@ void StudioProject::InitTiles()
 	meshList[GEO_TILE_STEALTH_BOX] = MeshBuilder::GenerateTile("Objective",1,1,1,1,26.f);
 	meshList[GEO_TILE_STEALTH_BOX]->textureID = LoadTGA("Image//Tiles//Tile_Stealth_Box.tga");
 
-	meshList[GEO_TILE_FINISH_CLOSE] = MeshBuilder::GenerateTile("FINISH_CLOSE",1,1,1,1,26.f);
-	meshList[GEO_TILE_FINISH_CLOSE]->textureID = LoadTGA("Image//Tiles//Tile_Finish3.tga");
+	meshList[GEO_TILE_FINISH_CLOSE] = MeshBuilder::GenerateTile("FINISH_CLOSE",1,1,1,1,80.f);
+	meshList[GEO_TILE_FINISH_CLOSE]->textureID = LoadTGA("Image//Tiles//Tile_Teleporter_Closed.tga");
 
 	meshList[GEO_TILE_FINISH_OPEN] = MeshBuilder::GenerateTile("FINISH_OPEN",1,1,1,1,26.f);
 	meshList[GEO_TILE_FINISH_OPEN]->textureID = LoadTGA("Image//Tiles//Tile_Finish2.tga");
@@ -1647,7 +1647,7 @@ void StudioProject::UpdateInput(double dt)
 	}
 
 	//Movement
-	if(Application::IsKeyPressed('W'))	//Interact
+	if(Application::IsKeyPressed('E'))	//Interact
 	{
 		if(m_cMap->theScreenMap[checkPosition_Y][checkPosition_X] == TILE_METALCORNER)
 		{
