@@ -2449,7 +2449,7 @@ void StudioProject::RenderMenu(int input)
 			if(GameMenu.getMenuState())
 			{
 				Render2DMesh(meshList[GEO_CONTROLS_TEXT],false,0.8f,150,420);
-				RenderTextOnScreen(meshList[GEO_TEXT], "W - INTERACTS WITH THE ITEMS", Color(1, 1, 1), 2.f, 15, 40);
+				RenderTextOnScreen(meshList[GEO_TEXT], "E - INTERACTS WITH THE ITEMS", Color(1, 1, 1), 2.f, 15, 40);
 				RenderTextOnScreen(meshList[GEO_TEXT], "A - Move Left", Color(1, 1, 1), 2.f, 15, 36);
 				RenderTextOnScreen(meshList[GEO_TEXT], "D - Move Right", Color(1, 1, 1), 2.f, 15, 32);
 				RenderTextOnScreen(meshList[GEO_TEXT], "SPACEBAR- Jump", Color(1, 1, 1), 2.f, 15, 28);
@@ -2516,12 +2516,12 @@ void StudioProject::RenderMenu(int input)
 		{
 			if(GameMenu.getPauseState())
 			{
-				RenderTextOnScreen(meshList[GEO_TEXT], "PAUSE SCREEN", Color(0.3f, 0.3f, 0.3f), 3.f, 28, 42);
-				RenderTextOnScreen(meshList[GEO_TEXT], "SAVE   ", Color(1, 1, 1), GameMenu.getSaveSize(), 28, 38);
-				RenderTextOnScreen(meshList[GEO_TEXT], "SAVE AND QUIT", Color(1, 1, 1), GameMenu.getSQSize(), 28, 34);
-				RenderTextOnScreen(meshList[GEO_TEXT], "QUIT", Color(1, 1, 1), GameMenu.getQuitSize(), 28, 30);
-				RenderTextOnScreen(meshList[GEO_TEXT], "RETURN TO GAME", Color(1, 1, 1), GameMenu.getReturnSize(), 28, 26);
-				RenderTextOnScreen(meshList[GEO_TEXT], "RETURN TO MAIN MENU", Color(1, 1, 1), GameMenu.getReturnMainSize(), 28, 24);
+				RenderTextOnScreen(meshList[GEO_TEXT], "PAUSE SCREEN", Color(0.3f, 0.3f, 0.3f), 5.f, 29, 42);
+				RenderTextOnScreen(meshList[GEO_TEXT], "SAVE   ", Color(1, 1, 1), GameMenu.getSaveSize(), 37, 38);
+				RenderTextOnScreen(meshList[GEO_TEXT], "SAVE AND QUIT", Color(1, 1, 1), GameMenu.getSQSize(), 32, 34);
+				RenderTextOnScreen(meshList[GEO_TEXT], "QUIT", Color(1, 1, 1), GameMenu.getQuitSize(), 37, 30);
+				RenderTextOnScreen(meshList[GEO_TEXT], "RETURN TO GAME", Color(1, 1, 1), GameMenu.getReturnSize(), 31, 26);
+				RenderTextOnScreen(meshList[GEO_TEXT], "RETURN TO MAIN MENU", Color(1, 1, 1), GameMenu.getReturnMainSize(), 29, 22);
 				
 				if(GameMenu.getSave() == true)
 				{

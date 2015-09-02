@@ -149,6 +149,7 @@ public:
 	float DELAY_RATE2;	//Input delay rate
 	float DELAY_RATE3;	//Input delay rate
 	float DELAY_RATE4;	//Input delay rate
+	float DELAY_RATE5;
 
 private:
 	CShop Money;

@@ -26,7 +26,7 @@ CMenuClass::CMenuClass(void)
 	DELAY_RATE2 = 0.2f;
 	DELAY_RATE3 = 0.2f;
 	DELAY_RATE4 = 0.3f;
-
+	DELAY_RATE5 = 0.2f;
 	//Level1Size = 3.f;	//Text size
 	//Level2Size = 3.f;
 	//Level3Size = 3.f;
@@ -711,10 +711,10 @@ void CMenuClass::PauseMenu()
 		}
 		inputDelay = 0.f;
 	}
-	if(Application::IsKeyPressed(VK_RETURN) && ItemOption == SAVE  && inputDelay > DELAY_RATE4)
+	if(Application::IsKeyPressed(VK_RETURN) && ItemOption == SAVE  && inputDelay > DELAY_RATE5)
 	{
 		save = true;
-		inputDelay = 0.f;
+		inputDelay = 0.2f;
 	}
 	else if(Application::IsKeyPressed(VK_RETURN) && ItemOption == SAVE_N_QUIT  && inputDelay > DELAY_RATE4)
 	{
