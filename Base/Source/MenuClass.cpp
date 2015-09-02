@@ -25,7 +25,7 @@ CMenuClass::CMenuClass(void)
 	DELAY_RATE = 0.2f;
 	DELAY_RATE2 = 0.2f;
 	DELAY_RATE3 = 0.2f;
-	DELAY_RATE4 = 0.2f;
+	DELAY_RATE4 = 0.3f;
 
 	//Level1Size = 3.f;	//Text size
 	//Level2Size = 3.f;

@@ -685,7 +685,7 @@ void StudioProject::SaveGame()
 {
 	if(Save)
 	{
-		cout<<"SAVE";
+
 		ofstream saveFile;
 		saveFile.open("Source//TextFiles//Player//Player_Data.txt");
 		if(saveFile.is_open())
@@ -2086,19 +2086,16 @@ void StudioProject::Update(double dt)
 			{
 				if(CHero::GetInstance()->Gethero_HP() < 100 && CHero::GetInstance()->Gethero_HP() > 75) // if Health is in between 75 to 100, set it to 100
 				{
-					//cout<<"HEALTH++";
 					CHero::GetInstance()->setHero_Score(CHero::GetInstance()->getHero_Score() - 5);
 					CHero::GetInstance()->setHero_Health(100);
-					//soundplayer.playSounds(soundplayer.HEALTH);
+					soundplayer.playSounds(soundplayer.HEALTH);
 				}
 				else if(CHero::GetInstance()->Gethero_HP() <= 75) // If health is lower or equals to 75, health plus 25.
 				{
-					//cout<<"HEALTH++";
 					CHero::GetInstance()->setHero_Score(CHero::GetInstance()->getHero_Score() - 5);
 					CHero::GetInstance()->setHero_Health(CHero::GetInstance()->Gethero_HP() + 25);
-					//soundplayer.playSounds(soundplayer.HEALTH);
+					soundplayer.playSounds(soundplayer.HEALTH);
 				}
-				soundplayer.playSounds(soundplayer.HEALTH);
 			}
 			
 			GameMenu.setHealthBought(false);
@@ -2127,13 +2124,12 @@ void StudioProject::Update(double dt)
 		{
 			Save = true; 
 			SaveGame();
-			GameMenu.setSave(false);
+			
 		}
 		if(GameMenu.getSavenQuit() == true)
 		{
 			Save = true; 
 			SaveGame();
-			GameMenu.setSavenQuit(false);
 			exit(0);
 
 		}
@@ -2645,6 +2641,17 @@ void StudioProject::RenderMenu(int input)
 				RenderTextOnScreen(meshList[GEO_TEXT], "QUIT", Color(1, 1, 1), GameMenu.getQuitSize(), 28, 30);
 				RenderTextOnScreen(meshList[GEO_TEXT], "RETURN TO GAME", Color(1, 1, 1), GameMenu.getReturnSize(), 28, 26);
 				RenderTextOnScreen(meshList[GEO_TEXT], "RETURN TO MAIN MENU", Color(1, 1, 1), GameMenu.getReturnMainSize(), 28, 24);
+				
+				if(GameMenu.getSave() == true)
+				{
+					RenderTextOnScreen(meshList[GEO_TEXT], "SAVED", Color(1, 1, 1), 5.f, 15, 38);
+					GameMenu.setSave(false);
+				}
+				if(GameMenu.getSavenQuit())
+				{
+					RenderTextOnScreen(meshList[GEO_TEXT], "SAVED", Color(1, 1, 1), 4.f, 30, 38);
+					GameMenu.setSavenQuit(false);
+				}
 			}
 		}
 		break;
