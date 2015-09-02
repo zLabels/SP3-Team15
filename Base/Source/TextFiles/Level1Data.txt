@@ -1,8 +1,0 @@
-//Position of Monsters on level 1
-//X coord , Y coord, Health , Damage, Type
-//1 is for Skeleton ,2 is for ghost
-525,100,150,5,2
-400,200,100,5,1
-250,200,100,5,1
-225,425,150,5,2
-425,400,100,5,1

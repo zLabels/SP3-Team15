@@ -88,25 +88,19 @@ class StudioProject : public Scene
 	enum GEOMETRY_TYPE
 	{
 		GEO_AXES,
-		GEO_LIGHTBALL,
 		GEO_QUAD,
 		GEO_CUBE,
-		GEO_RING,
-		GEO_CONE,
 		GEO_OBJECT,
 		GEO_TEXT,
 		GEO_TEXT1,
 		GEO_FLOOR,
 		//HUD
 		GEO_CROSSHAIR,
-		GEO_ICON,
 		GEO_HUD_TEMPLATE,
 		GEO_HUD_HP,
 		GEO_HUD_EP,
 		//Background
 		GEO_BACKGROUND,
-		GEO_LAYER_2,
-		GEO_LAYER_3,
 		//Tiles,
 		GEO_TILESTRUCTURE,
 		GEO_TILECAVE,
@@ -134,7 +128,6 @@ class StudioProject : public Scene
 		GEO_WINDOW_BOTTOM,
 		GEO_REAR_WALL,
 		GEO_REAR_GLASS,
-
 		//Hero,
 		GEO_TILEHERO,
 		GEO_PLAYER_RUN_RIGHT,
@@ -143,18 +136,6 @@ class StudioProject : public Scene
 		GEO_PLAYER_JUMP_LEFT,
 		GEO_PLAYER_IDLE_RIGHT,
 		GEO_PLAYER_IDLE_LEFT,
-		GEO_SABER_IDLE_RIGHT,
-		GEO_SABER_IDLE_LEFT,
-		GEO_SABER_RUN_RIGHT,
-		GEO_SABER_RUN_LEFT,
-		GEO_SABER_ATTACK_1_RIGHT,
-		GEO_SABER_ATTACK_1_LEFT,
-		GEO_SABER_ATTACK_2_RIGHT,
-		GEO_SABER_ATTACK_2_LEFT,
-		GEO_SABER_SHOCKWAVE_RIGHT,
-		GEO_SABER_SHOCKWAVE_LEFT,
-		GEO_SABER_JUMP_RIGHT,
-		GEO_SABER_JUMP_LEFT,
 		//Weapon
 		GEO_GRAPPLING_HOOK,
 		GEO_SHURIKEN,
@@ -297,9 +278,6 @@ private:
 
 	float fps;	//Frame rate
 
-	//Goodies and goodies factory
-	CGoodiesFactory theGoodiesFactory;
-	CGoodies** theArrayOfGoodies;	
 	void RenderPowerUp(void);	//Render powerups
 
 	//Enemy

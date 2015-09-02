@@ -111,12 +111,6 @@ public:
 	CSpriteAnimation* Hero_idle_left;
 	CSpriteAnimation* Hero_run_right;
 	CSpriteAnimation* Hero_run_left;
-	CSpriteAnimation* Hero_attack_1_right;
-	CSpriteAnimation* Hero_attack_1_left;
-	CSpriteAnimation* Hero_attack_2_right;
-	CSpriteAnimation* Hero_attack_2_left;
-	CSpriteAnimation* Hero_shockwave_right;
-	CSpriteAnimation* Hero_shockwave_left;
 	CSpriteAnimation* Hero_jump_right;
 	CSpriteAnimation* Hero_jump_left;
 private:
