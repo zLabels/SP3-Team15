@@ -1,7 +1,7 @@
 #include "Inventory.h"
 
 CInventory::CInventory(void) :
-		ShurikenCount(20)
+		ShurikenCount(5)
 {
 }
 
